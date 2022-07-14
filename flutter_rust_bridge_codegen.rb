@@ -9,7 +9,7 @@ class FlutterRustBridgeCodegen < Formula
     root_url "https://github.com/Desdaemon/homebrew-repo/releases/download/flutter_rust_bridge_codegen-1.37.2"
     sha256 cellar: :any_skip_relocation, big_sur:      "d1b616bc137f70ac82bbf6bde623876f73c09999795a6de6158bc8adfc5f2f18"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "4a9d8c5efeb94057cc21b46dc5f1c5fa40949b2ef74e2fc61eb7829021e1299e"
-  end  
+  end
 
   depends_on "rust" => :build
 
@@ -19,16 +19,12 @@ class FlutterRustBridgeCodegen < Formula
 
   test do
     system "cargo", "new", "--lib", "native"
-    File.open "native/lib.rs" do |f|
-      f.write "mod api;"
-    end
-    File.open "native/api.rs" do |f|
-      f.write <<~API
-        pub fn test() {
-          println!("Hello from Rust!")
-        }
-      API
-    end
+    "native/lib.rs".write "mod api;"
+    "native/api.rs".write <<~API
+      pub fn test() {
+        println!("Hello from Rust!")
+      }
+    API
     system bin/"flutter_rust_bridge_codegen", "--rust-input", "native/api.rs",
                                               "--dart-output", "bridge_generated.dart"
   end
