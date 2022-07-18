@@ -12,6 +12,7 @@ class FlutterRustBridgeCodegen < Formula
   end
 
   depends_on "rust" => :build
+  depends_on "dart" => :test
 
   def install
     system "cargo", "install", "--root", prefix, "--path", buildpath/"frb_codegen"
@@ -19,12 +20,14 @@ class FlutterRustBridgeCodegen < Formula
 
   test do
     system "cargo", "new", "--lib", "native"
-    "native/lib.rs".write "mod api;"
-    "native/api.rs".write <<~API
+    (testpath/"native/lib.rs").write "mod api;", mode: 'a'
+    (testpath/"native/api.rs").write <<~API
       pub fn test() {
         println!("Hello from Rust!")
       }
     API
+    system bin/"dart", "pub", "global", "activate", "ffigen"
+    system "rustup", "default", "stable"
     system bin/"flutter_rust_bridge_codegen", "--rust-input", "native/api.rs",
                                               "--dart-output", "bridge_generated.dart"
   end

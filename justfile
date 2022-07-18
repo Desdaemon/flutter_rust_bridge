@@ -64,6 +64,9 @@ check:
     cd {{frb_flutter}} && flutter pub get && flutter analyze
     cd {{frb_flutter}}/rust && cargo clippy
 
+scoop:
+    ./contrib/scoop.sh
+
 refresh_all:
     (cd frb_rust && cargo clippy -- -D warnings)
     (cd frb_macros && cargo clippy -- -D warnings)
@@ -96,9 +99,6 @@ release old_version new_version:
     sed -i '' 's/version: {{old_version}}/version: {{new_version}}/g' frb_dart/pubspec.yaml
 
     just refresh_all
-
-    cd frb_codegen && ./contrib/scoop.json.sh > ./contrib/flutter_rust_bridge_codegen.json
-
     git add --all
     git status && git diff --staged | grep ''
     git commit -m "bump from {{old_version}} to {{new_version}}"
