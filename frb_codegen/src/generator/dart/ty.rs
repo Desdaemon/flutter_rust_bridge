@@ -30,7 +30,7 @@ macro_rules! type_dart_generator_struct {
         #[derive(Debug, Clone)]
         pub struct $cls<'a> {
             pub ir: $ir_cls,
-            pub context: TypeGeneratorContext<'a>,
+            pub context: $crate::generator::dart::ty::TypeGeneratorContext<'a>,
         }
     };
 }
@@ -47,6 +47,7 @@ pub enum TypeDartGenerator<'a> {
     Boxed(TypeBoxedGenerator<'a>),
     EnumRef(TypeEnumRefGenerator<'a>),
     SyncReturn(TypeSyncReturnGenerator<'a>),
+    Closure(TypeClosureGenerator<'a>),
 }
 
 impl<'a> TypeDartGenerator<'a> {
@@ -62,6 +63,7 @@ impl<'a> TypeDartGenerator<'a> {
             Boxed(ir) => TypeBoxedGenerator { ir, context }.into(),
             EnumRef(ir) => TypeEnumRefGenerator { ir, context }.into(),
             SyncReturn(ir) => TypeSyncReturnGenerator { ir, context }.into(),
+            Closure(ir) => TypeClosureGenerator { ir, context }.into(),
         }
     }
 }

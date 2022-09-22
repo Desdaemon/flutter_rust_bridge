@@ -339,6 +339,11 @@ pub fn wire_handle_big_buffers(port_: MessagePort) {
 }
 
 #[wasm_bindgen]
+pub fn wire_handle_closure(port_: MessagePort, callback: js_sys::Function) {
+    wire_handle_closure_impl(port_, callback)
+}
+
+#[wasm_bindgen]
 pub fn wire_datetime_utc(port_: MessagePort, d: i64) {
     wire_datetime_utc_impl(port_, d)
 }
@@ -680,6 +685,11 @@ impl Wire2Api<Vec<f32>> for Box<[f32]> {
 impl Wire2Api<Vec<f64>> for Box<[f64]> {
     fn wire2api(self) -> Vec<f64> {
         self.into_vec()
+    }
+}
+impl Wire2Api<fn(i32)> for js_sys::Function {
+    fn wire2api(self) -> fn(i32) {
+        todo!()
     }
 }
 

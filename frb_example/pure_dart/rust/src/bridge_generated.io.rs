@@ -347,6 +347,11 @@ pub extern "C" fn wire_handle_big_buffers(port_: i64) {
 }
 
 #[no_mangle]
+pub extern "C" fn wire_handle_closure(port_: i64, callback: extern "C" fn(i32)) {
+    wire_handle_closure_impl(port_, callback)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_datetime_utc(port_: i64, d: i64) {
     wire_datetime_utc_impl(port_, d)
 }
@@ -1012,6 +1017,11 @@ impl Wire2Api<Vec<f64>> for *mut wire_float_64_list {
             let wrap = support::box_from_leak_ptr(self);
             support::vec_from_leak_ptr(wrap.ptr, wrap.len)
         }
+    }
+}
+impl Wire2Api<fn(i32)> for extern "C" fn(i32) {
+    fn wire2api(self) -> fn(i32) {
+        todo!()
     }
 }
 

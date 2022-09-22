@@ -283,6 +283,10 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
 
   FlutterRustBridgeTaskConstMeta get kHandleBigBuffersConstMeta;
 
+  Future<void> handleClosure({required void Function(int) callback, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHandleClosureConstMeta;
+
   Future<DateTime> datetimeUtc({required DateTime d, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kDatetimeUtcConstMeta;

@@ -100,6 +100,7 @@ impl<'a> Parser<'a> {
                     Some(IrFuncArg::Type(self.type_parser.parse_type(ty)))
                 }
             }
+            syn::Type::BareFn(_) => Some(IrFuncArg::Type(self.type_parser.parse_type(ty))),
             _ => None,
         }
     }

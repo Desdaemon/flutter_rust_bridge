@@ -14,6 +14,7 @@ pub enum IrType {
     StructRef(IrTypeStructRef),
     Boxed(IrTypeBoxed),
     EnumRef(IrTypeEnumRef),
+    Closure(IrTypeClosure),
     SyncReturn(IrTypeSyncReturn),
 }
 
@@ -72,6 +73,16 @@ impl IrType {
             | Self::Delegate(IrTypeDelegate::PrimitiveEnum { .. }) => true,
             Self::Boxed(IrTypeBoxed { inner, .. }) => inner.is_js_value(),
             _ => false,
+        }
+    }
+
+    /// Only valid in IO contexts.
+    #[inline]
+    pub fn dart_ffi_wire_type(&self) -> String {
+        if let Some(prim) = self.as_primitive() {
+            prim.dart_native_type().into()
+        } else {
+            self.dart_wire_type(Target::Io)
         }
     }
 }

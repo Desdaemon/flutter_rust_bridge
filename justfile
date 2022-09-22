@@ -23,16 +23,7 @@ build:
     cd frb_codegen && cargo build
 
 alias g := gen-bridge
-gen-bridge: build
-    (cd {{frb_flutter}} && flutter pub get)
-    {{frb_bin}} -r {{frb_flutter}}/rust/src/api.rs \
-                -d {{frb_flutter}}/lib/bridge_generated.dart \
-                --dart-decl-output {{frb_flutter}}/lib/bridge_definitions.dart \
-                -c {{frb_flutter}}/ios/Runner/bridge_generated.h \
-                -c {{frb_flutter}}/macos/Runner/bridge_generated.h \
-                --dart-format-line-length {{line_length}} --wasm
-    cd {{frb_pure}}/rust && cargo clean -p flutter_rust_bridge_example_single_block_test && cargo build
-    cd {{frb_pure_multi}}/rust && cargo clean -p flutter_rust_bridge_example_multi_blocks_test && cargo build
+gen-bridge: check
 
 alias l := lint
 lint *args="":
@@ -80,13 +71,15 @@ clean:
     cd {{frb_flutter}} && flutter clean
     cd {{frb_flutter}}/rust && cargo clean
 
-check:
-    cd {{frb_pure}}/dart && dart pub get && dart analyze
+check-rust:
     cd {{frb_pure}}/rust && cargo clippy
-    cd {{frb_pure_multi}}/dart && dart pub get && dart analyze
     cd {{frb_pure_multi}}/rust && cargo clippy
-    cd {{frb_flutter}} && flutter pub get && flutter analyze
     cd {{frb_flutter}}/rust && cargo clippy
+
+check: check-rust
+    cd {{frb_pure}}/dart && dart pub get && dart analyze
+    cd {{frb_pure_multi}}/dart && dart pub get && dart analyze
+    cd {{frb_flutter}} && flutter pub get && flutter analyze
     cd frb_codegen && cargo clippy -- -D warnings
     cd frb_rust && cargo clippy -- -D warnings
     cd frb_rust && cargo clippy --target wasm32-unknown-unknown -- -D warnings

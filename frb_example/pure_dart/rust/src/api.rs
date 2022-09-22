@@ -842,6 +842,10 @@ pub fn handle_big_buffers() -> BigBuffers {
     }
 }
 
+pub fn handle_closure(callback: fn(i32)) {
+    (0..12).for_each(callback);
+}
+
 pub fn datetime_utc(d: chrono::DateTime<chrono::Utc>) -> chrono::DateTime<chrono::Utc> {
     use chrono::Datelike;
     use chrono::Timelike;

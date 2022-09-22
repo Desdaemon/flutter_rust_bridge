@@ -287,6 +287,11 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int32)>> api2wire_fn_i32(void Function(int) raw) {
+    return ffi.Pointer.fromFunction(raw);
+  }
+
+  @protected
   int api2wire_i64(int raw) {
     return raw;
   }
@@ -1725,6 +1730,23 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   late final _wire_handle_big_buffersPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>('wire_handle_big_buffers');
   late final _wire_handle_big_buffers = _wire_handle_big_buffersPtr.asFunction<void Function(int)>();
+
+  void wire_handle_closure(
+    int port_,
+    ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int32)>> callback,
+  ) {
+    return _wire_handle_closure(
+      port_,
+      callback,
+    );
+  }
+
+  late final _wire_handle_closurePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64, ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int32)>>)>>('wire_handle_closure');
+  late final _wire_handle_closure = _wire_handle_closurePtr
+      .asFunction<void Function(int, ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int32)>>)>();
 
   void wire_datetime_utc(
     int port_,

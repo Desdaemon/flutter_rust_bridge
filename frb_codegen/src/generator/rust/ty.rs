@@ -43,9 +43,10 @@ pub trait TypeRustGeneratorTrait {
 
     fn allocate_funcs(
         &self,
-        _collector: &mut ExternFuncCollector,
-        _block_index: BlockIndex,
+        collector: &mut ExternFuncCollector,
+        block_index: BlockIndex,
     ) -> Acc<Option<String>> {
+        let _ = (collector, block_index);
         Acc::default()
     }
 
@@ -68,13 +69,15 @@ pub struct TypeGeneratorContext<'a> {
     pub config: &'a Opts,
 }
 
+/// - $cls: Name of the generator
+/// - $ir_cls: Type of IR the generator wraps over
 #[macro_export]
 macro_rules! type_rust_generator_struct {
     ($cls:ident, $ir_cls:ty) => {
         #[derive(Debug, Clone)]
         pub struct $cls<'a> {
             pub ir: $ir_cls,
-            pub context: TypeGeneratorContext<'a>,
+            pub context: $crate::generator::rust::TypeGeneratorContext<'a>,
         }
     };
 }
@@ -91,6 +94,7 @@ pub enum TypeRustGenerator<'a> {
     Boxed(TypeBoxedGenerator<'a>),
     EnumRef(TypeEnumRefGenerator<'a>),
     SyncReturn(TypeSyncReturnGenerator<'a>),
+    Closure(TypeClosureGenerator<'a>),
 }
 
 impl<'a> TypeRustGenerator<'a> {
@@ -106,6 +110,7 @@ impl<'a> TypeRustGenerator<'a> {
             Boxed(ir) => TypeBoxedGenerator { ir, context }.into(),
             EnumRef(ir) => TypeEnumRefGenerator { ir, context }.into(),
             SyncReturn(ir) => TypeSyncReturnGenerator { ir, context }.into(),
+            Closure(ir) => TypeClosureGenerator { ir, context }.into(),
         }
     }
 }

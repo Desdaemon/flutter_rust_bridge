@@ -182,6 +182,23 @@ Rust Worker 2 ->> Dart: channel.postMessage
 It is theoretically possible to have a one-to-one implementation of Isolate using only web primitives,
 `BroadcastChannel`s and `Worker`s, but it remains to be seen how practical such an approach would be.
 
+## Closures
+
+```mermaid
+sequenceDiagram
+Note over Dart: create channel
+Dart ->> Rust: sendPort
+Rust ->> Worker: sendPort
+Note over Worker: fn(..) = sendPort.send(..)
+loop
+    Worker ->> Dart: sendPort.send(Some(args))
+    Dart ->> Worker: receivePort.send(ret)
+end
+Note over Worker: fn goes out of scope
+Worker ->> Dart: sendPort.send(None)
+Note over Dart: stop listening
+```
+
 ## Want to know more? Tell me
 
 What do you want to know? Feel free to create an issue in GitHub, and I will tell more :)

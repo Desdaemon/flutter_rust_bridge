@@ -906,6 +906,20 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: [],
       );
 
+  Future<void> handleClosure({required void Function(int) callback, dynamic hint}) =>
+      _platform.executeNormal(FlutterRustBridgeTask(
+        callFfi: (port_) => _platform.inner.wire_handle_closure(port_, _platform.api2wire_fn_i32(callback)),
+        parseSuccessData: _wire2api_unit,
+        constMeta: kHandleClosureConstMeta,
+        argValues: [callback],
+        hint: hint,
+      ));
+
+  FlutterRustBridgeTaskConstMeta get kHandleClosureConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "handle_closure",
+        argNames: ["callback"],
+      );
+
   Future<DateTime> datetimeUtc({required DateTime d, dynamic hint}) => _platform.executeNormal(FlutterRustBridgeTask(
         callFfi: (port_) => _platform.inner.wire_datetime_utc(port_, _platform.api2wire_Chrono_Utc(d)),
         parseSuccessData: _wire2api_Chrono_Utc,

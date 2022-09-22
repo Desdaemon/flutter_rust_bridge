@@ -721,6 +721,8 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
 
   external void wire_handle_big_buffers(NativePortType port_);
 
+  external void wire_handle_closure(NativePortType port_, void Function(int) callback);
+
   external void wire_datetime_utc(NativePortType port_, BigInt d);
 
   external void wire_datetime_local(NativePortType port_, BigInt d);
@@ -936,6 +938,9 @@ class FlutterRustBridgeExampleSingleBlockTestWire
   void wire_call_new_module_system(NativePortType port_) => wasmModule.wire_call_new_module_system(port_);
 
   void wire_handle_big_buffers(NativePortType port_) => wasmModule.wire_handle_big_buffers(port_);
+
+  void wire_handle_closure(NativePortType port_, void Function(int) callback) =>
+      wasmModule.wire_handle_closure(port_, callback);
 
   void wire_datetime_utc(NativePortType port_, BigInt d) => wasmModule.wire_datetime_utc(port_, d);
 

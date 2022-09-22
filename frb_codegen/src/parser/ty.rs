@@ -1,6 +1,7 @@
 use std::collections::{HashMap, HashSet};
 use std::string::String;
 
+use itertools::Itertools;
 use syn::*;
 
 use crate::ir::IrType::*;
@@ -52,6 +53,8 @@ pub enum SupportedInnerType {
     Path(SupportedPathType),
     /// Array type
     Array(Box<Self>, usize),
+    /// Closure types
+    Fn(Vec<Self>, Option<Box<Self>>),
     /// The unit type `()`.
     Unit,
 }
@@ -62,6 +65,8 @@ impl std::fmt::Display for SupportedInnerType {
             Self::Path(p) => write!(f, "{}", p),
             Self::Array(u, len) => write!(f, "[{}; {}]", u, len),
             Self::Unit => write!(f, "()"),
+            Self::Fn(args, Some(ret)) => write!(f, "fn({}) -> {}", args.iter().join(", "), ret),
+            Self::Fn(args, None) => write!(f, "fn({})", args.iter().join(", ")),
         }
     }
 }
@@ -128,6 +133,18 @@ impl SupportedInnerType {
             syn::Type::Tuple(syn::TypeTuple { elems, .. }) if elems.is_empty() => {
                 Some(SupportedInnerType::Unit)
             }
+            syn::Type::BareFn(fun) => {
+                let mut args = vec![];
+                for input in fun.inputs.iter() {
+                    args.push(Self::try_from_syn_type(&input.ty)?);
+                }
+                let ret = if let ReturnType::Type(_, ty) = &fun.output {
+                    Some(Box::from(Self::try_from_syn_type(ty)?))
+                } else {
+                    None
+                };
+                Some(SupportedInnerType::Fn(args, ret))
+            }
             _ => None,
         }
     }
@@ -148,6 +165,9 @@ impl<'a> TypeParser<'a> {
             SupportedInnerType::Path(p) => self.convert_path_to_ir_type(p),
             SupportedInnerType::Array(p, len) => self.convert_array_to_ir_type(*p, len),
             SupportedInnerType::Unit => Some(IrType::Primitive(IrTypePrimitive::Unit)),
+            SupportedInnerType::Fn(args, ret) => {
+                self.convert_fn_to_ir_type(args, ret.map(|ret| *ret))
+            }
         }
     }
 
@@ -163,6 +183,26 @@ impl<'a> TypeParser<'a> {
                 inner: Box::new(others),
             }),
         })
+    }
+
+    pub fn convert_fn_to_ir_type(
+        &mut self,
+        args: Vec<SupportedInnerType>,
+        ret: Option<SupportedInnerType>,
+    ) -> Option<IrType> {
+        let mut out_args = vec![];
+        for arg in args {
+            out_args.push(self.convert_to_ir_type(arg)?);
+        }
+        let ret = if let Some(ret) = ret {
+            Some(Box::new(self.convert_to_ir_type(ret)?))
+        } else {
+            None
+        };
+        Some(IrType::Closure(IrTypeClosure {
+            args: out_args,
+            ret,
+        }))
     }
 
     /// Converts a path type into an `IrType` if possible.
