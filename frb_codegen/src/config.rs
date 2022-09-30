@@ -7,7 +7,8 @@ use std::path::PathBuf;
 use std::str::FromStr;
 
 use anyhow::{anyhow, Result};
-use clap::IntoApp;
+use clap::error::ErrorKind;
+use clap::CommandFactory;
 use clap::Parser;
 use convert_case::{Case, Casing};
 use serde::Deserialize;
@@ -18,59 +19,67 @@ use crate::parser;
 use crate::utils::BlockIndex;
 
 #[derive(Parser, Debug, PartialEq, Eq, Deserialize, Default)]
-#[clap(version, setting(clap::AppSettings::DeriveDisplayOrder))]
+#[serde(rename_all = "kebab-case")]
+#[command(version)]
 pub struct RawOpts {
     /// Path of input Rust code
-    #[clap(short, long, required = true, multiple_values = true)]
+    #[arg(short, long, required = true, num_args = 1..)]
     pub rust_input: Vec<String>,
     /// Path of output generated Dart code
-    #[clap(short, long, required = true, multiple_values = true)]
+    #[arg(short, long, required = true, num_args = 1..)]
     pub dart_output: Vec<String>,
     /// If provided, generated Dart declaration code to this separate file
-    #[clap(long)]
+    #[arg(long)]
     pub dart_decl_output: Option<String>,
     /// Output path of generated C header
-    #[clap(short, long)]
+    #[arg(short, long)]
     pub c_output: Option<Vec<String>>,
     /// Crate directory for your Rust project
-    #[clap(long, multiple_values = true)]
+    #[arg(long, num_args = 0..)]
     pub rust_crate_dir: Option<Vec<String>>,
     /// Output path of generated Rust code
-    #[clap(long, multiple_values = true)]
+    #[arg(long, num_args = 0..)]
     pub rust_output: Option<Vec<String>>,
     /// Generated class name
-    #[clap(long, multiple_values = true)]
+    #[arg(long, num_args = 0..)]
     pub class_name: Option<Vec<String>>,
     /// Line length for Dart formatting
-    #[clap(long, default_value = "80")]
+    #[arg(long, default_value_t = 80)]
+    #[serde(default)]
     pub dart_format_line_length: u32,
     /// Skip automatically adding `mod bridge_generated;` to `lib.rs`
-    #[clap(long)]
+    #[arg(long)]
+    #[serde(default)]
     pub skip_add_mod_to_lib: bool,
     /// Path to the installed LLVM
-    #[clap(long, multiple_values = true)]
+    #[arg(long)]
     pub llvm_path: Option<Vec<String>>,
     /// LLVM compiler opts
-    #[clap(long)]
+    #[arg(long)]
     pub llvm_compiler_opts: Option<String>,
     /// Path to root of Dart project, otherwise inferred from --dart-output
-    #[clap(long, multiple_values = true)]
+    #[arg(long, num_args = 0..)]
     pub dart_root: Option<Vec<String>>,
     /// Skip running build_runner even when codegen-required code is detected
-    #[clap(long)]
+    #[arg(long)]
+    #[serde(default)]
     pub no_build_runner: bool,
     /// Show debug messages.
-    #[clap(short, long)]
+    #[arg(short, long)]
+    #[serde(default)]
     pub verbose: bool,
     /// Enable WASM module generation.
     /// Requires: --dart-decl-output
-    #[clap(long, requires = "dart-decl-output")]
+    #[arg(long, requires = "dart_decl_output")]
+    #[serde(default)]
     pub wasm: bool,
     /// Inline declaration of Rust bridge modules
-    #[clap(long)]
+    #[arg(long)]
+    #[serde(default)]
     pub inline_rust: bool,
     /// Skip dependencies check.
-    #[clap(long)]
+    #[arg(long)]
+    #[serde(default)]
     pub skip_deps_check: bool,
 }
 
@@ -97,7 +106,7 @@ pub struct Opts {
 }
 
 pub fn parse(raw: RawOpts) -> Vec<Opts> {
-    fn bail(err: clap::ErrorKind, message: Cow<str>) {
+    fn bail(err: ErrorKind, message: Cow<str>) {
         RawOpts::command().error(err, message).exit()
     }
     // rust input path(s)
@@ -107,7 +116,7 @@ pub fn parse(raw: RawOpts) -> Vec<Opts> {
     let dart_output_paths = get_valid_canon_paths(&raw.dart_output);
     if dart_output_paths.len() != rust_input_paths.len() {
         bail(
-            clap::ErrorKind::WrongNumberOfValues,
+            ErrorKind::WrongNumberOfValues,
             "--dart-output's inputs should match --rust-input's length".into(),
         )
     }
@@ -128,7 +137,7 @@ pub fn parse(raw: RawOpts) -> Vec<Opts> {
         .collect::<Vec<_>>();
     if rust_crate_dirs.len() != rust_input_paths.len() {
         bail(
-            clap::ErrorKind::WrongNumberOfValues,
+            ErrorKind::WrongNumberOfValues,
             "--rust-crate-dir's inputs should match --rust-input's length".into(),
         );
     }
@@ -156,7 +165,7 @@ pub fn parse(raw: RawOpts) -> Vec<Opts> {
         .collect::<Vec<_>>();
     if rust_output_paths.len() != rust_input_paths.len() {
         bail(
-            clap::ErrorKind::WrongNumberOfValues,
+            ErrorKind::WrongNumberOfValues,
             "--rust-output's inputs should match --rust-input's length".into(),
         );
     }
@@ -170,7 +179,7 @@ pub fn parse(raw: RawOpts) -> Vec<Opts> {
     );
     if class_names.len() != rust_input_paths.len() {
         bail(
-            clap::ErrorKind::WrongNumberOfValues,
+            ErrorKind::WrongNumberOfValues,
             "--class-name's inputs should match --rust-input's length".into(),
         );
     }
@@ -261,7 +270,7 @@ fn get_outputs_for_flag_requires_full_data(
             let flag_str = strs.join("-");
             RawOpts::command()
                 .error(
-                    clap::ErrorKind::ValueValidation,
+                    ErrorKind::ValueValidation,
                     format!(
                         "for more than 1 rust blocks, please specify each {} clearly with flag \"{}\"",
                         raw_str, flag_str
@@ -476,4 +485,11 @@ impl Opts {
         )
         .with_extension("freezed.dart")
     }
+}
+
+const CONFIG_FILES: [&str; 4] = [".frbrc.json", ".frbrc.yaml", ".frbrc.yml", ".frbrc"];
+pub fn find_config_file() -> Option<&'static str> {
+    CONFIG_FILES
+        .iter()
+        .find_map(|file| Path::new(file).exists().then_some(*file))
 }

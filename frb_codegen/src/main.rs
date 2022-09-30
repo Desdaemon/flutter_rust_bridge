@@ -3,13 +3,20 @@ use std::process::exit;
 use clap::Parser;
 use env_logger::Env;
 use lib_flutter_rust_bridge_codegen::{
-    config_parse, frb_codegen, get_symbols_if_no_duplicates, RawOpts,
+    config_parse, find_config_file, frb_codegen, get_symbols_if_no_duplicates, RawOpts,
 };
 use log::{debug, error, info};
 
 fn main() -> anyhow::Result<()> {
     //  get valiable options from user input command
+    #[cfg(feature = "serde_yaml")]
+    let raw_opts = match (find_config_file(), std::env::args().skip(1).next()) {
+        (Some(path), None) => serde_yaml::from_reader(std::fs::File::open(path)?)?,
+        _ => RawOpts::parse(),
+    };
+    #[cfg(not(feature = "serde_yaml"))]
     let raw_opts = RawOpts::parse();
+
     env_logger::Builder::from_env(Env::default().default_filter_or(if raw_opts.verbose {
         "debug"
     } else {

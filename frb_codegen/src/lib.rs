@@ -21,6 +21,7 @@ mod config;
 mod tools;
 
 pub use crate::commands::ensure_tools_available;
+pub use crate::config::find_config_file;
 pub use crate::config::parse as config_parse;
 pub use crate::config::Opts;
 pub use crate::config::RawOpts;
