@@ -77,7 +77,7 @@ impl<'a> Parser<'a> {
 
     /// Attempts to parse the type from an argument of a function signature. There is a special
     /// case for top-level `StreamSink` types.
-    pub fn try_parse_fn_arg_type(&mut self, ty: &syn::Type) -> Option<IrFuncArg> {
+    pub fn try_parse_fn_arg_type(&mut self, ty: &syn::Type, gens: &Generics) -> Option<IrFuncArg> {
         match ty {
             syn::Type::Path(syn::TypePath { path, .. }) => {
                 let last_segment = path.segments.last().unwrap();
@@ -97,11 +97,48 @@ impl<'a> Parser<'a> {
                         _ => None,
                     }
                 } else {
-                    Some(IrFuncArg::Type(self.type_parser.parse_type(ty)))
+                    find_matching_generic_bound(&last_segment.ident, gens)
+                        .and_then(|bounds| self.try_parse_fn_arg_impl_fn(bounds.iter()))
+                        .or_else(|| Some(IrFuncArg::Type(self.type_parser.parse_type(ty))))
                 }
+            }
+            syn::Type::ImplTrait(syn::TypeImplTrait { bounds, .. }) => {
+                self.try_parse_fn_arg_impl_fn(bounds.iter())
             }
             _ => None,
         }
+    }
+
+    fn try_parse_fn_arg_impl_fn<'any, I>(&mut self, mut bounds: I) -> Option<IrFuncArg>
+    where
+        I: Iterator<Item = &'any TypeParamBound>,
+    {
+        bounds.find_map(|bound| match bound {
+            syn::TypeParamBound::Trait(syn::TraitBound { path, .. }) => {
+                let segment = &path.segments.last()?;
+                match &segment.arguments {
+                    syn::PathArguments::Parenthesized(syn::ParenthesizedGenericArguments {
+                        inputs,
+                        output,
+                        ..
+                    }) => Some(IrFuncArg::Type(IrType::Closure(IrTypeClosure {
+                        kind: IrTypeClosures::from_str(&segment.ident.to_string())?,
+                        args: inputs
+                            .iter()
+                            .map(|input| self.type_parser.parse_type(input))
+                            .collect(),
+                        returns: match output {
+                            syn::ReturnType::Type(_, typ) => {
+                                Some(Box::new(self.type_parser.parse_type(typ)))
+                            }
+                            _ => None,
+                        },
+                    }))),
+                    _ => None,
+                }
+            }
+            _ => None,
+        })
     }
 
     fn parse_function(&mut self, func: &ItemFn) -> IrFunc {
@@ -122,12 +159,14 @@ impl<'a> Parser<'a> {
                 } else {
                     panic!("unexpected pat_type={:?}", pat_type)
                 };
-                match self.try_parse_fn_arg_type(&pat_type.ty).unwrap_or_else(|| {
-                    panic!(
-                        "Failed to parse function argument type `{}`",
-                        type_to_string(&pat_type.ty)
-                    )
-                }) {
+                match self
+                    .try_parse_fn_arg_type(&pat_type.ty, &sig.generics)
+                    .unwrap_or_else(|| {
+                        panic!(
+                            "Failed to parse function argument type `{}`",
+                            type_to_string(&pat_type.ty)
+                        )
+                    }) {
                     IrFuncArg::StreamSinkType(ty) => {
                         output = Some(ty);
                         mode = Some(IrFuncMode::Stream { argument_index: i });
@@ -485,4 +524,30 @@ fn extract_metadata(attrs: &[Attribute]) -> Vec<IrDartAnnotation> {
 /// syn -> string https://github.com/dtolnay/syn/issues/294
 fn type_to_string(ty: &Type) -> String {
     quote!(#ty).to_string().replace(' ', "")
+}
+
+fn find_matching_generic_bound<'a>(
+    gen_ident: &'a Ident,
+    gens: &'a Generics,
+) -> Option<&'a Punctuated<TypeParamBound, Token![+]>> {
+    None.or_else(|| {
+        gens.params.iter().find_map(|param| match param {
+            GenericParam::Type(TypeParam { ident, bounds, .. }) if ident == gen_ident => {
+                Some(bounds)
+            }
+            _ => None,
+        })
+    })
+    .or_else(|| {
+        gens.where_clause.as_ref().and_then(|where_| {
+            where_.predicates.iter().find_map(|pred| match pred {
+                WherePredicate::Type(PredicateType {
+                    bounded_ty: Type::Path(ty),
+                    bounds,
+                    ..
+                }) if ty.path.is_ident(gen_ident) => Some(bounds),
+                _ => None,
+            })
+        })
+    })
 }

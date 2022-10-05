@@ -74,7 +74,7 @@ macro_rules! type_rust_generator_struct {
         #[derive(Debug, Clone)]
         pub struct $cls<'a> {
             pub ir: $ir_cls,
-            pub context: TypeGeneratorContext<'a>,
+            pub context: $crate::generator::rust::ty::TypeGeneratorContext<'a>,
         }
     };
 }
@@ -91,6 +91,7 @@ pub enum TypeRustGenerator<'a> {
     Boxed(TypeBoxedGenerator<'a>),
     EnumRef(TypeEnumRefGenerator<'a>),
     SyncReturn(TypeSyncReturnGenerator<'a>),
+    Closure(TypeClosureGenerator<'a>),
 }
 
 impl<'a> TypeRustGenerator<'a> {
@@ -106,6 +107,7 @@ impl<'a> TypeRustGenerator<'a> {
             Boxed(ir) => TypeBoxedGenerator { ir, context }.into(),
             EnumRef(ir) => TypeEnumRefGenerator { ir, context }.into(),
             SyncReturn(ir) => TypeSyncReturnGenerator { ir, context }.into(),
+            Closure(ir) => TypeClosureGenerator { ir, context }.into(),
         }
     }
 }

@@ -1,6 +1,7 @@
 mod func;
 mod ty;
 mod ty_boxed;
+mod ty_closure;
 mod ty_delegate;
 mod ty_enum;
 mod ty_general_list;
@@ -21,6 +22,7 @@ use wasm::*;
 use itertools::Itertools;
 pub use ty::*;
 pub use ty_boxed::*;
+pub use ty_closure::*;
 pub use ty_delegate::*;
 pub use ty_enum::*;
 pub use ty_general_list::*;

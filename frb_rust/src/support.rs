@@ -7,6 +7,11 @@ use std::mem;
 pub use crate::ffi::*;
 pub use lazy_static::lazy_static;
 
+use core::{
+    marker::PhantomData,
+    ops::{Deref, DerefMut},
+};
+
 pub use crate::handler::DefaultHandler;
 
 // ref https://stackoverflow.com/questions/39224904/how-to-expose-a-rust-vect-to-ffi
@@ -105,3 +110,22 @@ macro_rules! primitive_to_sync_return {
 
 // For simple types, use macro to implement [`From`] trait.
 primitive_to_sync_return!(u8, i8, u16, i16, u32, i32, u64, i64, f32, f64);
+
+/// Wraps data or code that is local to the executing thread.
+///
+/// Implements [Deref] and [DerefMut] into the inner data.
+#[repr(transparent)]
+pub struct Local<T>(T, PhantomData<*mut ()>);
+
+impl<T> Deref for Local<T> {
+    type Target = T;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<T> DerefMut for Local<T> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
