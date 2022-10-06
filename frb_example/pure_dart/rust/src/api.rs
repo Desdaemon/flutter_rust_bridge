@@ -906,3 +906,19 @@ pub fn handle_uuids(ids: Vec<uuid::Uuid>) -> anyhow::Result<Vec<uuid::Uuid>> {
 pub fn handle_nested_uuids(ids: FeatureUuid) -> anyhow::Result<FeatureUuid> {
     Ok(ids)
 }
+
+pub fn handle_closure(
+    callback: impl Fn(i32),
+    mut_cb: Option<impl FnMut(i32)>,
+    once: impl FnOnce(),
+) {
+    for i in 0..3 {
+        callback(i);
+    }
+    if let Some(mut mut_cb) = mut_cb {
+        for i in 0..5 {
+            mut_cb(i);
+        }
+    }
+    once();
+}

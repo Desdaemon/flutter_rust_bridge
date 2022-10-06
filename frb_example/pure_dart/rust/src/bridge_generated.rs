@@ -1087,6 +1087,26 @@ fn wire_handle_nested_uuids_impl(port_: MessagePort, ids: impl Wire2Api<FeatureU
         },
     )
 }
+fn wire_handle_closure_impl(
+    port_: MessagePort,
+    callback: impl Wire2Api<Box<dyn Fn(i32) -> ()>> + UnwindSafe,
+    mut_cb: impl Wire2Api<Option<Box<dyn FnMut(i32) -> ()>>> + UnwindSafe,
+    once: impl Wire2Api<Box<dyn FnOnce() -> ()>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "handle_closure",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_callback = callback.wire2api();
+            let api_mut_cb = mut_cb.wire2api();
+            let api_once = once.wire2api();
+            move |task_callback| Ok(handle_closure(api_callback, api_mut_cb, api_once))
+        },
+    )
+}
 fn wire_sum__method__SumWith_impl(
     port_: MessagePort,
     that: impl Wire2Api<SumWith> + UnwindSafe,

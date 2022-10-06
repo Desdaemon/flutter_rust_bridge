@@ -387,6 +387,16 @@ pub extern "C" fn wire_handle_nested_uuids(port_: i64, ids: *mut wire_FeatureUui
 }
 
 #[no_mangle]
+pub extern "C" fn wire_handle_closure(
+    port_: i64,
+    callback: extern "C" fn(i32) -> (),
+    mut_cb: extern "C" fn(i32) -> (),
+    once: extern "C" fn() -> (),
+) {
+    wire_handle_closure_impl(port_, callback, mut_cb, once)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_sum__method__SumWith(port_: i64, that: *mut wire_SumWith, y: u32, z: u32) {
     wire_sum__method__SumWith_impl(port_, that, y, z)
 }
@@ -977,6 +987,16 @@ impl Wire2Api<Box<Weekdays>> for *mut i32 {
         Wire2Api::<Weekdays>::wire2api(*wrap).into()
     }
 }
+impl Wire2Api<Box<dyn Fn(i32) -> ()>> for extern "C" fn(i32) -> () {
+    fn wire2api(self) -> Box<dyn Fn(i32) -> ()> {
+        Box::new(self)
+    }
+}
+impl Wire2Api<Box<dyn FnOnce() -> ()>> for extern "C" fn() -> () {
+    fn wire2api(self) -> Box<dyn FnOnce() -> ()> {
+        Box::new(self)
+    }
+}
 impl Wire2Api<ConcatenateWith> for wire_ConcatenateWith {
     fn wire2api(self) -> ConcatenateWith {
         ConcatenateWith {
@@ -1218,6 +1238,12 @@ impl Wire2Api<Note> for wire_Note {
 impl Wire2Api<Numbers> for wire_Numbers {
     fn wire2api(self) -> Numbers {
         Numbers(self.field0.wire2api())
+    }
+}
+
+impl Wire2Api<Option<Box<dyn FnMut(i32) -> ()>>> for extern "C" fn(i32) -> () {
+    fn wire2api(self) -> Option<Box<dyn FnMut(i32) -> ()>> {
+        (!(self as *mut ()).is_null()).then(|| self.wire2api())
     }
 }
 

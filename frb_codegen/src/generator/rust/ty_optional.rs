@@ -9,6 +9,12 @@ type_rust_generator_struct!(TypeOptionalGenerator, IrTypeOptional);
 impl TypeRustGeneratorTrait for TypeOptionalGenerator<'_> {
     fn wire2api_body(&self) -> Acc<Option<String>> {
         Acc {
+            io: match self.ir.inner.as_ref() {
+                IrType::Closure(_) => {
+                    Some("(!(self as *mut ()).is_null()).then(|| self.wire2api())".into())
+                }
+                _ => None,
+            },
             wasm: if self.ir.inner.is_js_value() {
                 Some("(!self.is_undefined() && !self.is_null()).then(|| self.wire2api())".into())
             } else if self.ir.is_primitive() || self.ir.is_boxed_primitive() {

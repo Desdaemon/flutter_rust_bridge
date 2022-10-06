@@ -316,6 +316,11 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
 
   FlutterRustBridgeTaskConstMeta get kHandleNestedUuidsConstMeta;
 
+  Future<void> handleClosure(
+      {required void Function(int) callback, void Function(int)? mutCb, required void Function() once, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHandleClosureConstMeta;
+
   Future<int> sumMethodSumWith({required SumWith that, required int y, required int z, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kSumMethodSumWithConstMeta;

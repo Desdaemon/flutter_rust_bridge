@@ -1016,6 +1016,28 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["ids"],
       );
 
+  Future<void> handleClosure(
+          {required void Function(int) callback,
+          void Function(int)? mutCb,
+          required void Function() once,
+          dynamic hint}) =>
+      _platform.executeNormal(FlutterRustBridgeTask(
+        callFfi: (port_) => _platform.inner.wire_handle_closure(
+            port_,
+            _platform.api2wire_closure_282jj9l0dlk8h(callback),
+            _platform.api2wire_opt_closure_282jj9l0dlk8h(mutCb),
+            _platform.api2wire_closure_36ygm9r0g7h9o(once)),
+        parseSuccessData: _wire2api_unit,
+        constMeta: kHandleClosureConstMeta,
+        argValues: [callback, mutCb, once],
+        hint: hint,
+      ));
+
+  FlutterRustBridgeTaskConstMeta get kHandleClosureConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "handle_closure",
+        argNames: ["callback", "mutCb", "once"],
+      );
+
   Future<int> sumMethodSumWith({required SumWith that, required int y, required int z, dynamic hint}) =>
       _platform.executeNormal(FlutterRustBridgeTask(
         callFfi: (port_) => _platform.inner.wire_sum__method__SumWith(

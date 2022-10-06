@@ -75,6 +75,14 @@ impl IrType {
             _ => false,
         }
     }
+
+    pub fn dart_native_type(&self, target: Target) -> String {
+        if let Some(prim) = self.as_primitive() {
+            prim.dart_native_type().into()
+        } else {
+            self.dart_wire_type(target)
+        }
+    }
 }
 
 #[enum_dispatch]

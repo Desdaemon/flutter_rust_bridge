@@ -71,6 +71,9 @@ impl IrTypeTrait for IrTypeOptional {
     fn rust_wire_is_pointer(&self, target: Target) -> bool {
         !target.is_wasm() || self.inner.rust_wire_is_pointer(target)
     }
+    fn rust_wire_modifier(&self, target: Target) -> String {
+        self.inner.rust_wire_modifier(target)
+    }
 
     fn visit_children_types<F: FnMut(&IrType) -> bool>(&self, f: &mut F, ir_file: &IrFile) {
         self.inner.visit_types(f, ir_file);

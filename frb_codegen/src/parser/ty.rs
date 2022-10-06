@@ -21,6 +21,8 @@ pub struct TypeParser<'a> {
 
     parsed_enums: HashSet<String>,
     enum_pool: IrEnumPool,
+
+    pub(crate) current_sig: Option<&'a Signature>,
 }
 
 impl<'a> TypeParser<'a> {
@@ -35,6 +37,7 @@ impl<'a> TypeParser<'a> {
             enum_pool: HashMap::new(),
             parsing_or_parsed_struct_names: HashSet::new(),
             parsed_enums: HashSet::new(),
+            current_sig: None,
         }
     }
 
@@ -54,6 +57,7 @@ pub enum SupportedInnerType {
     Array(Box<Self>, usize),
     /// The unit type `()`.
     Unit,
+    Impl(Vec<TypeParamBound>),
 }
 
 impl std::fmt::Display for SupportedInnerType {
@@ -62,6 +66,7 @@ impl std::fmt::Display for SupportedInnerType {
             Self::Path(p) => write!(f, "{}", p),
             Self::Array(u, len) => write!(f, "[{}; {}]", u, len),
             Self::Unit => write!(f, "()"),
+            Self::Impl(_) => write!(f, "impl"),
         }
     }
 }
@@ -71,6 +76,13 @@ impl std::fmt::Display for SupportedInnerType {
 pub struct SupportedPathType {
     pub ident: syn::Ident,
     pub generic: Option<Box<SupportedInnerType>>,
+}
+
+#[derive(Debug)]
+pub struct SupportedImplType {
+    pub path: SupportedPathType,
+    pub args: Vec<SupportedInnerType>,
+    pub returns: Option<Box<SupportedInnerType>>,
 }
 
 impl std::fmt::Display for SupportedPathType {
@@ -89,7 +101,7 @@ impl SupportedInnerType {
     /// or `None` otherwise.
     pub fn try_from_syn_type(ty: &syn::Type) -> Option<Self> {
         match ty {
-            syn::Type::Path(syn::TypePath { path, .. }) => {
+            Type::Path(TypePath { path, .. }) => {
                 let last_segment = path.segments.last().unwrap().clone();
                 match last_segment.arguments {
                     syn::PathArguments::None => Some(SupportedInnerType::Path(SupportedPathType {
@@ -112,7 +124,7 @@ impl SupportedInnerType {
                     _ => None,
                 }
             }
-            syn::Type::Array(syn::TypeArray { elem, len, .. }) => {
+            Type::Array(TypeArray { elem, len, .. }) => {
                 let len: usize = match len {
                     syn::Expr::Lit(lit) => match &lit.lit {
                         syn::Lit::Int(x) => x.base10_parse().unwrap(),
@@ -125,8 +137,11 @@ impl SupportedInnerType {
                     len,
                 ))
             }
-            syn::Type::Tuple(syn::TypeTuple { elems, .. }) if elems.is_empty() => {
+            Type::Tuple(TypeTuple { elems, .. }) if elems.is_empty() => {
                 Some(SupportedInnerType::Unit)
+            }
+            Type::ImplTrait(TypeImplTrait { bounds, .. }) => {
+                Some(SupportedInnerType::Impl(bounds.iter().cloned().collect()))
             }
             _ => None,
         }
@@ -147,6 +162,7 @@ impl<'a> TypeParser<'a> {
         match ty {
             SupportedInnerType::Path(p) => self.convert_path_to_ir_type(p),
             SupportedInnerType::Array(p, len) => self.convert_array_to_ir_type(*p, len),
+            SupportedInnerType::Impl(bounds) => self.convert_impl_to_ir_type(bounds.iter()),
             SupportedInnerType::Unit => Some(IrType::Primitive(IrTypePrimitive::Unit)),
         }
     }
@@ -163,6 +179,13 @@ impl<'a> TypeParser<'a> {
                 inner: Box::new(others),
             }),
         })
+    }
+
+    pub fn convert_impl_to_ir_type<'any>(
+        &mut self,
+        bounds: impl Iterator<Item = &'any TypeParamBound>,
+    ) -> Option<IrType> {
+        self.parse_type_bounds(bounds)
     }
 
     /// Converts a path type into an `IrType` if possible.
@@ -265,6 +288,13 @@ impl<'a> TypeParser<'a> {
             if ident_string.as_str() == "Uuid" {
                 return Some(Delegate(IrTypeDelegate::Uuid));
             }
+
+            if let Some(bounds) = (self.current_sig)
+                .and_then(|sig| find_matching_generic_bound(&ident_string, &sig.generics))
+            {
+                return self.convert_impl_to_ir_type(bounds.iter());
+            }
+
             IrTypePrimitive::try_from_rust_str(ident_string)
                 .map(Primitive)
                 .or_else(|| {
@@ -416,4 +446,56 @@ impl<'a> TypeParser<'a> {
             comments,
         }
     }
+
+    fn parse_type_bounds<'any>(
+        &mut self,
+        mut bounds: impl Iterator<Item = &'any TypeParamBound>,
+    ) -> Option<IrType> {
+        bounds.find_map(|bound| match bound {
+            syn::TypeParamBound::Trait(syn::TraitBound { path, .. }) => {
+                let segment = &path.segments.last()?;
+                match &segment.arguments {
+                    syn::PathArguments::Parenthesized(syn::ParenthesizedGenericArguments {
+                        inputs,
+                        output,
+                        ..
+                    }) => Some(IrType::Closure(IrTypeClosure {
+                        kind: IrTypeClosures::from_str(&segment.ident.to_string())?,
+                        args: inputs.iter().map(|input| self.parse_type(input)).collect(),
+                        returns: match output {
+                            syn::ReturnType::Type(_, typ) => Some(Box::new(self.parse_type(typ))),
+                            _ => None,
+                        },
+                    })),
+                    _ => None,
+                }
+            }
+            _ => None,
+        })
+    }
+}
+fn find_matching_generic_bound<'a>(
+    gen_ident: &'a str,
+    gens: &'a Generics,
+) -> Option<&'a punctuated::Punctuated<TypeParamBound, Token![+]>> {
+    None.or_else(|| {
+        gens.params.iter().find_map(|param| match param {
+            GenericParam::Type(TypeParam { ident, bounds, .. }) if ident == gen_ident => {
+                Some(bounds)
+            }
+            _ => None,
+        })
+    })
+    .or_else(|| {
+        gens.where_clause.as_ref().and_then(|where_| {
+            where_.predicates.iter().find_map(|pred| match pred {
+                WherePredicate::Type(PredicateType {
+                    bounded_ty: Type::Path(ty),
+                    bounds,
+                    ..
+                }) if ty.path.is_ident(gen_ident) => Some(bounds),
+                _ => None,
+            })
+        })
+    })
 }

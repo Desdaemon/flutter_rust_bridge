@@ -291,6 +291,16 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int32)>> api2wire_closure_282jj9l0dlk8h(void Function(int) raw) {
+    return ffi.Pointer.fromFunction(raw);
+  }
+
+  @protected
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>> api2wire_closure_36ygm9r0g7h9o(void Function() raw) {
+    return ffi.Pointer.fromFunction(raw);
+  }
+
+  @protected
   ffi.Pointer<wire_float_32_list> api2wire_float_32_list(Float32List raw) {
     final ans = inner.new_float_32_list_0(raw.length);
     ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
@@ -446,6 +456,12 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   @protected
   ffi.Pointer<ffi.Uint8> api2wire_opt_box_u8(int? raw) {
     return raw == null ? ffi.nullptr : api2wire_box_u8(raw);
+  }
+
+  @protected
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int32)>> api2wire_opt_closure_282jj9l0dlk8h(
+      void Function(int)? raw) {
+    return raw == null ? ffi.nullptr : api2wire_closure_282jj9l0dlk8h(raw);
   }
 
   @protected
@@ -768,6 +784,11 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
 
   void _api_fill_to_wire_opt_box_exotic_optionals(ExoticOptionals? apiObj, ffi.Pointer<wire_ExoticOptionals> wireObj) {
     if (apiObj != null) _api_fill_to_wire_box_exotic_optionals(apiObj, wireObj);
+  }
+
+  void _api_fill_to_wire_opt_closure_282jj9l0dlk8h(
+      void Function(int)? apiObj, ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int32)>> wireObj) {
+    if (apiObj != null) _api_fill_to_wire_closure_282jj9l0dlk8h(apiObj, wireObj);
   }
 
   void _api_fill_to_wire_sequences(Sequences apiObj, wire_Sequences wireObj) {
@@ -1867,6 +1888,34 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
           'wire_handle_nested_uuids');
   late final _wire_handle_nested_uuids =
       _wire_handle_nested_uuidsPtr.asFunction<void Function(int, ffi.Pointer<wire_FeatureUuid>)>();
+
+  void wire_handle_closure(
+    int port_,
+    ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int32)>> callback,
+    ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int32)>> mut_cb,
+    ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>> once,
+  ) {
+    return _wire_handle_closure(
+      port_,
+      callback,
+      mut_cb,
+      once,
+    );
+  }
+
+  late final _wire_handle_closurePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int64,
+              ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int32)>>,
+              ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int32)>>,
+              ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>)>>('wire_handle_closure');
+  late final _wire_handle_closure = _wire_handle_closurePtr.asFunction<
+      void Function(
+          int,
+          ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int32)>>,
+          ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int32)>>,
+          ffi.Pointer<ffi.NativeFunction<ffi.Void Function()>>)>();
 
   void wire_sum__method__SumWith(
     int port_,

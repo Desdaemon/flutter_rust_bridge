@@ -266,6 +266,16 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  void Function(int) api2wire_closure_282jj9l0dlk8h(void Function(int) raw) {
+    throw UnimplementedError();
+  }
+
+  @protected
+  void Function() api2wire_closure_36ygm9r0g7h9o(void Function() raw) {
+    throw UnimplementedError();
+  }
+
+  @protected
   List<dynamic> api2wire_concatenate_with(ConcatenateWith raw) {
     return [api2wire_String(raw.a)];
   }
@@ -524,6 +534,11 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  void Function(int)? api2wire_opt_closure_282jj9l0dlk8h(void Function(int)? raw) {
+    return raw == null ? null : api2wire_closure_282jj9l0dlk8h(raw);
+  }
+
+  @protected
   Float32List? api2wire_opt_float_32_list(Float32List? raw) {
     return raw == null ? null : api2wire_float_32_list(raw);
   }
@@ -758,6 +773,9 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
 
   external void wire_handle_nested_uuids(NativePortType port_, List<dynamic> ids);
 
+  external void wire_handle_closure(
+      NativePortType port_, void Function(int) callback, void Function(int)? mut_cb, void Function() once);
+
   external void wire_sum__method__SumWith(NativePortType port_, List<dynamic> that, int y, int z);
 
   external void wire_new__static_method__ConcatenateWith(NativePortType port_, String a);
@@ -981,6 +999,10 @@ class FlutterRustBridgeExampleSingleBlockTestWire
 
   void wire_handle_nested_uuids(NativePortType port_, List<dynamic> ids) =>
       wasmModule.wire_handle_nested_uuids(port_, ids);
+
+  void wire_handle_closure(
+          NativePortType port_, void Function(int) callback, void Function(int)? mut_cb, void Function() once) =>
+      wasmModule.wire_handle_closure(port_, callback, mut_cb, once);
 
   void wire_sum__method__SumWith(NativePortType port_, List<dynamic> that, int y, int z) =>
       wasmModule.wire_sum__method__SumWith(port_, that, y, z);

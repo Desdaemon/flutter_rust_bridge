@@ -82,12 +82,12 @@ impl IrTypeTrait for IrTypeClosure {
                 format!(
                     "ffi.Pointer<ffi.NativeFunction<{} Function({})>>",
                     match self.returns.as_deref() {
-                        Some(returns) => returns.dart_wire_type(target),
+                        Some(returns) => returns.dart_native_type(target),
                         _ => "ffi.Void".into(),
                     },
                     self.args
                         .iter()
-                        .map(|arg| arg.dart_wire_type(target))
+                        .map(|arg| arg.dart_native_type(target))
                         .join(", ")
                 )
             }
@@ -100,7 +100,7 @@ impl IrTypeTrait for IrTypeClosure {
         match target {
             Target::Io => {
                 format!(
-                    "support::Local<extern \"C\" fn({}) -> {}>",
+                    "extern fn({}) -> {}",
                     self.args
                         .iter()
                         .map(|arg| arg.rust_wire_type(target))
@@ -118,7 +118,7 @@ impl IrTypeTrait for IrTypeClosure {
 
     fn rust_api_type(&self) -> String {
         format!(
-            "impl {}({}) -> {}",
+            "Box<dyn {}({}) -> {}>",
             self.kind.trait_name(),
             self.args.iter().map(<_>::rust_api_type).join(", "),
             match self.returns.as_deref() {
@@ -126,5 +126,13 @@ impl IrTypeTrait for IrTypeClosure {
                 _ => "()".into(),
             }
         )
+    }
+
+    fn rust_wire_is_pointer(&self, target: Target) -> bool {
+        !target.is_wasm()
+    }
+
+    fn rust_wire_modifier(&self, _target: Target) -> String {
+        "".into()
     }
 }

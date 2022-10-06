@@ -379,6 +379,16 @@ pub fn wire_handle_nested_uuids(port_: MessagePort, ids: JsValue) {
 }
 
 #[wasm_bindgen]
+pub fn wire_handle_closure(
+    port_: MessagePort,
+    callback: js_sys::Function,
+    mut_cb: Option<js_sys::Function>,
+    once: js_sys::Function,
+) {
+    wire_handle_closure_impl(port_, callback, mut_cb, once)
+}
+
+#[wasm_bindgen]
 pub fn wire_sum__method__SumWith(port_: MessagePort, that: JsValue, y: u32, z: u32) {
     wire_sum__method__SumWith_impl(port_, that, y, z)
 }
@@ -615,6 +625,16 @@ impl Wire2Api<Attribute> for JsValue {
     }
 }
 
+impl Wire2Api<Box<dyn Fn(i32) -> ()>> for js_sys::Function {
+    fn wire2api(self) -> Box<dyn Fn(i32) -> ()> {
+        todo!()
+    }
+}
+impl Wire2Api<Box<dyn FnOnce() -> ()>> for js_sys::Function {
+    fn wire2api(self) -> Box<dyn FnOnce() -> ()> {
+        todo!()
+    }
+}
 impl Wire2Api<ConcatenateWith> for JsValue {
     fn wire2api(self) -> ConcatenateWith {
         let self_ = self.dyn_into::<JsArray>().unwrap();
@@ -928,6 +948,11 @@ impl Wire2Api<Option<Box<ExoticOptionals>>> for JsValue {
     }
 }
 
+impl Wire2Api<Option<Box<dyn FnMut(i32) -> ()>>> for Option<js_sys::Function> {
+    fn wire2api(self) -> Option<Box<dyn FnMut(i32) -> ()>> {
+        self.map(Wire2Api::wire2api)
+    }
+}
 impl Wire2Api<Option<Vec<f32>>> for Option<Box<[f32]>> {
     fn wire2api(self) -> Option<Vec<f32>> {
         self.map(Wire2Api::wire2api)
@@ -1259,6 +1284,11 @@ impl Wire2Api<Option<Box<i8>>> for JsValue {
 }
 impl Wire2Api<Option<Box<u8>>> for JsValue {
     fn wire2api(self) -> Option<Box<u8>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
+impl Wire2Api<Option<Box<dyn FnMut(i32) -> ()>>> for JsValue {
+    fn wire2api(self) -> Option<Box<dyn FnMut(i32) -> ()>> {
         (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
     }
 }
