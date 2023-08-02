@@ -18,10 +18,12 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
   /// Documentation on a simple adder function.
   Future<int> simpleAdder({required int a, required int b, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSimpleAdderConstMeta;
 
   int simpleAdderSync({required int a, required int b, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSimpleAdderSyncConstMeta;
 
   ///
@@ -32,71 +34,88 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
   Future<int> primitiveTypes(
       {required int myI32, required int myI64, required double myF64, required bool myBool, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kPrimitiveTypesConstMeta;
 
   Future<int?> primitiveOptionalTypes({int? myI32, int? myI64, double? myF64, bool? myBool, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kPrimitiveOptionalTypesConstMeta;
 
   int primitiveTypesSync(
       {required int myI32, required int myI64, required double myF64, required bool myBool, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kPrimitiveTypesSyncConstMeta;
 
   Future<int> primitiveU32({required int myU32, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kPrimitiveU32ConstMeta;
 
   int primitiveU32Sync({required int myU32, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kPrimitiveU32SyncConstMeta;
 
   Future<String> handleString({required String s, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleStringConstMeta;
 
   String handleStringSync({required String s, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleStringSyncConstMeta;
 
   Future<void> handleReturnUnit({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleReturnUnitConstMeta;
 
   void handleReturnUnitSync({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleReturnUnitSyncConstMeta;
 
   Future<Uint8List> handleVecU8({required Uint8List v, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleVecU8ConstMeta;
 
   Uint8List handleVecU8Sync({required Uint8List v, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleVecU8SyncConstMeta;
 
   Future<VecOfPrimitivePack> handleVecOfPrimitive({required int n, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleVecOfPrimitiveConstMeta;
 
   VecOfPrimitivePack handleVecOfPrimitiveSync({required int n, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleVecOfPrimitiveSyncConstMeta;
 
   Future<ZeroCopyVecOfPrimitivePack> handleZeroCopyVecOfPrimitive({required int n, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleZeroCopyVecOfPrimitiveConstMeta;
 
   ZeroCopyVecOfPrimitivePack handleZeroCopyVecOfPrimitiveSync({required int n, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleZeroCopyVecOfPrimitiveSyncConstMeta;
 
   Future<MySize> handleStruct({required MySize arg, required MySize boxed, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleStructConstMeta;
 
   MySize handleStructSync({required MySize arg, required MySize boxed, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleStructSyncConstMeta;
 
   MySizeFreezed handleStructSyncFreezed({required MySizeFreezed arg, required MySizeFreezed boxed, dynamic hint});
@@ -105,74 +124,92 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
 
   Future<NewTypeInt> handleNewtype({NewTypeInt arg = const NewTypeInt(field0: 0), dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleNewtypeConstMeta;
 
   NewTypeInt handleNewtypeSync({required NewTypeInt arg, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleNewtypeSyncConstMeta;
 
   Future<List<MySize>> handleListOfStruct({required List<MySize> l, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleListOfStructConstMeta;
 
   List<MySize> handleListOfStructSync({required List<MySize> l, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleListOfStructSyncConstMeta;
 
   Future<List<String>> handleStringList({required List<String> names, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleStringListConstMeta;
 
   List<String> handleStringListSync({required List<String> names, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleStringListSyncConstMeta;
 
   Future<MyTreeNode> handleComplexStruct({required MyTreeNode s, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleComplexStructConstMeta;
 
   MyTreeNode handleComplexStructSync({required MyTreeNode s, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleComplexStructSyncConstMeta;
 
   Future<MyNestedStruct> handleNestedStruct({required MyNestedStruct s, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleNestedStructConstMeta;
 
   Uint8List handleSyncReturn({required String mode, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleSyncReturnConstMeta;
 
   Stream<String> handleStream({required String arg, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleStreamConstMeta;
 
   Stream<MyStreamEntry> handleStreamOfStruct({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleStreamOfStructConstMeta;
 
   Future<int> returnErr({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kReturnErrConstMeta;
 
   Future<int> returnPanic({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kReturnPanicConstMeta;
 
   Future<double?> handleOptionalReturn({required double left, required double right, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleOptionalReturnConstMeta;
 
   Future<Element?> handleOptionalStruct({String? document, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleOptionalStructConstMeta;
 
   Future<ExoticOptionals?> handleOptionalIncrement({ExoticOptionals? opt, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleOptionalIncrementConstMeta;
 
   Future<double> handleIncrementBoxedOptional({double? opt, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleIncrementBoxedOptionalConstMeta;
 
   Future<String> handleOptionBoxArguments(
@@ -185,46 +222,57 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
       ExoticOptionals? structbox,
       dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleOptionBoxArgumentsConstMeta;
 
   Future<Uint8List> printNote({required Note note, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kPrintNoteConstMeta;
 
   Future<Weekdays?> handleReturnEnum({required String input, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleReturnEnumConstMeta;
 
   Future<Weekdays> handleEnumParameter({required Weekdays weekday, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleEnumParameterConstMeta;
 
   Future<void> handleCustomizedStruct({required Customized val, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleCustomizedStructConstMeta;
 
   Future<KitchenSink> handleEnumStruct({required KitchenSink val, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleEnumStructConstMeta;
 
   Future<bool> useImportedStruct({required MyStruct myStruct, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kUseImportedStructConstMeta;
 
   Future<bool> useImportedEnum({required MyEnum myEnum, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kUseImportedEnumConstMeta;
 
   Future<ApplicationSettings> getAppSettings({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kGetAppSettingsConstMeta;
 
   Future<ApplicationSettings> getFallibleAppSettings({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kGetFallibleAppSettingsConstMeta;
 
   Future<bool> isAppEmbedded({required ApplicationSettings appSettings, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kIsAppEmbeddedConstMeta;
 
   Stream<ApplicationSettings> appSettingsStream({dynamic hint});
@@ -245,353 +293,440 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
 
   Future<ApplicationMessage> getMessage({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kGetMessageConstMeta;
 
   Future<Numbers> repeatNumber({required int num, required int times, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kRepeatNumberConstMeta;
 
   Future<Sequences> repeatSequence({required int seq, required int times, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kRepeatSequenceConstMeta;
 
   Future<int?> firstNumber({required Numbers nums, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kFirstNumberConstMeta;
 
   Future<int?> firstSequence({required Sequences seqs, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kFirstSequenceConstMeta;
 
   Future<U8Array5> getArray({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kGetArrayConstMeta;
 
   Future<PointArray2> getComplexArray({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kGetComplexArrayConstMeta;
 
   Future<int> getUsize({required int u, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kGetUsizeConstMeta;
 
   Future<UserId> nextUserId({required UserId userId, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kNextUserIdConstMeta;
 
   Stream<Event> registerEventListener({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kRegisterEventListenerConstMeta;
 
   Future<void> closeEventListener({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kCloseEventListenerConstMeta;
 
   Future<void> createEvent({required String address, required String payload, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kCreateEventConstMeta;
 
   Stream<Log> handleStreamSinkAt1({required int key, required int max, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleStreamSinkAt1ConstMeta;
 
   Stream<Log> handleStreamSinkAt2({required int key, required int max, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleStreamSinkAt2ConstMeta;
 
   Stream<Log> handleStreamSinkAt3({required int key, required int max, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleStreamSinkAt3ConstMeta;
 
   Future<SumWith> getSumStruct({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kGetSumStructConstMeta;
 
   Future<SumWithArray3> getSumArray({required int a, required int b, required int c, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kGetSumArrayConstMeta;
 
   Future<Measure?> multiplyByTen({required Measure measure, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kMultiplyByTenConstMeta;
 
   Future<OldSimpleStruct> callOldModuleSystem({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kCallOldModuleSystemConstMeta;
 
   Future<NewSimpleStruct> callNewModuleSystem({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kCallNewModuleSystemConstMeta;
 
   Future<BigBuffers> handleBigBuffers({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleBigBuffersConstMeta;
 
   Future<DateTime> datetimeUtc({required DateTime d, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kDatetimeUtcConstMeta;
 
   Future<DateTime> datetimeLocal({required DateTime d, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kDatetimeLocalConstMeta;
 
   Future<DateTime> naivedatetime({required DateTime d, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kNaivedatetimeConstMeta;
 
   Future<DateTime?> optionalEmptyDatetimeUtc({DateTime? d, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOptionalEmptyDatetimeUtcConstMeta;
 
   Future<Duration> duration({required Duration d, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kDurationConstMeta;
 
   Future<List<Duration>> handleTimestamps({required List<DateTime> timestamps, required DateTime epoch, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleTimestampsConstMeta;
 
   Future<List<DateTime>> handleDurations({required List<Duration> durations, required DateTime since, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleDurationsConstMeta;
 
   Future<TestChrono> testChrono({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestChronoConstMeta;
 
   Future<TestChrono> testPreciseChrono({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestPreciseChronoConstMeta;
 
   Future<Duration> howLongDoesItTake({required FeatureChrono mine, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHowLongDoesItTakeConstMeta;
 
   Future<UuidValue> handleUuid({required UuidValue id, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleUuidConstMeta;
 
   Future<List<UuidValue>> handleUuids({required List<UuidValue> ids, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleUuidsConstMeta;
 
   Future<FeatureUuid> handleNestedUuids({required FeatureUuid ids, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleNestedUuidsConstMeta;
 
   Future<MessageId> newMsgid({required U8Array32 id, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kNewMsgidConstMeta;
 
   Future<U8Array32> useMsgid({required MessageId id, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kUseMsgidConstMeta;
 
   Future<Blob> boxedBlob({required U8Array1600 blob, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kBoxedBlobConstMeta;
 
   Future<U8Array1600> useBoxedBlob({required Blob blob, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kUseBoxedBlobConstMeta;
 
   Future<FeedId> returnBoxedFeedId({required U8Array8 id, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kReturnBoxedFeedIdConstMeta;
 
   Future<U8Array8> returnBoxedRawFeedId({required FeedId id, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kReturnBoxedRawFeedIdConstMeta;
 
   Future<TestId> testId({required TestId id, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestIdConstMeta;
 
   Future<double> lastNumber({required F64Array16 array, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kLastNumberConstMeta;
 
   Future<TestIdArray2> nestedId({required TestIdArray4 id, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kNestedIdConstMeta;
 
   String syncAcceptDartOpaque({required Object opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSyncAcceptDartOpaqueConstMeta;
 
   Future<String> asyncAcceptDartOpaque({required Object opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kAsyncAcceptDartOpaqueConstMeta;
 
   Future<Object> loopBack({required Object opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kLoopBackConstMeta;
 
   Future<Object?> loopBackOption({required Object opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kLoopBackOptionConstMeta;
 
   Future<ObjectArray1> loopBackArray({required Object opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kLoopBackArrayConstMeta;
 
   Future<List<Object>> loopBackVec({required Object opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kLoopBackVecConstMeta;
 
   Future<void> loopBackOptionGet({Object? opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kLoopBackOptionGetConstMeta;
 
   Future<void> loopBackArrayGet({required ObjectArray1 opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kLoopBackArrayGetConstMeta;
 
   Future<void> loopBackVecGet({required List<Object> opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kLoopBackVecGetConstMeta;
 
   /// [DartWrapObject] can be safely retrieved on a dart thread.
   String unwrapDartOpaque({required Object opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kUnwrapDartOpaqueConstMeta;
 
   /// [DartWrapObject] cannot be obtained
   /// on a thread other than the thread it was created on.
   Future<void> panicUnwrapDartOpaque({required Object opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kPanicUnwrapDartOpaqueConstMeta;
 
   Future<HideData> createOpaque({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kCreateOpaqueConstMeta;
 
   Future<HideData?> createOptionOpaque({HideData? opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kCreateOptionOpaqueConstMeta;
 
   HideData syncCreateOpaque({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSyncCreateOpaqueConstMeta;
 
   Future<EnumOpaqueArray5> createArrayOpaqueEnum({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kCreateArrayOpaqueEnumConstMeta;
 
   Future<String> runEnumOpaque({required EnumOpaque opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kRunEnumOpaqueConstMeta;
 
   Future<String> runOpaque({required HideData opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kRunOpaqueConstMeta;
 
   Future<String> runOpaqueWithDelay({required HideData opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kRunOpaqueWithDelayConstMeta;
 
   Future<HideDataArray2> opaqueArray({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOpaqueArrayConstMeta;
 
   NonCloneData syncCreateNonClone({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSyncCreateNonCloneConstMeta;
 
   Future<String> runNonClone({required NonCloneData clone, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kRunNonCloneConstMeta;
 
   Future<NonSendHideData> createSyncOpaque({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kCreateSyncOpaqueConstMeta;
 
   NonSendHideData syncCreateSyncOpaque({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSyncCreateSyncOpaqueConstMeta;
 
   String syncRunOpaque({required NonSendHideData opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSyncRunOpaqueConstMeta;
 
   Future<void> opaqueArrayRun({required HideDataArray2 data, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOpaqueArrayRunConstMeta;
 
   Future<List<HideData>> opaqueVec({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOpaqueVecConstMeta;
 
   Future<void> opaqueVecRun({required List<HideData> data, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOpaqueVecRunConstMeta;
 
   Future<OpaqueNested> createNestedOpaque({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kCreateNestedOpaqueConstMeta;
 
   Object syncLoopback({required Object opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSyncLoopbackConstMeta;
 
   Object? syncOptionLoopback({Object? opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSyncOptionLoopbackConstMeta;
 
   String? syncOption({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSyncOptionConstMeta;
 
   String? syncOptionNull({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSyncOptionNullConstMeta;
 
   HideData? syncOptionRustOpaque({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSyncOptionRustOpaqueConstMeta;
 
   Object? syncOptionDartOpaque({required Object opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSyncOptionDartOpaqueConstMeta;
 
   void syncVoid({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSyncVoidConstMeta;
 
   Future<void> runNestedOpaque({required OpaqueNested opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kRunNestedOpaqueConstMeta;
 
   Future<DartOpaqueNested> createNestedDartOpaque({required Object opaque1, required Object opaque2, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kCreateNestedDartOpaqueConstMeta;
 
   Future<void> getNestedDartOpaque({required DartOpaqueNested opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kGetNestedDartOpaqueConstMeta;
 
   Future<EnumDartOpaque> createEnumDartOpaque({required Object opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kCreateEnumDartOpaqueConstMeta;
 
   Future<void> getEnumDartOpaque({required EnumDartOpaque opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kGetEnumDartOpaqueConstMeta;
 
   Future<void> setStaticDartOpaque({required Object opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSetStaticDartOpaqueConstMeta;
 
   Future<void> dropStaticDartOpaque({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kDropStaticDartOpaqueConstMeta;
 
   Future<String> unwrapRustOpaque({required HideData opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kUnwrapRustOpaqueConstMeta;
 
   Object returnNonDroppableDartOpaque({required Object opaque, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kReturnNonDroppableDartOpaqueConstMeta;
 
   /// Function to check the code generator.
@@ -599,6 +734,7 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
   /// FrbOpaqueReturn must not be used as an argument.
   Future<FrbOpaqueReturn> frbGeneratorTest({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kFrbGeneratorTestConstMeta;
 
   /// Structure for testing the SyncReturn<RustOpaque> code generator.
@@ -606,42 +742,52 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
   /// FrbOpaqueSyncReturn must be without wrapper like Option<> Vec<> etc.
   FrbOpaqueSyncReturn frbSyncGeneratorTest({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kFrbSyncGeneratorTestConstMeta;
 
   Future<int> handleTypeAliasId({required int input, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleTypeAliasIdConstMeta;
 
   Future<int> handleTypeNestAliasId({required int input, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleTypeNestAliasIdConstMeta;
 
   Future<TestModel> handleTypeAliasModel({required int input, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleTypeAliasModelConstMeta;
 
   Future<Empty> emptyStruct({required Empty empty, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kEmptyStructConstMeta;
 
   Future<dynamic> returnDartDynamic({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kReturnDartDynamicConstMeta;
 
   Future<void> handleStringReferences({required String boxed, required String arc, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleStringReferencesConstMeta;
 
   Future<void> handleSlices({required Uint8List boxed, required Uint8List arc, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleSlicesConstMeta;
 
   Future<List<String>?> handleVecString({List<String>? strings, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleVecStringConstMeta;
 
   Future<void> handleOptionDelegates({U8Array3? array, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleOptionDelegatesConstMeta;
 
   Future<void> handleManyOptionals(
@@ -654,26 +800,32 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
       int? chunkSize,
       dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleManyOptionalsConstMeta;
 
   Future<WithEnum> handleWithEnum({required WithEnum withEnum, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleWithEnumConstMeta;
 
   Future<String> handleChar({required String plain, String? opt, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleCharConstMeta;
 
   Future<Weekdays?> handleOptEnum({Weekdays? weekday, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleOptEnumConstMeta;
 
   List<Weekdays> handleComplexType1({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleComplexType1ConstMeta;
 
   List<ApplicationMessage> handleComplexType2({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleComplexType2ConstMeta;
 
   Future<ListOptionals> handleListOptionals(
@@ -690,123 +842,194 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
       List<Object?>? objects,
       dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleListOptionalsConstMeta;
 
   Future<RawStringItemStruct> testRawStringItemStruct({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestRawStringItemStructConstMeta;
 
   Future<MoreThanJustOneRawStringStruct> testMoreThanJustOneRawStringStruct({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestMoreThanJustOneRawStringStructConstMeta;
 
   Future<RawStringMirrored> testRawStringMirrored({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestRawStringMirroredConstMeta;
 
   Future<NestedRawStringMirrored> testNestedRawStringMirrored({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestNestedRawStringMirroredConstMeta;
 
   Future<RawStringEnumMirrored> testRawStringEnumMirrored({required bool nested, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestRawStringEnumMirroredConstMeta;
 
   Future<ListOfNestedRawStringMirrored> testListOfRawNestedStringMirrored({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestListOfRawNestedStringMirroredConstMeta;
 
   Future<List<RawStringMirrored>> testFallibleOfRawStringMirrored({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestFallibleOfRawStringMirroredConstMeta;
 
   Future<List<Weekdays>> listOfPrimitiveEnums({required List<Weekdays> weekdays, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kListOfPrimitiveEnumsConstMeta;
 
   Future<Abc> testAbcEnum({required Abc abc, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestAbcEnumConstMeta;
 
   Future<ContainsMirroredSubStruct> testContainsMirroredSubStruct({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestContainsMirroredSubStructConstMeta;
 
   Future<int> sumMethodSumWith(
       {required SumWith that, required int y, required int z, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSumMethodSumWithConstMeta;
 
-  /// Documentation on a static method
+  /// @nodoc
   Future<ConcatenateWith> newStaticMethodConcatenateWith({required String a, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kNewStaticMethodConcatenateWithConstMeta;
 
-  /// Documentation on an instance method
+  /// @nodoc
   Future<String> concatenateMethodConcatenateWith({required ConcatenateWith that, required String b, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kConcatenateMethodConcatenateWithConstMeta;
 
+  /// @nodoc
   Future<String> concatenateStaticStaticMethodConcatenateWith({required String a, required String b, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kConcatenateStaticStaticMethodConcatenateWithConstMeta;
 
+  /// @nodoc
   Stream<Log2> handleSomeStreamSinkMethodConcatenateWith(
       {required ConcatenateWith that, required int key, required int max, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleSomeStreamSinkMethodConcatenateWithConstMeta;
 
+  /// @nodoc
   Stream<int> handleSomeStreamSinkAt1MethodConcatenateWith({required ConcatenateWith that, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleSomeStreamSinkAt1MethodConcatenateWithConstMeta;
 
+  /// @nodoc
   Stream<Log2> handleSomeStaticStreamSinkStaticMethodConcatenateWith(
       {required int key, required int max, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleSomeStaticStreamSinkStaticMethodConcatenateWithConstMeta;
 
+  /// @nodoc
   Stream<int> handleSomeStaticStreamSinkSingleArgStaticMethodConcatenateWith({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleSomeStaticStreamSinkSingleArgStaticMethodConcatenateWithConstMeta;
 
+  /// @nodoc
   Future<void> handleSelfByValueMethodTakeSelfIntWrapper({required IntWrapper that, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleSelfByValueMethodTakeSelfIntWrapperConstMeta;
 
+  /// @nodoc
   DropFnType get dropOpaqueBoxDartDebug;
+
+  /// @nodoc
   ShareFnType get shareOpaqueBoxDartDebug;
+
+  /// @nodoc
   OpaqueTypeFinalizer get BoxDartDebugFinalizer;
 
+  /// @nodoc
   DropFnType get dropOpaqueFrbOpaqueReturn;
+
+  /// @nodoc
   ShareFnType get shareOpaqueFrbOpaqueReturn;
+
+  /// @nodoc
   OpaqueTypeFinalizer get FrbOpaqueReturnFinalizer;
 
+  /// @nodoc
   DropFnType get dropOpaqueFrbOpaqueSyncReturn;
+
+  /// @nodoc
   ShareFnType get shareOpaqueFrbOpaqueSyncReturn;
+
+  /// @nodoc
   OpaqueTypeFinalizer get FrbOpaqueSyncReturnFinalizer;
 
+  /// @nodoc
   DropFnType get dropOpaqueHideData;
+
+  /// @nodoc
   ShareFnType get shareOpaqueHideData;
+
+  /// @nodoc
   OpaqueTypeFinalizer get HideDataFinalizer;
 
+  /// @nodoc
   DropFnType get dropOpaqueI32;
+
+  /// @nodoc
   ShareFnType get shareOpaqueI32;
+
+  /// @nodoc
   OpaqueTypeFinalizer get I32Finalizer;
 
+  /// @nodoc
   DropFnType get dropOpaqueMutexHideData;
+
+  /// @nodoc
   ShareFnType get shareOpaqueMutexHideData;
+
+  /// @nodoc
   OpaqueTypeFinalizer get MutexHideDataFinalizer;
 
+  /// @nodoc
   DropFnType get dropOpaqueNonCloneData;
+
+  /// @nodoc
   ShareFnType get shareOpaqueNonCloneData;
+
+  /// @nodoc
   OpaqueTypeFinalizer get NonCloneDataFinalizer;
 
+  /// @nodoc
   DropFnType get dropOpaqueNonSendHideData;
+
+  /// @nodoc
   ShareFnType get shareOpaqueNonSendHideData;
+
+  /// @nodoc
   OpaqueTypeFinalizer get NonSendHideDataFinalizer;
 
+  /// @nodoc
   DropFnType get dropOpaqueRwLockHideData;
+
+  /// @nodoc
   ShareFnType get shareOpaqueRwLockHideData;
+
+  /// @nodoc
   OpaqueTypeFinalizer get RwLockHideDataFinalizer;
 }
 

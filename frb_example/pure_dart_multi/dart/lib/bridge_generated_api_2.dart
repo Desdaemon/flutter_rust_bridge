@@ -19,6 +19,7 @@ abstract class ApiClass2 {
   /// Documentation on a simple adder function.
   Future<int> simpleAdder2({required int a, required int b, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSimpleAdder2ConstMeta;
 }
 

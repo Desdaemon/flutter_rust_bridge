@@ -22,66 +22,85 @@ abstract class FlutterRustBridgeExample {
       required int numThreads,
       dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kDrawMandelbrotConstMeta;
 
   Future<String> passingComplexStructs({required TreeNode root, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kPassingComplexStructsConstMeta;
 
   Future<BoxedPoint> returningStructsWithBoxedFields({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kReturningStructsWithBoxedFieldsConstMeta;
 
   Future<int> offTopicMemoryTestInputArray({required Uint8List input, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOffTopicMemoryTestInputArrayConstMeta;
 
   Future<Uint8List> offTopicMemoryTestOutputZeroCopyBuffer({required int len, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOffTopicMemoryTestOutputZeroCopyBufferConstMeta;
 
   Future<Uint8List> offTopicMemoryTestOutputVecU8({required int len, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOffTopicMemoryTestOutputVecU8ConstMeta;
 
   Future<int> offTopicMemoryTestInputVecOfObject({required List<Size> input, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOffTopicMemoryTestInputVecOfObjectConstMeta;
 
   Future<List<Size>> offTopicMemoryTestOutputVecOfObject({required int len, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOffTopicMemoryTestOutputVecOfObjectConstMeta;
 
   Future<int> offTopicMemoryTestInputComplexStruct({required TreeNode input, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOffTopicMemoryTestInputComplexStructConstMeta;
 
   Future<TreeNode> offTopicMemoryTestOutputComplexStruct({required int len, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOffTopicMemoryTestOutputComplexStructConstMeta;
 
   Future<int> offTopicDeliberatelyReturnError({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOffTopicDeliberatelyReturnErrorConstMeta;
 
   Future<int> offTopicDeliberatelyPanic({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kOffTopicDeliberatelyPanicConstMeta;
 
   Future<UserId> nextUserId({required UserId userId, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kNextUserIdConstMeta;
 
+  /// @nodoc
   Future<void> testMethodMethodBoxedPoint({required BoxedPoint that, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestMethodMethodBoxedPointConstMeta;
 
+  /// @nodoc
   Future<int> sumMethodSumWith({required SumWith that, required int y, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSumMethodSumWithConstMeta;
 
+  /// @nodoc
   Future<int> sumStaticStaticMethodSumWith({required int x, required int y, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSumStaticStaticMethodSumWithConstMeta;
 }
 

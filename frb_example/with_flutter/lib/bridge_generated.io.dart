@@ -56,6 +56,13 @@ class FlutterRustBridgeExamplePlatform extends FlutterRustBridgeBase<FlutterRust
   }
 
   @protected
+  wire_SumWith api2wire_sum_with(SumWith raw) {
+    final shell = inner.new_sum_with_0();
+    _api_fill_to_wire_sum_with(raw, shell);
+    return shell;
+  }
+
+  @protected
   wire_TreeNode api2wire_tree_node(TreeNode raw) {
     final shell = inner.new_tree_node_0();
     _api_fill_to_wire_tree_node(raw, shell);
@@ -69,6 +76,12 @@ class FlutterRustBridgeExamplePlatform extends FlutterRustBridgeBase<FlutterRust
     return ans;
   }
 
+  @protected
+  wire_UserId api2wire_user_id(UserId raw) {
+    final shell = inner.new_user_id_0();
+    _api_fill_to_wire_user_id(raw, shell);
+    return shell;
+  }
 // Section: finalizer
 
 // Section: api_fill_to_wire
@@ -90,6 +103,10 @@ class FlutterRustBridgeExamplePlatform extends FlutterRustBridgeBase<FlutterRust
   void _api_fill_to_wire_tree_node(TreeNode apiObj, wire_TreeNode wireObj) {
     wireObj.name = api2wire_String(apiObj.name);
     wireObj.children = api2wire_list_tree_node(apiObj.children);
+  }
+
+  void _api_fill_to_wire_uint_8_list(Uint8List apiObj, ffi.Pointer<wire_uint_8_list> wireObj) {
+    throw UnimplementedError();
   }
 
   void _api_fill_to_wire_user_id(UserId apiObj, wire_UserId wireObj) {
@@ -402,6 +419,13 @@ class FlutterRustBridgeExampleWire implements FlutterRustBridgeWireBase {
   late final _new_size_0Ptr = _lookup<ffi.NativeFunction<wire_Size Function()>>('new_size_0');
   late final _new_size_0 = _new_size_0Ptr.asFunction<wire_Size Function()>();
 
+  wire_SumWith new_sum_with_0() {
+    return _new_sum_with_0();
+  }
+
+  late final _new_sum_with_0Ptr = _lookup<ffi.NativeFunction<wire_SumWith Function()>>('new_sum_with_0');
+  late final _new_sum_with_0 = _new_sum_with_0Ptr.asFunction<wire_SumWith Function()>();
+
   wire_TreeNode new_tree_node_0() {
     return _new_tree_node_0();
   }
@@ -420,6 +444,13 @@ class FlutterRustBridgeExampleWire implements FlutterRustBridgeWireBase {
   late final _new_uint_8_list_0Ptr =
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_uint_8_list> Function(ffi.Int32)>>('new_uint_8_list_0');
   late final _new_uint_8_list_0 = _new_uint_8_list_0Ptr.asFunction<ffi.Pointer<wire_uint_8_list> Function(int)>();
+
+  wire_UserId new_user_id_0() {
+    return _new_user_id_0();
+  }
+
+  late final _new_user_id_0Ptr = _lookup<ffi.NativeFunction<wire_UserId Function()>>('new_user_id_0');
+  late final _new_user_id_0 = _new_user_id_0Ptr.asFunction<wire_UserId Function()>();
 
   void free_WireSyncReturn(
     WireSyncReturn ptr,

@@ -99,9 +99,13 @@ struct wire_Point new_point_0(void);
 
 struct wire_Size new_size_0(void);
 
+struct wire_SumWith new_sum_with_0(void);
+
 struct wire_TreeNode new_tree_node_0(void);
 
 struct wire_uint_8_list *new_uint_8_list_0(int32_t len);
+
+struct wire_UserId new_user_id_0(void);
 
 void free_WireSyncReturn(WireSyncReturn ptr);
 
@@ -123,8 +127,10 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) new_list_tree_node_0);
     dummy_var ^= ((int64_t) (void*) new_point_0);
     dummy_var ^= ((int64_t) (void*) new_size_0);
+    dummy_var ^= ((int64_t) (void*) new_sum_with_0);
     dummy_var ^= ((int64_t) (void*) new_tree_node_0);
     dummy_var ^= ((int64_t) (void*) new_uint_8_list_0);
+    dummy_var ^= ((int64_t) (void*) new_user_id_0);
     dummy_var ^= ((int64_t) (void*) free_WireSyncReturn);
     dummy_var ^= ((int64_t) (void*) store_dart_post_cobject);
     dummy_var ^= ((int64_t) (void*) get_dart_object);

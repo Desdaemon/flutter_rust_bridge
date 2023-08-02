@@ -223,7 +223,7 @@ class FlutterRustBridgeExampleImpl implements FlutterRustBridgeExample {
       );
 
   Future<UserId> nextUserId({required UserId userId, dynamic hint}) {
-    var arg0 = _platform.api2wire_box_autoadd_user_id(userId);
+    var arg0 = _platform.api2wire_user_id(userId);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_next_user_id(port_, arg0),
       parseSuccessData: _wire2api_user_id,
@@ -239,10 +239,10 @@ class FlutterRustBridgeExampleImpl implements FlutterRustBridgeExample {
       );
 
   Future<void> testMethodMethodBoxedPoint({required BoxedPoint that, dynamic hint}) {
-    var arg0 = _platform.api2wire_box_autoadd_boxed_point(that);
+    var arg0 = _platform.api2wire_boxed_point(that);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_test_method__method__BoxedPoint(port_, arg0),
-      parseSuccessData: _wire2api_unit,
+      parseSuccessData: (d) => _wire2api_unit(d),
       constMeta: kTestMethodMethodBoxedPointConstMeta,
       argValues: [that],
       hint: hint,
@@ -255,11 +255,11 @@ class FlutterRustBridgeExampleImpl implements FlutterRustBridgeExample {
       );
 
   Future<int> sumMethodSumWith({required SumWith that, required int y, dynamic hint}) {
-    var arg0 = _platform.api2wire_box_autoadd_sum_with(that);
+    var arg0 = _platform.api2wire_sum_with(that);
     var arg1 = api2wire_u32(y);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_sum__method__SumWith(port_, arg0, arg1),
-      parseSuccessData: _wire2api_u32,
+      parseSuccessData: (d) => _wire2api_u32(d),
       constMeta: kSumMethodSumWithConstMeta,
       argValues: [that, y],
       hint: hint,

@@ -79,8 +79,11 @@ pub(crate) fn generate_api_func(
     let const_meta_field_name = format!("k{}ConstMeta", func.name.to_case(Case::Pascal));
 
     let signature = format!("{func_expr};");
-
-    let comments = dart_comments(&func.comments);
+    let comments = if func.name.contains("_method__") {
+        "/// @nodoc\n".to_string()
+    } else {
+        dart_comments(&func.comments)
+    };
 
     let task_common_args = format!(
         "
@@ -152,7 +155,7 @@ pub(crate) fn generate_api_func(
     );
 
     let companion_field_signature =
-        format!("FlutterRustBridgeTaskConstMeta get {const_meta_field_name};");
+        format!("/// @nodoc\nFlutterRustBridgeTaskConstMeta get {const_meta_field_name};");
 
     let companion_field_implementation = format!(
         "
@@ -181,8 +184,11 @@ pub(crate) fn generate_api_func(
 pub(crate) fn generate_opaque_getters(ty: &IrType) -> GeneratedApiFunc {
     let signature = format!(
         "
+    /// @nodoc
     DropFnType get dropOpaque{0};
+    /// @nodoc
     ShareFnType get shareOpaque{0};
+    /// @nodoc
     OpaqueTypeFinalizer get {0}Finalizer;
     ",
         ty.dart_api_type(),

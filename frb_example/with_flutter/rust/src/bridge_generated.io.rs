@@ -74,17 +74,17 @@ pub extern "C" fn wire_off_topic_deliberately_panic(port_: i64) {
 }
 
 #[no_mangle]
-pub extern "C" fn wire_next_user_id(port_: i64, user_id: *mut wire_UserId) {
+pub extern "C" fn wire_next_user_id(port_: i64, user_id: wire_UserId) {
     wire_next_user_id_impl(port_, user_id)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_test_method__method__BoxedPoint(port_: i64, that: *mut wire_BoxedPoint) {
+pub extern "C" fn wire_test_method__method__BoxedPoint(port_: i64, that: wire_BoxedPoint) {
     wire_test_method__method__BoxedPoint_impl(port_, that)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_sum__method__SumWith(port_: i64, that: *mut wire_SumWith, y: u32) {
+pub extern "C" fn wire_sum__method__SumWith(port_: i64, that: wire_SumWith, y: u32) {
     wire_sum__method__SumWith_impl(port_, that, y)
 }
 
@@ -124,6 +124,11 @@ pub extern "C" fn new_size_0() -> wire_Size {
 }
 
 #[no_mangle]
+pub extern "C" fn new_sum_with_0() -> wire_SumWith {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
 pub extern "C" fn new_tree_node_0() -> wire_TreeNode {
     NewWithNullPtr::new_with_null_ptr()
 }
@@ -135,6 +140,11 @@ pub extern "C" fn new_uint_8_list_0(len: i32) -> *mut wire_uint_8_list {
         len,
     };
     support::new_leak_box_ptr(ans)
+}
+
+#[no_mangle]
+pub extern "C" fn new_user_id_0() -> wire_UserId {
+    NewWithNullPtr::new_with_null_ptr()
 }
 
 // Section: related functions
