@@ -615,7 +615,12 @@ impl<'a> TypeParser<'a> {
                 },
             })
             .collect();
-        IrEnum::new(name, wrapper_name, path, comments, variants)
+        let exhaustive = !src_enum
+            .src
+            .attrs
+            .iter()
+            .any(|attr| attr.path().is_ident("non_exhaustive"));
+        IrEnum::new(name, wrapper_name, path, comments, variants, exhaustive)
     }
 
     fn parse_struct_core(&mut self, ident_string: &String) -> Option<IrStruct> {

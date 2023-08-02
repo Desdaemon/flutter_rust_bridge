@@ -20,7 +20,9 @@ impl TypeDartGeneratorTrait for TypeGeneralListGenerator<'_> {
                 }}
                 return ans;
                 ",
-                if self.ir.inner.is_primitive() {
+                if self.ir.inner.is_primitive()
+                    || matches!(self.ir.inner.as_ref(), IrType::Optional(..))
+                {
                     // Handle primitive enums list.
                     // This is similar to `StringList` in
                     // `frb_codegen/src/generator/dart/ty_delegate.rs`

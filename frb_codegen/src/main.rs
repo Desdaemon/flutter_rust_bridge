@@ -1,4 +1,3 @@
-use anyhow::Context;
 #[cfg(feature = "serde")]
 use lib_flutter_rust_bridge_codegen::dump;
 use lib_flutter_rust_bridge_codegen::{
@@ -19,7 +18,8 @@ fn main() -> anyhow::Result<()> {
 
     #[cfg(feature = "serde")]
     if let Some(dump) = dump_config {
-        return dump::dump_multi(&configs, dump).context("Failed to dump config");
+        dump::dump_multi(&configs, dump)?;
+        return Ok(());
     }
 
     // generation of rust api for ffi

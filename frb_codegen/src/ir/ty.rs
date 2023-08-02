@@ -73,6 +73,7 @@ impl IrType {
             Primitive(repr) | Delegate(IrTypeDelegate::PrimitiveEnum { repr, .. }) => Some(repr),
             #[cfg(feature = "chrono")]
             Delegate(IrTypeDelegate::Time(_)) => Some(&IrTypePrimitive::I64),
+            // Optional(IrTypeOptional { inner }) => inner.as_primitive(),
             _ => None,
         }
     }

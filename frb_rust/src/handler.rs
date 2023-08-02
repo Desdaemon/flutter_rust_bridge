@@ -53,14 +53,15 @@ pub trait Handler {
 
     /// Same as [`wrap`][Handler::wrap], but the Rust function must return a [SyncReturn] and
     /// need not implement [Send].
-    fn wrap_sync<SyncTaskFn, TaskRet>(
+    fn wrap_sync<SyncTaskFn, TaskRet, D>(
         &self,
         wrap_info: WrapInfo,
         sync_task: SyncTaskFn,
     ) -> WireSyncReturn
     where
         SyncTaskFn: FnOnce() -> Result<SyncReturn<TaskRet>> + UnwindSafe,
-        TaskRet: IntoDart;
+        TaskRet: IntoIntoDart<D>,
+        D: IntoDart;
 }
 
 /// The simple handler uses a simple thread pool to execute tasks.
@@ -120,20 +121,21 @@ impl<E: Executor, EH: ErrorHandler> Handler for SimpleHandler<E, EH> {
         });
     }
 
-    fn wrap_sync<SyncTaskFn, TaskRet>(
+    fn wrap_sync<SyncTaskFn, TaskRet, D>(
         &self,
         wrap_info: WrapInfo,
         sync_task: SyncTaskFn,
     ) -> WireSyncReturn
     where
-        TaskRet: IntoDart,
+        TaskRet: IntoIntoDart<D>,
+        D: IntoDart,
         SyncTaskFn: FnOnce() -> Result<SyncReturn<TaskRet>> + UnwindSafe,
     {
         // NOTE This extra [catch_unwind] **SHOULD** be put outside **ALL** code!
         // For reason, see comments in [wrap]
         panic::catch_unwind(move || {
             let catch_unwind_result = panic::catch_unwind(move || {
-                match self.executor.execute_sync(wrap_info, sync_task) {
+                match self.executor.execute_sync::<_, _, D>(wrap_info, sync_task) {
                     Ok(data) => wire_sync_from_data(data.0, true),
                     Err(err) => self
                         .error_handler
@@ -161,14 +163,15 @@ pub trait Executor: RefUnwindSafe {
         D: IntoDart;
 
     /// Executes a Rust function that returns a [SyncReturn].
-    fn execute_sync<SyncTaskFn, TaskRet>(
+    fn execute_sync<SyncTaskFn, TaskRet, D>(
         &self,
         wrap_info: WrapInfo,
         sync_task: SyncTaskFn,
-    ) -> Result<SyncReturn<TaskRet>>
+    ) -> Result<SyncReturn<D>>
     where
         SyncTaskFn: FnOnce() -> Result<SyncReturn<TaskRet>> + UnwindSafe,
-        TaskRet: IntoDart;
+        TaskRet: IntoIntoDart<D>,
+        D: IntoDart;
 }
 
 /// The default executor used.
@@ -233,16 +236,17 @@ impl<EH: ErrorHandler> Executor for ThreadPoolExecutor<EH> {
         });
     }
 
-    fn execute_sync<SyncTaskFn, TaskRet>(
+    fn execute_sync<SyncTaskFn, TaskRet, D>(
         &self,
         _wrap_info: WrapInfo,
         sync_task: SyncTaskFn,
-    ) -> Result<SyncReturn<TaskRet>>
+    ) -> Result<SyncReturn<D>>
     where
         SyncTaskFn: FnOnce() -> Result<SyncReturn<TaskRet>> + UnwindSafe,
-        TaskRet: IntoDart,
+        TaskRet: IntoIntoDart<D>,
+        D: IntoDart,
     {
-        sync_task()
+        sync_task().map(|SyncReturn(t)| SyncReturn(t.into_into_dart()))
     }
 }
 

@@ -209,7 +209,7 @@ impl TypeRustGeneratorTrait for TypeEnumRefGenerator<'_> {
             None => (&src.name, "Self"),
         };
         let self_ref = self.self_access("self".to_owned());
-        let variants = src
+        let mut variants = src
             .variants()
             .iter()
             .enumerate()
@@ -251,6 +251,10 @@ impl TypeRustGeneratorTrait for TypeEnumRefGenerator<'_> {
                 }
             })
             .collect::<Vec<_>>();
+
+        if !src.exhaustive {
+            variants.push("_ => todo!()".to_string());
+        }
 
         let into_into_dart = get_into_into_dart(&src.name, src.wrapper_name.as_ref());
         format!(

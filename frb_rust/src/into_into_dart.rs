@@ -1,4 +1,4 @@
-use crate::{ffi::*, DartSafe};
+use crate::{ffi::*, DartSafe, SyncReturn};
 
 /// Basically the Into trait.
 /// We need this separate trait because we need to implement it for Vec<T> etc.
@@ -47,6 +47,28 @@ where
 {
     fn into_into_dart(self) -> ZeroCopyBuffer<D> {
         ZeroCopyBuffer(self.0.into_into_dart())
+    }
+}
+
+impl<T, D, E> IntoIntoDart<Result<D, E>> for Result<T, E>
+where
+    T: IntoIntoDart<D>,
+    D: IntoDart,
+    Result<D, E>: IntoDart,
+{
+    fn into_into_dart(self) -> Result<D, E> {
+        self.map(IntoIntoDart::into_into_dart)
+    }
+}
+
+impl<T, D> IntoIntoDart<SyncReturn<D>> for SyncReturn<T>
+where
+    T: IntoIntoDart<D>,
+    D: IntoDart,
+    SyncReturn<D>: IntoDart,
+{
+    fn into_into_dart(self) -> SyncReturn<D> {
+        SyncReturn(self.0.into_into_dart())
     }
 }
 
