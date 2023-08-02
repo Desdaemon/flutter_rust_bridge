@@ -117,6 +117,14 @@ pub extern "C" fn wire_handle_struct_sync(
 }
 
 #[no_mangle]
+pub extern "C" fn wire_handle_struct_sync_freezed(
+    arg: wire_MySizeFreezed,
+    boxed: *mut wire_MySizeFreezed,
+) -> support::WireSyncReturn {
+    wire_handle_struct_sync_freezed_impl(arg, boxed)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_handle_newtype(port_: i64, arg: wire_NewTypeInt) {
     wire_handle_newtype_impl(port_, arg)
 }
@@ -880,25 +888,13 @@ pub extern "C" fn wire_handle_list_optionals(
 }
 
 #[no_mangle]
-pub extern "C" fn wire_sum__method__SumWith(port_: i64, that: wire_SumWith, y: u32, z: u32) {
-pub extern "C" fn wire_handle_with_enum(port_: i64, with_enum: wire_WithEnum) {
-    wire_handle_with_enum_impl(port_, with_enum)
+pub extern "C" fn wire_test_raw_string_item_struct(port_: i64) {
+    wire_test_raw_string_item_struct_impl(port_)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_handle_opt_enum(port_: i64, weekday: *mut i32) {
-    wire_handle_opt_enum_impl(port_, weekday)
-}
-
-#[no_mangle]
-pub extern "C" fn wire_sum__method__SumWith(port_: i64, that: wire_SumWith, y: u32, z: u32) {
-pub extern "C" fn wire_handle_with_enum(port_: i64, with_enum: wire_WithEnum) {
-    wire_handle_with_enum_impl(port_, with_enum)
-}
-
-#[no_mangle]
-pub extern "C" fn wire_handle_opt_enum(port_: i64, weekday: *mut i32) {
-    wire_handle_opt_enum_impl(port_, weekday)
+pub extern "C" fn wire_test_more_than_just_one_raw_string_struct(port_: i64) {
+    wire_test_more_than_just_one_raw_string_struct_impl(port_)
 }
 
 #[no_mangle]
@@ -932,7 +928,7 @@ pub extern "C" fn wire_list_of_primitive_enums(port_: i64, weekdays: *mut wire_l
 }
 
 #[no_mangle]
-pub extern "C" fn wire_test_abc_enum(port_: i64, abc: *mut wire_Abc) {
+pub extern "C" fn wire_test_abc_enum(port_: i64, abc: wire_Abc) {
     wire_test_abc_enum_impl(port_, abc)
 }
 
@@ -942,7 +938,7 @@ pub extern "C" fn wire_test_contains_mirrored_sub_struct(port_: i64) {
 }
 
 #[no_mangle]
-pub extern "C" fn wire_test_struct_with_enum(port_: i64, se: *mut wire_StructWithEnum) {
+pub extern "C" fn wire_test_struct_with_enum(port_: i64, se: wire_StructWithEnum) {
     wire_test_struct_with_enum_impl(port_, se)
 }
 
@@ -957,7 +953,7 @@ pub extern "C" fn wire_test_tuple_2(port_: i64, value: *mut wire_list___record__
 }
 
 #[no_mangle]
-pub extern "C" fn wire_as_string__method__Event(port_: i64, that: *mut wire_Event) {
+pub extern "C" fn wire_as_string__method__Event(port_: i64, that: wire_Event) {
     wire_as_string__method__Event_impl(port_, that)
 }
 
@@ -1021,6 +1017,11 @@ pub extern "C" fn wire_handle_some_static_stream_sink_single_arg__static_method_
     port_: i64,
 ) {
     wire_handle_some_static_stream_sink_single_arg__static_method__ConcatenateWith_impl(port_)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_make__factory__static_method__ConcatenateWith() -> support::WireSyncReturn {
+    wire_make__factory__static_method__ConcatenateWith_impl()
 }
 
 #[no_mangle]
@@ -1143,6 +1144,11 @@ pub extern "C" fn new_box_autoadd_HideData_0() -> *mut wire_HideData {
 }
 
 #[no_mangle]
+pub extern "C" fn new_box_autoadd___record__String_i32_0() -> *mut wire___record__String_i32 {
+    support::new_leak_box_ptr(wire___record__String_i32::new_with_null_ptr())
+}
+
+#[no_mangle]
 pub extern "C" fn new_box_autoadd_a_0() -> *mut wire_A {
     support::new_leak_box_ptr(wire_A::new_with_null_ptr())
 }
@@ -1164,6 +1170,16 @@ pub extern "C" fn new_box_autoadd_b_0() -> *mut wire_B {
 
 #[no_mangle]
 pub extern "C" fn new_box_autoadd_bool_0(value: bool) -> *mut bool {
+    support::new_leak_box_ptr(value)
+}
+
+#[no_mangle]
+pub extern "C" fn new_box_autoadd_c_0() -> *mut wire_C {
+    support::new_leak_box_ptr(wire_C::new_with_null_ptr())
+}
+
+#[no_mangle]
+pub extern "C" fn new_box_autoadd_char_0(value: u32) -> *mut u32 {
     support::new_leak_box_ptr(value)
 }
 
@@ -1265,6 +1281,11 @@ pub extern "C" fn new_box_kitchen_sink_0() -> *mut wire_KitchenSink {
 #[no_mangle]
 pub extern "C" fn new_box_my_size_0() -> *mut wire_MySize {
     support::new_leak_box_ptr(wire_MySize::new_with_null_ptr())
+}
+
+#[no_mangle]
+pub extern "C" fn new_box_my_size_freezed_0() -> *mut wire_MySizeFreezed {
+    support::new_leak_box_ptr(wire_MySizeFreezed::new_with_null_ptr())
 }
 
 #[no_mangle]
@@ -1615,6 +1636,11 @@ pub extern "C" fn new_my_nested_struct_0() -> wire_MyNestedStruct {
 
 #[no_mangle]
 pub extern "C" fn new_my_size_0() -> wire_MySize {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_my_size_freezed_0() -> wire_MySizeFreezed {
     NewWithNullPtr::new_with_null_ptr()
 }
 
@@ -2070,6 +2096,12 @@ impl Wire2Api<RustOpaque<HideData>> for *mut wire_HideData {
     fn wire2api(self) -> RustOpaque<HideData> {
         let wrap = unsafe { support::box_from_leak_ptr(self) };
         Wire2Api::<RustOpaque<HideData>>::wire2api(*wrap).into()
+    }
+}
+impl Wire2Api<(String, i32)> for *mut wire___record__String_i32 {
+    fn wire2api(self) -> (String, i32) {
+        let wrap = unsafe { support::box_from_leak_ptr(self) };
+        Wire2Api::<(String, i32)>::wire2api(*wrap).into()
     }
 }
 impl Wire2Api<A> for *mut wire_A {
@@ -3032,6 +3064,13 @@ pub struct wire_DartOpaqueNested {
 #[derive(Clone)]
 pub struct wire_Empty {
     pad_: u8,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_Event {
+    address: *mut wire_uint_8_list,
+    payload: *mut wire_uint_8_list,
 }
 
 #[repr(C)]
@@ -4152,6 +4191,12 @@ impl NewWithNullPtr for wire_IntWrapper {
 }
 
 impl Default for wire_IntWrapper {
+    fn default() -> Self {
+        Self::new_with_null_ptr()
+    }
+}
+
+impl Default for wire_KitchenSink {
     fn default() -> Self {
         Self::new_with_null_ptr()
     }

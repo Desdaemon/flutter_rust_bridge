@@ -336,6 +336,23 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["arg", "boxed"],
       );
 
+  MySizeFreezed handleStructSyncFreezed({required MySizeFreezed arg, required MySizeFreezed boxed, dynamic hint}) {
+    var arg0 = _platform.api2wire_my_size_freezed(arg);
+    var arg1 = _platform.api2wire_box_my_size_freezed(boxed);
+    return _platform.executeSync(FlutterRustBridgeSyncTask(
+      callFfi: () => _platform.inner.wire_handle_struct_sync_freezed(arg0, arg1),
+      parseSuccessData: _wire2api_my_size_freezed,
+      constMeta: kHandleStructSyncFreezedConstMeta,
+      argValues: [arg, boxed],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHandleStructSyncFreezedConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "handle_struct_sync_freezed",
+        argNames: ["arg", "boxed"],
+      );
+
   Future<NewTypeInt> handleNewtype({NewTypeInt arg = const NewTypeInt(field0: 0), dynamic hint}) {
     var arg0 = _platform.api2wire_new_type_int(arg);
     return _platform.executeNormal(FlutterRustBridgeTask(
@@ -2756,7 +2773,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
       );
 
   Future<(String, int)> testTuple({(String, int)? value, dynamic hint}) {
-    var arg0 = _platform.api2wire_opt_box_autoadd___record__String_i32(value);
+    var arg0 = _platform.api2wire_opt___record__String_i32(value);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_test_tuple(port_, arg0),
       parseSuccessData: _wire2api___record__String_i32,
@@ -2944,6 +2961,22 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
   FlutterRustBridgeTaskConstMeta get kHandleSomeStaticStreamSinkSingleArgStaticMethodConcatenateWithConstMeta =>
       const FlutterRustBridgeTaskConstMeta(
         debugName: "handle_some_static_stream_sink_single_arg__static_method__ConcatenateWith",
+        argNames: [],
+      );
+
+  ConcatenateWith makeFactoryStaticMethodConcatenateWith({dynamic hint}) {
+    return _platform.executeSync(FlutterRustBridgeSyncTask(
+      callFfi: () => _platform.inner.wire_make__factory__static_method__ConcatenateWith(),
+      parseSuccessData: _wire2api_concatenate_with,
+      constMeta: kMakeFactoryStaticMethodConcatenateWithConstMeta,
+      argValues: [],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kMakeFactoryStaticMethodConcatenateWithConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "make__factory__static_method__ConcatenateWith",
         argNames: [],
       );
 
@@ -3677,6 +3710,10 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     return (raw as List<dynamic>).map(_wire2api_application_env_var).toList();
   }
 
+  List<ApplicationMessage> _wire2api_list_application_message(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_application_message).toList();
+  }
+
   List<ApplicationSettings> _wire2api_list_application_settings(dynamic raw) {
     return (raw as List<dynamic>).map(_wire2api_application_settings).toList();
   }
@@ -4335,7 +4372,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
   }
 
   Weekdays _wire2api_weekdays(dynamic raw) {
-    return Weekdays.values[raw];
+    return Weekdays.values[raw as int];
   }
 
   WithEnum _wire2api_with_enum(dynamic raw) {

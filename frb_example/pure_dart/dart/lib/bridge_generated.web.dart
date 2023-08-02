@@ -250,19 +250,8 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
-  List<dynamic> api2wire_box_autoadd_abc(Abc raw) {
-    return api2wire_abc(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_a(A raw) {
-    return api2wire_a(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_application_settings(
-      ApplicationSettings raw) {
-    return api2wire_application_settings(raw);
+  List<dynamic> api2wire_box_autoadd_application_env(ApplicationEnv raw) {
+    return api2wire_application_env(raw);
   }
 
   @protected
@@ -286,68 +275,8 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
-  List<dynamic> api2wire_box_autoadd_concatenate_with(ConcatenateWith raw) {
-    return api2wire_concatenate_with(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_customized(Customized raw) {
-    return api2wire_customized(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_dart_opaque_nested(DartOpaqueNested raw) {
-    return api2wire_dart_opaque_nested(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_enum_dart_opaque(EnumDartOpaque raw) {
-    return api2wire_enum_dart_opaque(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_enum_opaque(EnumOpaque raw) {
-    return api2wire_enum_opaque(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_c(C raw) {
-    return api2wire_c(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_concatenate_with(ConcatenateWith raw) {
-    return api2wire_concatenate_with(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_customized(Customized raw) {
-    return api2wire_customized(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_dart_opaque_nested(DartOpaqueNested raw) {
-    return api2wire_dart_opaque_nested(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_empty(Empty raw) {
-    return api2wire_empty(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_enum_dart_opaque(EnumDartOpaque raw) {
-    return api2wire_enum_dart_opaque(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_enum_opaque(EnumOpaque raw) {
-    return api2wire_enum_opaque(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_event(Event raw) {
-    return api2wire_event(raw);
+  int api2wire_box_autoadd_char(String raw) {
+    return api2wire_char(raw);
   }
 
   @protected
@@ -889,6 +818,11 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  List<dynamic>? api2wire_opt___record__String_i32((String, int)? raw) {
+    return raw == null ? null : api2wire___record__String_i32(raw);
+  }
+
+  @protected
   List<dynamic>? api2wire_opt_application_env(ApplicationEnv? raw) {
     return raw == null ? null : api2wire_application_env(raw);
   }
@@ -1186,6 +1120,9 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   late final Finalizer<PlatformPointer> _MutexHideDataFinalizer =
       Finalizer<PlatformPointer>(inner.drop_opaque_MutexHideData);
   Finalizer<PlatformPointer> get MutexHideDataFinalizer => _MutexHideDataFinalizer;
+  late final Finalizer<PlatformPointer> _NonCloneDataFinalizer =
+      Finalizer<PlatformPointer>(inner.drop_opaque_NonCloneData);
+  Finalizer<PlatformPointer> get NonCloneDataFinalizer => _NonCloneDataFinalizer;
   late final Finalizer<PlatformPointer> _NonSendHideDataFinalizer =
       Finalizer<PlatformPointer>(inner.drop_opaque_NonSendHideData);
   Finalizer<PlatformPointer> get NonSendHideDataFinalizer => _NonSendHideDataFinalizer;
@@ -1243,6 +1180,8 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
   external dynamic /* void */ wire_handle_struct(NativePortType port_, List<dynamic> arg, List<dynamic> boxed);
 
   external dynamic /* List<dynamic> */ wire_handle_struct_sync(List<dynamic> arg, List<dynamic> boxed);
+
+  external dynamic /* List<dynamic> */ wire_handle_struct_sync_freezed(List<dynamic> arg, List<dynamic> boxed);
 
   external dynamic /* void */ wire_handle_newtype(NativePortType port_, List<dynamic> arg);
 
@@ -1302,6 +1241,14 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
   external dynamic /* void */ wire_get_fallible_app_settings(NativePortType port_);
 
   external dynamic /* void */ wire_is_app_embedded(NativePortType port_, List<dynamic> app_settings);
+
+  external dynamic /* void */ wire_app_settings_stream(NativePortType port_);
+
+  external dynamic /* void */ wire_app_settings_vec_stream(NativePortType port_);
+
+  external dynamic /* void */ wire_mirror_struct_stream(NativePortType port_);
+
+  external dynamic /* void */ wire_mirror_tuple_stream(NativePortType port_);
 
   external dynamic /* void */ wire_get_message(NativePortType port_);
 
@@ -1528,6 +1475,34 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
       List<dynamic>? enums,
       List<dynamic>? objects);
 
+  external dynamic /* void */ wire_test_raw_string_item_struct(NativePortType port_);
+
+  external dynamic /* void */ wire_test_more_than_just_one_raw_string_struct(NativePortType port_);
+
+  external dynamic /* void */ wire_test_raw_string_mirrored(NativePortType port_);
+
+  external dynamic /* void */ wire_test_nested_raw_string_mirrored(NativePortType port_);
+
+  external dynamic /* void */ wire_test_raw_string_enum_mirrored(NativePortType port_, bool nested);
+
+  external dynamic /* void */ wire_test_list_of_raw_nested_string_mirrored(NativePortType port_);
+
+  external dynamic /* void */ wire_test_fallible_of_raw_string_mirrored(NativePortType port_);
+
+  external dynamic /* void */ wire_list_of_primitive_enums(NativePortType port_, List<dynamic> weekdays);
+
+  external dynamic /* void */ wire_test_abc_enum(NativePortType port_, List<dynamic> abc);
+
+  external dynamic /* void */ wire_test_contains_mirrored_sub_struct(NativePortType port_);
+
+  external dynamic /* void */ wire_test_struct_with_enum(NativePortType port_, List<dynamic> se);
+
+  external dynamic /* void */ wire_test_tuple(NativePortType port_, List<dynamic>? value);
+
+  external dynamic /* void */ wire_test_tuple_2(NativePortType port_, List<dynamic> value);
+
+  external dynamic /* void */ wire_as_string__method__Event(NativePortType port_, List<dynamic> that);
+
   external dynamic /* void */ wire_sum__method__SumWith(NativePortType port_, List<dynamic> that, int y, int z);
 
   external dynamic /* void */ wire_new__static_method__ConcatenateWith(NativePortType port_, String a);
@@ -1549,6 +1524,8 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
 
   external dynamic /* void */ wire_handle_some_static_stream_sink_single_arg__static_method__ConcatenateWith(
       NativePortType port_);
+
+  external dynamic /* List<dynamic> */ wire_make__factory__static_method__ConcatenateWith();
 
   external dynamic /* void */ wire_handle_self_by_value__method__take_self__IntWrapper(
       NativePortType port_, List<dynamic> that);
@@ -1644,6 +1621,9 @@ class FlutterRustBridgeExampleSingleBlockTestWire
   dynamic /* List<dynamic> */ wire_handle_struct_sync(List<dynamic> arg, List<dynamic> boxed) =>
       wasmModule.wire_handle_struct_sync(arg, boxed);
 
+  dynamic /* List<dynamic> */ wire_handle_struct_sync_freezed(List<dynamic> arg, List<dynamic> boxed) =>
+      wasmModule.wire_handle_struct_sync_freezed(arg, boxed);
+
   void wire_handle_newtype(NativePortType port_, List<dynamic> arg) => wasmModule.wire_handle_newtype(port_, arg);
 
   dynamic /* List<dynamic> */ wire_handle_newtype_sync(List<dynamic> arg) => wasmModule.wire_handle_newtype_sync(arg);
@@ -1719,6 +1699,14 @@ class FlutterRustBridgeExampleSingleBlockTestWire
 
   void wire_is_app_embedded(NativePortType port_, List<dynamic> app_settings) =>
       wasmModule.wire_is_app_embedded(port_, app_settings);
+
+  void wire_app_settings_stream(NativePortType port_) => wasmModule.wire_app_settings_stream(port_);
+
+  void wire_app_settings_vec_stream(NativePortType port_) => wasmModule.wire_app_settings_vec_stream(port_);
+
+  void wire_mirror_struct_stream(NativePortType port_) => wasmModule.wire_mirror_struct_stream(port_);
+
+  void wire_mirror_tuple_stream(NativePortType port_) => wasmModule.wire_mirror_tuple_stream(port_);
 
   void wire_get_message(NativePortType port_) => wasmModule.wire_get_message(port_);
 
@@ -1864,6 +1852,10 @@ class FlutterRustBridgeExampleSingleBlockTestWire
 
   void wire_opaque_array(NativePortType port_) => wasmModule.wire_opaque_array(port_);
 
+  dynamic /* Object */ wire_sync_create_non_clone() => wasmModule.wire_sync_create_non_clone();
+
+  void wire_run_non_clone(NativePortType port_, Object clone) => wasmModule.wire_run_non_clone(port_, clone);
+
   void wire_create_sync_opaque(NativePortType port_) => wasmModule.wire_create_sync_opaque(port_);
 
   dynamic /* Object */ wire_sync_create_sync_opaque() => wasmModule.wire_sync_create_sync_opaque();
@@ -1979,6 +1971,43 @@ class FlutterRustBridgeExampleSingleBlockTestWire
       wasmModule.wire_handle_list_optionals(
           port_, prims, arrays, strings, zcopy, weekdays, times, uuids, bytes, structs, enums, objects);
 
+  void wire_test_raw_string_item_struct(NativePortType port_) => wasmModule.wire_test_raw_string_item_struct(port_);
+
+  void wire_test_more_than_just_one_raw_string_struct(NativePortType port_) =>
+      wasmModule.wire_test_more_than_just_one_raw_string_struct(port_);
+
+  void wire_test_raw_string_mirrored(NativePortType port_) => wasmModule.wire_test_raw_string_mirrored(port_);
+
+  void wire_test_nested_raw_string_mirrored(NativePortType port_) =>
+      wasmModule.wire_test_nested_raw_string_mirrored(port_);
+
+  void wire_test_raw_string_enum_mirrored(NativePortType port_, bool nested) =>
+      wasmModule.wire_test_raw_string_enum_mirrored(port_, nested);
+
+  void wire_test_list_of_raw_nested_string_mirrored(NativePortType port_) =>
+      wasmModule.wire_test_list_of_raw_nested_string_mirrored(port_);
+
+  void wire_test_fallible_of_raw_string_mirrored(NativePortType port_) =>
+      wasmModule.wire_test_fallible_of_raw_string_mirrored(port_);
+
+  void wire_list_of_primitive_enums(NativePortType port_, List<dynamic> weekdays) =>
+      wasmModule.wire_list_of_primitive_enums(port_, weekdays);
+
+  void wire_test_abc_enum(NativePortType port_, List<dynamic> abc) => wasmModule.wire_test_abc_enum(port_, abc);
+
+  void wire_test_contains_mirrored_sub_struct(NativePortType port_) =>
+      wasmModule.wire_test_contains_mirrored_sub_struct(port_);
+
+  void wire_test_struct_with_enum(NativePortType port_, List<dynamic> se) =>
+      wasmModule.wire_test_struct_with_enum(port_, se);
+
+  void wire_test_tuple(NativePortType port_, List<dynamic>? value) => wasmModule.wire_test_tuple(port_, value);
+
+  void wire_test_tuple_2(NativePortType port_, List<dynamic> value) => wasmModule.wire_test_tuple_2(port_, value);
+
+  void wire_as_string__method__Event(NativePortType port_, List<dynamic> that) =>
+      wasmModule.wire_as_string__method__Event(port_, that);
+
   void wire_sum__method__SumWith(NativePortType port_, List<dynamic> that, int y, int z) =>
       wasmModule.wire_sum__method__SumWith(port_, that, y, z);
 
@@ -2003,6 +2032,9 @@ class FlutterRustBridgeExampleSingleBlockTestWire
 
   void wire_handle_some_static_stream_sink_single_arg__static_method__ConcatenateWith(NativePortType port_) =>
       wasmModule.wire_handle_some_static_stream_sink_single_arg__static_method__ConcatenateWith(port_);
+
+  dynamic /* List<dynamic> */ wire_make__factory__static_method__ConcatenateWith() =>
+      wasmModule.wire_make__factory__static_method__ConcatenateWith();
 
   void wire_handle_self_by_value__method__take_self__IntWrapper(NativePortType port_, List<dynamic> that) =>
       wasmModule.wire_handle_self_by_value__method__take_self__IntWrapper(port_, that);
@@ -2030,6 +2062,10 @@ class FlutterRustBridgeExampleSingleBlockTestWire
   dynamic /*  */ drop_opaque_MutexHideData(ptr) => wasmModule.drop_opaque_MutexHideData(ptr);
 
   int /* *const c_void */ share_opaque_MutexHideData(ptr) => wasmModule.share_opaque_MutexHideData(ptr);
+
+  dynamic /*  */ drop_opaque_NonCloneData(ptr) => wasmModule.drop_opaque_NonCloneData(ptr);
+
+  int /* *const c_void */ share_opaque_NonCloneData(ptr) => wasmModule.share_opaque_NonCloneData(ptr);
 
   dynamic /*  */ drop_opaque_NonSendHideData(ptr) => wasmModule.drop_opaque_NonSendHideData(ptr);
 

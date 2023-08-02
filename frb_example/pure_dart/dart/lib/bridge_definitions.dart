@@ -120,6 +120,7 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
 
   MySizeFreezed handleStructSyncFreezed({required MySizeFreezed arg, required MySizeFreezed boxed, dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleStructSyncFreezedConstMeta;
 
   Future<NewTypeInt> handleNewtype({NewTypeInt arg = const NewTypeInt(field0: 0), dynamic hint});
@@ -277,18 +278,22 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
 
   Stream<ApplicationSettings> appSettingsStream({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kAppSettingsStreamConstMeta;
 
   Stream<List<ApplicationSettings>> appSettingsVecStream({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kAppSettingsVecStreamConstMeta;
 
   Stream<MirrorStruct> mirrorStructStream({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kMirrorStructStreamConstMeta;
 
   Stream<(ApplicationSettings, RawStringEnumMirrored)> mirrorTupleStream({dynamic hint});
 
+  /// @nodoc
   FlutterRustBridgeTaskConstMeta get kMirrorTupleStreamConstMeta;
 
   Future<ApplicationMessage> getMessage({dynamic hint});
@@ -895,8 +900,29 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
   /// @nodoc
   FlutterRustBridgeTaskConstMeta get kTestContainsMirroredSubStructConstMeta;
 
-  Future<int> sumMethodSumWith(
-      {required SumWith that, required int y, required int z, dynamic hint});
+  Future<StructWithEnum> testStructWithEnum({required StructWithEnum se, dynamic hint});
+
+  /// @nodoc
+  FlutterRustBridgeTaskConstMeta get kTestStructWithEnumConstMeta;
+
+  Future<(String, int)> testTuple({(String, int)? value, dynamic hint});
+
+  /// @nodoc
+  FlutterRustBridgeTaskConstMeta get kTestTupleConstMeta;
+
+  Future<void> testTuple2({required List<(String, int)> value, dynamic hint});
+
+  /// @nodoc
+  FlutterRustBridgeTaskConstMeta get kTestTuple2ConstMeta;
+
+  /// @nodoc
+  Future<String> asStringMethodEvent({required Event that, dynamic hint});
+
+  /// @nodoc
+  FlutterRustBridgeTaskConstMeta get kAsStringMethodEventConstMeta;
+
+  /// @nodoc
+  Future<int> sumMethodSumWith({required SumWith that, required int y, required int z, dynamic hint});
 
   /// @nodoc
   FlutterRustBridgeTaskConstMeta get kSumMethodSumWithConstMeta;
@@ -944,6 +970,12 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
 
   /// @nodoc
   FlutterRustBridgeTaskConstMeta get kHandleSomeStaticStreamSinkSingleArgStaticMethodConcatenateWithConstMeta;
+
+  /// @nodoc
+  ConcatenateWith makeFactoryStaticMethodConcatenateWith({dynamic hint});
+
+  /// @nodoc
+  FlutterRustBridgeTaskConstMeta get kMakeFactoryStaticMethodConcatenateWithConstMeta;
 
   /// @nodoc
   Future<void> handleSelfByValueMethodTakeSelfIntWrapper({required IntWrapper that, dynamic hint});
@@ -1389,6 +1421,9 @@ class ConcatenateWith {
   static Stream<int> handleSomeStaticStreamSinkSingleArg(
           {required FlutterRustBridgeExampleSingleBlockTest bridge, dynamic hint}) =>
       bridge.handleSomeStaticStreamSinkSingleArgStaticMethodConcatenateWith(hint: hint);
+
+  factory ConcatenateWith.make({required FlutterRustBridgeExampleSingleBlockTest bridge, dynamic hint}) =>
+      bridge.makeFactoryStaticMethodConcatenateWith(hint: hint);
 }
 
 class ContainsMirroredSubStruct {

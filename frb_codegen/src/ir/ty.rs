@@ -147,13 +147,14 @@ impl IrType {
             // Delegate(IrTypeDelegate::String | IrTypeDelegate::StringList) => true,
             Delegate(IrTypeDelegate::String) => !target.is_wasm(),
             Delegate(IrTypeDelegate::StringList) => true,
-            StructRef(..) | EnumRef(..) | DartOpaque(..) | RustOpaque(..) | Primitive(..) => true,
+            StructRef(..) | EnumRef(..) | DartOpaque(..) | RustOpaque(..) | Primitive(..)
+            | Record(..) => true,
             // *mut T / ?
             Boxed(ir) => !target.is_wasm() || ir.inner.needs_box(target),
             // *mut list_.. // JsArray
             GeneralList(..) => true,
             Delegate(ir) => ir.get_delegate().needs_box(target),
-            Optional(..) | SyncReturn(..) | Dynamic(..) => unreachable!(),
+            Optional(..) | SyncReturn(..) | Dynamic(..) | Unencodable(..) => unreachable!(),
         }
     }
 

@@ -32,7 +32,8 @@ impl IrTypeTrait for IrTypePrimitiveList {
             IrTypePrimitive::Char => panic!("Vec<char> is not supported; please use String or Vec<u32> instead."),
             | IrTypePrimitive::Bool
             | IrTypePrimitive::Unit // TODO: Only transfer length
-            | IrTypePrimitive::Usize => {
+            | IrTypePrimitive::Usize
+            | IrTypePrimitive::Isize => {
                 panic!(
                     "Vec<{}> is not yet supported.",
                     self.primitive.rust_api_type()

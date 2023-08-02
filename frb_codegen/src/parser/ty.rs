@@ -19,6 +19,7 @@ pub struct TypeParser<'a> {
     struct_pool: IrStructPool,
     parsed_enums: HashSet<String>,
     enum_pool: IrEnumPool,
+    pub(crate) impl_struct: Option<IrType>,
 }
 
 impl<'a> TypeParser<'a> {
@@ -35,6 +36,7 @@ impl<'a> TypeParser<'a> {
             enum_pool: HashMap::new(),
             parsing_or_parsed_struct_names: HashSet::new(),
             parsed_enums: HashSet::new(),
+            impl_struct: None,
         }
     }
 
@@ -104,6 +106,7 @@ fn path_type_to_unencodable(
                 args: option_args_refs.as_ref().map(|args_refs| match args_refs {
                     ArgsRefs::Generic(args_array) => Args::Generic(args_array.to_vec()),
                     ArgsRefs::Signature(args_array) => Args::Signature(args_array.to_vec()),
+                    ArgsRefs::Subscript(elem) => Args::Subscript((*elem).clone()),
                 }),
             })
             .collect(),
@@ -151,6 +154,15 @@ impl<'a> TypeParser<'a> {
                 } else {
                     self.convert_tuple_to_ir_type(elems)
                 }
+            }
+            syn::Type::Slice(syn::TypeSlice { elem, .. }) => {
+                IrType::Unencodable(IrTypeUnencodable {
+                    string: String::new(),
+                    segments: vec![NameComponent {
+                        ident: String::new(),
+                        args: Some(Args::Subscript(self.parse_type(&elem))),
+                    }],
+                })
             }
             _ => IrType::Unencodable(IrTypeUnencodable {
                 string: resolve_ty.to_token_stream().to_string(),
@@ -297,6 +309,30 @@ impl<'a> TypeParser<'a> {
                     [("DartOpaque", None)] => Ok(DartOpaque(IrTypeDartOpaque {})),
 
                     [("String", None)] => Ok(Delegate(IrTypeDelegate::String)),
+
+                    [(container @ ("Arc" | "Box" | "Cow"), Some(Generic([Unencodable(unenc)])))]
+                        if unenc.is_str() =>
+                    {
+                        Ok(Delegate(IrTypeDelegate::Str(container.to_string())))
+                    }
+
+                    [(
+                        container @ ("Arc" | "Box" | "Cow"),
+                        Some(Generic(
+                            [Unencodable(IrTypeUnencodable {
+                                string, segments, ..
+                            })],
+                        )),
+                    )] if string.is_empty() => match &segments[..] {
+                        [NameComponent {
+                            args: Some(Args::Subscript(IrType::Primitive(prim))),
+                            ..
+                        }] => Ok(IrType::Delegate(IrTypeDelegate::Slice(
+                            container.to_string(),
+                            prim.clone(),
+                        ))),
+                        other => return Err(format!("Unsupported slice type {other:?}")),
+                    },
 
                     // TODO: change to "if let guard" https://github.com/rust-lang/rust/issues/51114
                     [(name, None)]
@@ -445,24 +481,9 @@ impl<'a> TypeParser<'a> {
                         type_path.to_token_stream()
                     )),
 
-                    [("Option", Some(Generic([inner])))] => Ok(Optional(match inner {
-                        StructRef(..)
-                        | EnumRef(..)
-                        | RustOpaque(..)
-                        | DartOpaque(..)
-                        | Primitive(..)
-                        | Record(..)
-                        | Delegate(IrTypeDelegate::PrimitiveEnum { .. }) => {
-                            IrTypeOptional::new_boxed(inner.clone())
-                        }
-
-                        #[cfg(feature = "chrono")]
-                        Delegate(IrTypeDelegate::Time(..)) => {
-                            IrTypeOptional::new_boxed(inner.clone())
-                        }
-
-                        _ => IrTypeOptional::new(inner.clone()),
-                    })),
+                    [("Option", Some(Generic([inner])))] => {
+                        Ok(Optional(IrTypeOptional::new(inner.clone())))
+                    }
 
                     #[cfg(all(feature = "chrono", feature = "qualified_names"))]
                     [("chrono", None), ("DateTime", Some(Generic(args)))] => {
@@ -471,6 +492,10 @@ impl<'a> TypeParser<'a> {
 
                     #[cfg(feature = "chrono")]
                     [("DateTime", Some(Generic(args)))] => datetime_to_ir_type(args),
+
+                    [("Self", None)] => {
+                        Ok(self.impl_struct.as_ref().expect("Not in a method").clone())
+                    }
 
                     _ => Ok(path_type_to_unencodable(type_path, flat_vector)),
                 }
@@ -634,43 +659,5 @@ impl<'a> TypeParser<'a> {
             dart_metadata: metadata,
             comments,
         })
-    }
-}
-/// {Cow,Arc,Box}<{str,[{u8,i8,...}]}>
-fn parse_slice(wrapper: &str, generic: &SupportedInnerType) -> Option<IrTypeDelegate> {
-    match generic {
-        SupportedInnerType::Path(path) if path.ident == "str" => {
-            Some(IrTypeDelegate::Str(wrapper.to_owned()))
-        }
-        SupportedInnerType::Slice(ty) => {
-            if let SupportedInnerType::Path(path) = ty.as_ref() {
-                return Some(IrTypeDelegate::Slice(
-                    wrapper.to_owned(),
-                    IrTypePrimitive::try_from_rust_str(&path.ident.to_string())?,
-                ));
-            }
-
-            None
-        }
-        _ => None,
-    }
-}
-/// {Cow,Arc,Box}<{str,[{u8,i8,...}]}>
-fn parse_slice(wrapper: &str, generic: &SupportedInnerType) -> Option<IrTypeDelegate> {
-    match generic {
-        SupportedInnerType::Path(path) if path.ident == "str" => {
-            Some(IrTypeDelegate::Str(wrapper.to_owned()))
-        }
-        SupportedInnerType::Slice(ty) => {
-            if let SupportedInnerType::Path(path) = ty.as_ref() {
-                return Some(IrTypeDelegate::Slice(
-                    wrapper.to_owned(),
-                    IrTypePrimitive::try_from_rust_str(&path.ident.to_string())?,
-                ));
-            }
-
-            None
-        }
-        _ => None,
     }
 }

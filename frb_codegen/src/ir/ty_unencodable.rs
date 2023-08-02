@@ -4,6 +4,7 @@ use crate::{ir::*, target::Target};
 pub enum ArgsRefs<'a> {
     Generic(&'a [IrType]),
     Signature(&'a [IrType]),
+    Subscript(&'a IrType),
 }
 
 pub trait Splayable {
@@ -14,6 +15,7 @@ crate::ir! {
 pub enum Args {
     Generic(Vec<IrType>),
     Signature(Vec<IrType>),
+    Subscript(IrType),
 }
 }
 
@@ -43,6 +45,7 @@ impl Splayable for Vec<NameComponent> {
                     args.as_ref().map(|args| match &args {
                         Args::Generic(types) => ArgsRefs::Generic(&types[..]),
                         Args::Signature(types) => ArgsRefs::Signature(&types[..]),
+                        Args::Subscript(elem) => ArgsRefs::Subscript(elem),
                     }),
                 )
             })
@@ -80,6 +83,15 @@ impl IrTypeTrait for IrTypeUnencodable {
             "JsValue".into()
         } else {
             format!("wire_{}", self.safe_ident())
+        }
+    }
+}
+
+impl IrTypeUnencodable {
+    pub fn is_str(&self) -> bool {
+        match self.segments.as_slice() {
+            [NameComponent { ident, args: None }] => ident == "str",
+            _ => false,
         }
     }
 }

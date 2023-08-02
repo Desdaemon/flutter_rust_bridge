@@ -5,6 +5,7 @@ use crate::ir::*;
 use crate::target::Acc;
 use crate::target::Target;
 use crate::type_rust_generator_struct;
+use crate::utils::misc::BlockIndex;
 
 use super::NO_PARAMS;
 
@@ -234,7 +235,7 @@ impl TypeRustGeneratorTrait for TypeStructRefGenerator<'_> {
     fn allocate_funcs(
         &self,
         collector: &mut ExternFuncCollector,
-        block_index: crate::utils::BlockIndex,
+        block_index: BlockIndex,
     ) -> Acc<Option<String>> {
         let func = collector.generate(
             &format!("new_{}_{}", self.ir.safe_ident(), block_index),

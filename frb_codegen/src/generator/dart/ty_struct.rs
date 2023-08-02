@@ -1,11 +1,10 @@
 use crate::generator::dart::ty::*;
 use crate::generator::dart::{dart_comments, dart_metadata, GeneratedApiMethod};
-use crate::method_utils::FunctionName;
 use crate::target::Acc;
 use crate::type_dart_generator_struct;
-use crate::{fmt, ir::*};
 use crate::utils::method::FunctionName;
-use crate::{ir::*, Opts};
+use crate::Opts;
+use crate::{fmt, ir::*};
 use convert_case::{Case, Casing};
 
 type_dart_generator_struct!(TypeStructRefGenerator, IrTypeStructRef);
@@ -315,19 +314,27 @@ fn generate_api_method(
     let static_function_name = f.method_name();
     let comments = dart_comments(&func.comments);
 
-    let partial = format!(
-        "{} {} {}({{ {} }})",
-        if f.is_static_method() { "static" } else { "" },
-        func.mode.dart_return_type(&func.output.dart_api_type()),
-        if f.is_static_method() {
-            if static_function_name == "new" {
-                format!("new{}", ir_struct.name)
-            } else {
-                static_function_name.to_case(Case::Camel)
-            }
+    let method_name = if f.is_static_method() {
+        if static_function_name == "new" {
+            format!("new{}", ir_struct.name)
         } else {
-            f.method_name().to_case(Case::Camel)
-        },
+            static_function_name.to_case(Case::Camel)
+        }
+    } else {
+        f.method_name().to_case(Case::Camel)
+    };
+    let signature_style = if f.is_factory() {
+        format!("factory {}.{method_name}", &ir_struct.name)
+    } else {
+        format!(
+            "{} {} {method_name}",
+            if f.is_static_method() { "static" } else { "" },
+            func.mode.dart_return_type(&func.output.dart_api_type())
+        )
+    };
+
+    let partial = format!(
+        "{signature_style}({{ {} }})",
         full_func_param_list.join(","),
     );
 

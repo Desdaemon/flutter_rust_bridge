@@ -1,6 +1,7 @@
 //! Manages receiving and sending values across the FFI boundary.
 
 use std::marker::PhantomData;
+use std::sync::Arc;
 
 /// The representation of a Dart object outside of the Dart heap.
 ///
@@ -105,6 +106,8 @@ pub struct StreamSink<T> {
     #[cfg(wasm)]
     handle: ChannelHandle,
     _phantom_data: PhantomData<T>,
+    /// Tracker for automatically closing the sink when the last instance goes out of scope.
+    will: Arc<()>,
 }
 
 impl<T> StreamSink<T> {
@@ -121,6 +124,7 @@ impl<T> StreamSink<T> {
             #[cfg(wasm)]
             handle: ChannelHandle(name),
             _phantom_data: PhantomData,
+            will: Arc::new(()),
         }
     }
 
@@ -147,9 +151,10 @@ impl<T> StreamSink<T> {
         self.rust2dart().close_stream()
     }
 }
-
-impl<T: IntoDart> Drop for StreamSink<T> {
+impl<T> Drop for StreamSink<T> {
     fn drop(&mut self) {
-        _ = self.close();
+        if Arc::get_mut(&mut self.will).is_some() {
+            _ = self.close();
+        }
     }
 }

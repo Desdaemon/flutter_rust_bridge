@@ -1,7 +1,6 @@
 use itertools::Itertools;
 
 use crate::generator::rust::get_into_into_dart;
-use crate::fmt;
 use crate::generator::rust::ty::*;
 use crate::generator::rust::ExternFuncCollector;
 use crate::generator::rust::NO_PARAMS;
@@ -10,6 +9,7 @@ use crate::target::Acc;
 use crate::target::Target;
 use crate::target::Target::*;
 use crate::type_rust_generator_struct;
+use crate::utils::misc::BlockIndex;
 
 type_rust_generator_struct!(TypeEnumRefGenerator, IrTypeEnumRef);
 
@@ -267,7 +267,6 @@ impl TypeRustGeneratorTrait for TypeEnumRefGenerator<'_> {
             name,
             self_ref,
             variants.join("\n"),
-            name = name,
         )
         .to_string()
     }
@@ -347,7 +346,7 @@ impl TypeRustGeneratorTrait for TypeEnumRefGenerator<'_> {
     fn allocate_funcs(
         &self,
         collector: &mut ExternFuncCollector,
-        block_index: crate::utils::BlockIndex,
+        block_index: BlockIndex,
     ) -> Acc<Option<String>> {
         let func = collector.generate(
             &format!("new_{}_{}", self.ir.safe_ident(), block_index),

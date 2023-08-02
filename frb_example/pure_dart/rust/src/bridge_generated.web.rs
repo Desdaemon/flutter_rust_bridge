@@ -914,7 +914,7 @@ pub fn wire_test_tuple(port_: MessagePort, value: JsValue) {
 }
 
 #[wasm_bindgen]
-pub fn wire_test_tuple_2(port_: MessagePort, value: JsValue) {
+pub fn wire_test_tuple_2(port_: MessagePort, value: JsArray) {
     wire_test_tuple_2_impl(port_, value)
 }
 
@@ -979,6 +979,11 @@ pub fn wire_handle_some_static_stream_sink_single_arg__static_method__Concatenat
     port_: MessagePort,
 ) {
     wire_handle_some_static_stream_sink_single_arg__static_method__ConcatenateWith_impl(port_)
+}
+
+#[wasm_bindgen]
+pub fn wire_make__factory__static_method__ConcatenateWith() -> support::WireSyncReturn {
+    wire_make__factory__static_method__ConcatenateWith_impl()
 }
 
 #[wasm_bindgen]
@@ -1632,6 +1637,11 @@ impl Wire2Api<Vec<RustOpaque<HideData>>> for JsArray {
         self.iter().map(Wire2Api::wire2api).collect()
     }
 }
+impl Wire2Api<Vec<(String, i32)>> for JsArray {
+    fn wire2api(self) -> Vec<(String, i32)> {
+        self.iter().map(Wire2Api::wire2api).collect()
+    }
+}
 impl Wire2Api<Vec<ApplicationEnvVar>> for JsArray {
     fn wire2api(self) -> Vec<ApplicationEnvVar> {
         self.iter().map(Wire2Api::wire2api).collect()
@@ -1932,6 +1942,11 @@ impl Wire2Api<Option<uuid::Uuid>> for Option<Box<[u8]>> {
 impl Wire2Api<Option<ZeroCopyBuffer<Vec<u8>>>> for Option<Box<[u8]>> {
     fn wire2api(self) -> Option<ZeroCopyBuffer<Vec<u8>>> {
         self.map(Wire2Api::wire2api)
+    }
+}
+impl Wire2Api<Option<(String, i32)>> for JsValue {
+    fn wire2api(self) -> Option<(String, i32)> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
     }
 }
 impl Wire2Api<Option<ApplicationEnv>> for JsValue {
@@ -2623,6 +2638,12 @@ impl Wire2Api<Vec<DartOpaque>> for JsValue {
 }
 impl Wire2Api<Vec<RustOpaque<HideData>>> for JsValue {
     fn wire2api(self) -> Vec<RustOpaque<HideData>> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<(String, i32)>> for JsValue {
+    fn wire2api(self) -> Vec<(String, i32)> {
         let arr = self.dyn_into::<JsArray>().unwrap();
         arr.iter().map(Wire2Api::wire2api).collect()
     }

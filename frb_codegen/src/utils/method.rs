@@ -3,6 +3,7 @@ use crate::ir::IrFile;
 const STATIC_METHOD_MARKER: &str = "__static_method__";
 const METHOD_MARKER: &str = "__method__";
 const TAKE_SELF_MARKER: &str = "take_self__";
+const FACTORY_MARKER: &str = "__factory__static_method__";
 
 pub(crate) struct MethodNamingUtil;
 
@@ -17,14 +18,29 @@ impl MethodNamingUtil {
         s.contains(STATIC_METHOD_MARKER)
     }
 
+    pub(crate) fn is_method(s: &str) -> bool {
+        MethodNamingUtil::is_static_method(s) || MethodNamingUtil::is_non_static_method(s)
+    }
+
+    pub(crate) fn is_factory(s: &str) -> bool {
+        s.contains(FACTORY_MARKER)
+    }
+
     // Returns the name of the struct that this method is for
-    fn static_method_return_struct_name(s: &str) -> String {
+    pub(crate) fn static_method_return_struct_name(s: &str) -> String {
         s.split(STATIC_METHOD_MARKER).last().unwrap().to_string()
     }
 
     // Returns the name of method itself
-    fn static_method_return_method_name(s: &str) -> String {
-        s.split(STATIC_METHOD_MARKER).next().unwrap().to_string()
+    pub(crate) fn static_method_return_method_name(s: &str) -> String {
+        if s.contains(FACTORY_MARKER) {
+            s.split(FACTORY_MARKER)
+        } else {
+            s.split(STATIC_METHOD_MARKER)
+        }
+        .next()
+        .unwrap()
+        .to_string()
     }
 
     // Returns the name of the struct that this method is for
@@ -47,6 +63,10 @@ impl MethodNamingUtil {
 
     fn mark_as_static_method(s: &str, struct_name: &str) -> String {
         format!("{s}{STATIC_METHOD_MARKER}{struct_name}")
+    }
+
+    fn mark_as_factory(s: &str, struct_name: &str) -> String {
+        format!("{s}{FACTORY_MARKER}{struct_name}")
     }
 
     fn mark_as_non_static_method(
@@ -82,6 +102,7 @@ pub enum MethodInfo {
     Not,
     Static {
         struct_name: String,
+        factory: bool,
     },
     NonStatic {
         struct_name: String,
@@ -106,8 +127,15 @@ impl FunctionName {
     pub fn serialize(&self) -> String {
         match &self.method_info {
             MethodInfo::Not => self.actual_name.clone(),
-            MethodInfo::Static { struct_name } => {
-                MethodNamingUtil::mark_as_static_method(&self.actual_name, struct_name)
+            MethodInfo::Static {
+                struct_name,
+                factory,
+            } => {
+                if *factory {
+                    MethodNamingUtil::mark_as_factory(&self.actual_name, struct_name)
+                } else {
+                    MethodNamingUtil::mark_as_static_method(&self.actual_name, struct_name)
+                }
             }
             MethodInfo::NonStatic {
                 struct_name,
@@ -126,6 +154,7 @@ impl FunctionName {
                 actual_name: MethodNamingUtil::static_method_return_method_name(s),
                 method_info: MethodInfo::Static {
                     struct_name: MethodNamingUtil::static_method_return_struct_name(s),
+                    factory: MethodNamingUtil::is_factory(s),
                 },
             }
         } else if MethodNamingUtil::is_non_static_method(s) {
@@ -158,13 +187,18 @@ impl FunctionName {
     pub fn struct_name(&self) -> Option<String> {
         match &self.method_info {
             MethodInfo::Not => None,
-            MethodInfo::Static { struct_name } => Some(struct_name.clone()),
-            MethodInfo::NonStatic { struct_name, .. } => Some(struct_name.clone()),
+            MethodInfo::Static { struct_name, .. } | MethodInfo::NonStatic { struct_name, .. } => {
+                Some(struct_name.clone())
+            }
         }
     }
 
     pub fn is_static_method(&self) -> bool {
         matches!(self.method_info, MethodInfo::Static { .. })
+    }
+
+    pub const fn is_factory(&self) -> bool {
+        matches!(self.method_info, MethodInfo::Static { factory: true, .. })
     }
 
     // Tests if the function is `f` is a static method for struct with name `struct_name`

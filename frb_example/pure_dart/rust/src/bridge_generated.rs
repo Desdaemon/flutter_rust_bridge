@@ -2143,7 +2143,7 @@ fn wire_handle_string_references_impl(
     boxed: impl Wire2Api<Box<str>> + UnwindSafe,
     arc: impl Wire2Api<Arc<str>> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, ()>(
         WrapInfo {
             debug_name: "handle_string_references",
             port: Some(port_),
@@ -2161,7 +2161,7 @@ fn wire_handle_slices_impl(
     boxed: impl Wire2Api<Box<[u8]>> + UnwindSafe,
     arc: impl Wire2Api<Arc<[u8]>> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, ()>(
         WrapInfo {
             debug_name: "handle_slices",
             port: Some(port_),
@@ -2178,7 +2178,7 @@ fn wire_handle_vec_string_impl(
     port_: MessagePort,
     strings: impl Wire2Api<Option<Vec<String>>> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Option<Vec<String>>>(
         WrapInfo {
             debug_name: "handle_vec_string",
             port: Some(port_),
@@ -2194,7 +2194,7 @@ fn wire_handle_option_delegates_impl(
     port_: MessagePort,
     array: impl Wire2Api<Option<[u8; 3]>> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, ()>(
         WrapInfo {
             debug_name: "handle_option_delegates",
             port: Some(port_),
@@ -2216,7 +2216,7 @@ fn wire_handle_many_optionals_impl(
     skip_rows_after_header: impl Wire2Api<Option<usize>> + UnwindSafe,
     chunk_size: impl Wire2Api<Option<usize>> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, ()>(
         WrapInfo {
             debug_name: "handle_many_optionals",
             port: Some(port_),
@@ -2245,7 +2245,7 @@ fn wire_handle_many_optionals_impl(
     )
 }
 fn wire_handle_with_enum_impl(port_: MessagePort, with_enum: impl Wire2Api<WithEnum> + UnwindSafe) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, WithEnum>(
         WrapInfo {
             debug_name: "handle_with_enum",
             port: Some(port_),
@@ -2262,7 +2262,7 @@ fn wire_handle_char_impl(
     plain: impl Wire2Api<char> + UnwindSafe,
     opt: impl Wire2Api<Option<char>> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, char>(
         WrapInfo {
             debug_name: "handle_char",
             port: Some(port_),
@@ -2279,7 +2279,7 @@ fn wire_handle_opt_enum_impl(
     port_: MessagePort,
     weekday: impl Wire2Api<Option<Weekdays>> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, mirror_RawStringEnumMirrored>(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, Option<Weekdays>>(
         WrapInfo {
             debug_name: "handle_opt_enum",
             port: Some(port_),
@@ -2308,15 +2308,7 @@ fn wire_handle_complex_type_2_impl() -> support::WireSyncReturn {
             port: None,
             mode: FfiCallMode::Sync,
         },
-        move || {
-            Ok(SyncReturn(
-                handle_complex_type_2()?
-                    .0
-                    .into_iter()
-                    .map(mirror_ApplicationMessage)
-                    .collect::<Vec<_>>(),
-            ))
-        },
+        move || handle_complex_type_2(),
     )
 }
 fn wire_handle_list_optionals_impl(
@@ -2333,7 +2325,7 @@ fn wire_handle_list_optionals_impl(
     enums: impl Wire2Api<Option<Vec<Option<KitchenSink>>>> + UnwindSafe,
     objects: impl Wire2Api<Option<Vec<Option<DartOpaque>>>> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, ListOptionals>(
         WrapInfo {
             debug_name: "handle_list_optionals",
             port: Some(port_),
@@ -2369,8 +2361,8 @@ fn wire_handle_list_optionals_impl(
         },
     )
 }
-fn wire_test_list_of_raw_nested_string_mirrored_impl(port_: MessagePort) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, mirror_ListOfNestedRawStringMirrored>(
+fn wire_test_raw_string_item_struct_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, RawStringItemStruct>(
         WrapInfo {
             debug_name: "test_raw_string_item_struct",
             port: Some(port_),
@@ -2380,7 +2372,7 @@ fn wire_test_list_of_raw_nested_string_mirrored_impl(port_: MessagePort) {
     )
 }
 fn wire_test_more_than_just_one_raw_string_struct_impl(port_: MessagePort) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, MoreThanJustOneRawStringStruct>(
         WrapInfo {
             debug_name: "test_more_than_just_one_raw_string_struct",
             port: Some(port_),
@@ -2390,19 +2382,45 @@ fn wire_test_more_than_just_one_raw_string_struct_impl(port_: MessagePort) {
     )
 }
 fn wire_test_raw_string_mirrored_impl(port_: MessagePort) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, mirror_RawStringMirrored>(
         WrapInfo {
             debug_name: "test_raw_string_mirrored",
             port: Some(port_),
             mode: FfiCallMode::Normal,
         },
-        move || move |task_callback| Ok(mirror_RawStringMirrored(test_raw_string_mirrored())),
+        move || move |task_callback| Ok(test_raw_string_mirrored()),
     )
 }
 fn wire_test_nested_raw_string_mirrored_impl(port_: MessagePort) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, mirror_NestedRawStringMirrored>(
         WrapInfo {
             debug_name: "test_nested_raw_string_mirrored",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || move |task_callback| Ok(test_nested_raw_string_mirrored()),
+    )
+}
+fn wire_test_raw_string_enum_mirrored_impl(
+    port_: MessagePort,
+    nested: impl Wire2Api<bool> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, mirror_RawStringEnumMirrored>(
+        WrapInfo {
+            debug_name: "test_raw_string_enum_mirrored",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_nested = nested.wire2api();
+            move |task_callback| Ok(test_raw_string_enum_mirrored(api_nested))
+        },
+    )
+}
+fn wire_test_list_of_raw_nested_string_mirrored_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, mirror_ListOfNestedRawStringMirrored>(
+        WrapInfo {
+            debug_name: "test_list_of_raw_nested_string_mirrored",
             port: Some(port_),
             mode: FfiCallMode::Normal,
         },
@@ -2681,11 +2699,21 @@ fn wire_handle_some_static_stream_sink_single_arg__static_method__ConcatenateWit
         },
     )
 }
+fn wire_make__factory__static_method__ConcatenateWith_impl() -> support::WireSyncReturn {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync(
+        WrapInfo {
+            debug_name: "make__factory__static_method__ConcatenateWith",
+            port: None,
+            mode: FfiCallMode::Sync,
+        },
+        move || Ok(ConcatenateWith::make()),
+    )
+}
 fn wire_handle_self_by_value__method__take_self__IntWrapper_impl(
     port_: MessagePort,
     that: impl Wire2Api<IntWrapper> + UnwindSafe,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, ()>(
         WrapInfo {
             debug_name: "handle_self_by_value__method__take_self__IntWrapper",
             port: Some(port_),
@@ -2948,7 +2976,7 @@ impl Wire2Api<Weekdays> for i32 {
 
 impl support::IntoDart for A {
     fn into_dart(self) -> support::DartAbi {
-        vec![self.a.into_into_dart().into_dart()].into_dart()
+        vec![self.a.into_dart()].into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for A {}
@@ -2991,7 +3019,7 @@ impl rust2dart::IntoIntoDart<mirror_ApplicationEnv> for ApplicationEnv {
 impl support::IntoDart for mirror_ApplicationEnvVar {
     fn into_dart(self) -> support::DartAbi {
         vec![
-            self.0 .0.into_into_dart().into_dart(),
+            self.0 .0.into_dart(),
             self.0 .1.into_into_dart().into_dart(),
         ]
         .into_dart()
@@ -3007,16 +3035,13 @@ impl rust2dart::IntoIntoDart<mirror_ApplicationEnvVar> for ApplicationEnvVar {
 impl support::IntoDart for mirror_ApplicationMessage {
     fn into_dart(self) -> support::DartAbi {
         match self.0 {
-            ApplicationMessage::DisplayMessage(field0) => {
-                vec![0.into_dart(), field0.into_into_dart().into_dart()]
-            }
+            ApplicationMessage::DisplayMessage(field0) => vec![0.into_dart(), field0.into_dart()],
             ApplicationMessage::RenderPixel { x, y } => vec![
                 1.into_dart(),
                 x.into_into_dart().into_dart(),
                 y.into_into_dart().into_dart(),
             ],
             ApplicationMessage::Exit => vec![2.into_dart()],
-            _ => unreachable!(),
         }
         .into_dart()
     }
@@ -3049,12 +3074,9 @@ impl support::IntoDart for mirror_ApplicationSettings {
         vec![
             self.0.name.into_dart(),
             self.0.version.into_dart(),
-            mirror_ApplicationMode(self.0.mode).into_dart(),
-            mirror_ApplicationEnv((*self.0.env)).into_dart(),
-            self.0
-                .env_optional
-                .map(|v| mirror_ApplicationEnv(v))
-                .into_dart(),
+            self.0.mode.into_into_dart().into_dart(),
+            self.0.env.into_into_dart().into_dart(),
+            self.0.env_optional.map(mirror_ApplicationEnv).into_dart(),
         ]
         .into_dart()
     }
@@ -3068,11 +3090,7 @@ impl rust2dart::IntoIntoDart<mirror_ApplicationSettings> for ApplicationSettings
 
 impl support::IntoDart for Attribute {
     fn into_dart(self) -> support::DartAbi {
-        vec![
-            self.key.into_into_dart().into_dart(),
-            self.value.into_into_dart().into_dart(),
-        ]
-        .into_dart()
+        vec![self.key.into_dart(), self.value.into_dart()].into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for Attribute {}
@@ -3112,7 +3130,7 @@ impl rust2dart::IntoIntoDart<BigBuffers> for BigBuffers {
 
 impl support::IntoDart for Blob {
     fn into_dart(self) -> support::DartAbi {
-        vec![self.0.into_into_dart().into_dart()].into_dart()
+        vec![self.0.into_dart()].into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for Blob {}
@@ -3136,7 +3154,7 @@ impl rust2dart::IntoIntoDart<C> for C {
 
 impl support::IntoDart for ConcatenateWith {
     fn into_dart(self) -> support::DartAbi {
-        vec![self.a.into_into_dart().into_dart()].into_dart()
+        vec![self.a.into_dart()].into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for ConcatenateWith {}
@@ -3248,7 +3266,6 @@ impl support::IntoDart for EnumOpaque {
             Self::TraitObj(field0) => vec![2.into_dart(), field0.into_dart()],
             Self::Mutex(field0) => vec![3.into_dart(), field0.into_dart()],
             Self::RwLock(field0) => vec![4.into_dart(), field0.into_dart()],
-            _ => unreachable!(),
         }
         .into_dart()
     }
@@ -3262,11 +3279,7 @@ impl rust2dart::IntoIntoDart<EnumOpaque> for EnumOpaque {
 
 impl support::IntoDart for Event {
     fn into_dart(self) -> support::DartAbi {
-        vec![
-            self.address.into_into_dart().into_dart(),
-            self.payload.into_into_dart().into_dart(),
-        ]
-        .into_dart()
+        vec![self.address.into_dart(), self.payload.into_dart()].into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for Event {}
@@ -3306,11 +3319,7 @@ impl rust2dart::IntoIntoDart<ExoticOptionals> for ExoticOptionals {
 
 impl support::IntoDart for FeatureUuid {
     fn into_dart(self) -> support::DartAbi {
-        vec![
-            self.one.into_into_dart().into_dart(),
-            self.many.into_into_dart().into_dart(),
-        ]
-        .into_dart()
+        vec![self.one.into_dart(), self.many.into_dart()].into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for FeatureUuid {}
@@ -3322,7 +3331,7 @@ impl rust2dart::IntoIntoDart<FeatureUuid> for FeatureUuid {
 
 impl support::IntoDart for FeedId {
     fn into_dart(self) -> support::DartAbi {
-        vec![self.0.into_into_dart().into_dart()].into_dart()
+        vec![self.0.into_dart()].into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for FeedId {}
@@ -3354,7 +3363,7 @@ impl support::IntoDart for KitchenSink {
             Self::Optional(field0, field1) => {
                 vec![3.into_dart(), field0.into_dart(), field1.into_dart()]
             }
-            Self::Buffer(field0) => vec![4.into_dart(), field0.into_into_dart().into_dart()],
+            Self::Buffer(field0) => vec![4.into_dart(), field0.into_dart()],
             Self::Enums(field0) => vec![5.into_dart(), field0.into_into_dart().into_dart()],
         }
         .into_dart()
@@ -3364,6 +3373,20 @@ impl support::IntoDartExceptPrimitive for KitchenSink {}
 impl rust2dart::IntoIntoDart<KitchenSink> for KitchenSink {
     fn into_into_dart(self) -> Self {
         self
+    }
+}
+
+impl support::IntoDart for mirror_ListOfNestedRawStringMirrored {
+    fn into_dart(self) -> support::DartAbi {
+        vec![self.0.raw.into_into_dart().into_dart()].into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for mirror_ListOfNestedRawStringMirrored {}
+impl rust2dart::IntoIntoDart<mirror_ListOfNestedRawStringMirrored>
+    for ListOfNestedRawStringMirrored
+{
+    fn into_into_dart(self) -> mirror_ListOfNestedRawStringMirrored {
+        mirror_ListOfNestedRawStringMirrored(self)
     }
 }
 
@@ -3386,18 +3409,9 @@ impl support::IntoDart for ListOptionals {
     }
 }
 impl support::IntoDartExceptPrimitive for ListOptionals {}
-
-impl support::IntoDart for mirror_ListOfNestedRawStringMirrored {
-    fn into_dart(self) -> support::DartAbi {
-        vec![self.0.raw.into_into_dart().into_dart()].into_dart()
-    }
-}
-impl support::IntoDartExceptPrimitive for mirror_ListOfNestedRawStringMirrored {}
-impl rust2dart::IntoIntoDart<mirror_ListOfNestedRawStringMirrored>
-    for ListOfNestedRawStringMirrored
-{
-    fn into_into_dart(self) -> mirror_ListOfNestedRawStringMirrored {
-        mirror_ListOfNestedRawStringMirrored(self)
+impl rust2dart::IntoIntoDart<ListOptionals> for ListOptionals {
+    fn into_into_dart(self) -> Self {
+        self
     }
 }
 
@@ -3421,7 +3435,7 @@ impl support::IntoDart for Log2 {
     fn into_dart(self) -> support::DartAbi {
         vec![
             self.key.into_into_dart().into_dart(),
-            self.value.into_into_dart().into_dart(),
+            self.value.into_dart(),
         ]
         .into_dart()
     }
@@ -3451,7 +3465,7 @@ impl rust2dart::IntoIntoDart<Measure> for Measure {
 
 impl support::IntoDart for MessageId {
     fn into_dart(self) -> support::DartAbi {
-        vec![self.0.into_into_dart().into_dart()].into_dart()
+        vec![self.0.into_dart()].into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for MessageId {}
@@ -3482,10 +3496,10 @@ impl rust2dart::IntoIntoDart<MirrorStruct> for MirrorStruct {
 impl support::IntoDart for MoreThanJustOneRawStringStruct {
     fn into_dart(self) -> support::DartAbi {
         vec![
-            self.regular.into_into_dart().into_dart(),
-            self.r#type.into_into_dart().into_dart(),
+            self.regular.into_dart(),
+            self.r#type.into_dart(),
             self.r#async.into_into_dart().into_dart(),
-            self.another.into_into_dart().into_dart(),
+            self.another.into_dart(),
         ]
         .into_dart()
     }
@@ -3563,7 +3577,7 @@ impl rust2dart::IntoIntoDart<MySizeFreezed> for MySizeFreezed {
 
 impl support::IntoDart for MyStreamEntry {
     fn into_dart(self) -> support::DartAbi {
-        vec![self.hello.into_into_dart().into_dart()].into_dart()
+        vec![self.hello.into_dart()].into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for MyStreamEntry {}
@@ -3716,7 +3730,7 @@ impl rust2dart::IntoIntoDart<mirror_RawStringEnumMirrored> for RawStringEnumMirr
 
 impl support::IntoDart for RawStringItemStruct {
     fn into_dart(self) -> support::DartAbi {
-        vec![self.r#type.into_into_dart().into_dart()].into_dart()
+        vec![self.r#type.into_dart()].into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for RawStringItemStruct {}
@@ -3728,7 +3742,7 @@ impl rust2dart::IntoIntoDart<RawStringItemStruct> for RawStringItemStruct {
 
 impl support::IntoDart for mirror_RawStringMirrored {
     fn into_dart(self) -> support::DartAbi {
-        vec![self.0.r#value.into_into_dart().into_dart()].into_dart()
+        vec![self.0.r#value.into_dart()].into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for mirror_RawStringMirrored {}
@@ -3813,7 +3827,7 @@ impl rust2dart::IntoIntoDart<TestChrono> for TestChrono {
 
 impl support::IntoDart for TestId {
     fn into_dart(self) -> support::DartAbi {
-        vec![self.0.into_into_dart().into_dart()].into_dart()
+        vec![self.0.into_dart()].into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for TestId {}
@@ -3827,7 +3841,7 @@ impl support::IntoDart for TestModel {
     fn into_dart(self) -> support::DartAbi {
         vec![
             self.id.into_into_dart().into_dart(),
-            self.name.into_into_dart().into_dart(),
+            self.name.into_dart(),
             self.alias_enum.into_into_dart().into_dart(),
             self.alias_struct.into_into_dart().into_dart(),
         ]
@@ -3892,32 +3906,42 @@ impl support::IntoDart for Weekdays {
     }
 }
 impl support::IntoDartExceptPrimitive for Weekdays {}
+impl rust2dart::IntoIntoDart<Weekdays> for Weekdays {
+    fn into_into_dart(self) -> Self {
+        self
+    }
+}
 
 impl support::IntoDart for WithEnum {
     fn into_dart(self) -> support::DartAbi {
         vec![
-            self.weekdays.into_dart(),
-            self.kitchen_sink.into_dart(),
-            self.wrapper.into_dart(),
+            self.weekdays.into_into_dart().into_dart(),
+            self.kitchen_sink.into_into_dart().into_dart(),
+            self.wrapper.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
 }
 impl support::IntoDartExceptPrimitive for WithEnum {}
+impl rust2dart::IntoIntoDart<WithEnum> for WithEnum {
+    fn into_into_dart(self) -> Self {
+        self
+    }
+}
 
 impl support::IntoDart for ZeroCopyVecOfPrimitivePack {
     fn into_dart(self) -> support::DartAbi {
         vec![
-            self.int8list.into_into_dart().into_dart(),
-            self.uint8list.into_into_dart().into_dart(),
-            self.int16list.into_into_dart().into_dart(),
-            self.uint16list.into_into_dart().into_dart(),
-            self.uint32list.into_into_dart().into_dart(),
-            self.int32list.into_into_dart().into_dart(),
-            self.uint64list.into_into_dart().into_dart(),
-            self.int64list.into_into_dart().into_dart(),
-            self.float32list.into_into_dart().into_dart(),
-            self.float64list.into_into_dart().into_dart(),
+            self.int8list.into_dart(),
+            self.uint8list.into_dart(),
+            self.int16list.into_dart(),
+            self.uint16list.into_dart(),
+            self.uint32list.into_dart(),
+            self.int32list.into_dart(),
+            self.uint64list.into_dart(),
+            self.int64list.into_dart(),
+            self.float32list.into_dart(),
+            self.float64list.into_dart(),
         ]
         .into_dart()
     }

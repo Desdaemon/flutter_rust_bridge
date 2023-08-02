@@ -19,10 +19,9 @@ use topological_sort::TopologicalSort;
 use crate::ir::*;
 
 use crate::generator::rust::HANDLER_NAME;
-use crate::method_utils::{FunctionName, MethodInfo};
 use crate::parser::source_graph::Crate;
 use crate::parser::ty::TypeParser;
-use crate::utils::method::FunctionName;
+use crate::utils::method::{FunctionName, MethodInfo, MethodNamingUtil};
 
 use self::ty::convert_ident_str;
 
@@ -179,31 +178,30 @@ impl<'a> Parser<'a> {
     /// Attempts to parse the type from an argument of a function signature. There is a special
     /// case for top-level `StreamSink` types.
     pub fn try_parse_fn_arg_type(&mut self, ty: &syn::Type) -> Option<IrFuncArg> {
-        match ty {
-            syn::Type::Path(syn::TypePath { path, .. }) => {
-                let last_segment = path.segments.last().unwrap();
-                if last_segment.ident == STREAM_SINK_IDENT {
-                    match &last_segment.arguments {
-                        syn::PathArguments::AngleBracketed(
-                            syn::AngleBracketedGenericArguments { args, .. },
-                        ) if args.len() == 1 => {
-                            // Unwrap is safe here because args.len() == 1
-                            match args.last().unwrap() {
-                                syn::GenericArgument::Type(t) => {
-                                    Some(IrFuncArg::StreamSinkType(self.type_parser.parse_type(t)))
-                                }
-                                _ => None,
+        if let syn::Type::Path(syn::TypePath { path, .. }) = ty {
+            let last_segment = path.segments.last().unwrap();
+            return if last_segment.ident == STREAM_SINK_IDENT {
+                match &last_segment.arguments {
+                    syn::PathArguments::AngleBracketed(syn::AngleBracketedGenericArguments {
+                        args,
+                        ..
+                    }) if args.len() == 1 => {
+                        // Unwrap is safe here because args.len() == 1
+                        match args.last().unwrap() {
+                            syn::GenericArgument::Type(t) => {
+                                Some(IrFuncArg::StreamSinkType(self.type_parser.parse_type(t)))
                             }
+                            _ => None,
                         }
-                        _ => None,
                     }
-                } else {
-                    Some(IrFuncArg::Type(self.type_parser.parse_type(ty)))
+                    _ => None,
                 }
-            }
-            syn::Type::Array(_) => Some(IrFuncArg::Type(self.type_parser.parse_type(ty))),
-            _ => None,
+            } else {
+                Some(IrFuncArg::Type(self.type_parser.parse_type(ty)))
+            };
         }
+
+        Some(IrFuncArg::Type(self.type_parser.parse_type(ty)))
     }
 
     fn parse_function(&mut self, func: &ItemFn) -> ParserResult<IrFunc> {
@@ -216,6 +214,15 @@ impl<'a> Parser<'a> {
         let mut output = None;
         let mut mode: Option<IrFuncMode> = None;
         let mut fallible = true;
+
+        self.type_parser.impl_struct = MethodNamingUtil::is_method(&func_name).then(|| {
+            self.type_parser.parse_type(
+                &syn::parse_str(&MethodNamingUtil::static_method_return_struct_name(
+                    &func_name,
+                ))
+                .unwrap(),
+            )
+        });
 
         for (i, sig_input) in sig.inputs.iter().enumerate() {
             if let FnArg::Typed(ref pat_type) = sig_input {
@@ -287,6 +294,13 @@ impl<'a> Parser<'a> {
             mode = Some(if let Some(IrType::SyncReturn(_)) = output {
                 IrFuncMode::Sync
             } else {
+                if MethodNamingUtil::is_factory(&func_name) {
+                    panic!(
+                        "Factory function `{}::{}` must return a SyncReturn<_>",
+                        MethodNamingUtil::static_method_return_struct_name(&func_name),
+                        MethodNamingUtil::static_method_return_method_name(&func_name)
+                    )
+                }
                 IrFuncMode::Normal
             });
         }
@@ -351,23 +365,20 @@ fn item_method_to_function(
             }
         };
         let method_name = if is_static_method {
-            let self_type = {
-                let ItemImpl { self_ty, .. } = item_impl;
-                if let Type::Path(TypePath { path, .. }) = self_ty.as_ref() {
-                    if let Some(PathSegment { ident, .. }) = path.segments.first() {
-                        Some(ident.to_string())
-                    } else {
-                        None
-                    }
-                } else {
-                    None
-                }
+            let self_type = if let Type::Path(TypePath { path, .. }) = item_impl.self_ty.as_ref() {
+                path.segments
+                    .first()
+                    .map(|segment| segment.ident.to_string())
+            } else {
+                None
             };
+            let factory = is_factory(&item_method.attrs);
             Ident::new(
                 &FunctionName::new(
                     &item_method.sig.ident.to_string(),
                     MethodInfo::Static {
                         struct_name: self_type.unwrap(),
+                        factory,
                     },
                 )
                 .serialize(),
@@ -390,6 +401,7 @@ fn item_method_to_function(
         Ok(Some(ItemFn {
             attrs: item_method.attrs.clone(),
             vis: item_method.vis.clone(),
+            block: Box::new(item_method.block.clone()),
             sig: Signature {
                 constness: None,
                 asyncness: None,
@@ -399,6 +411,8 @@ fn item_method_to_function(
                 ident: method_name,
                 generics: item_method.sig.generics.clone(),
                 paren_token: item_method.sig.paren_token,
+                variadic: None,
+                output: item_method.sig.output.clone(),
                 inputs: item_method
                     .sig
                     .inputs
@@ -436,14 +450,15 @@ fn item_method_to_function(
                         }
                     })
                     .collect::<ParserResult<Punctuated<_, _>>>()?,
-                variadic: None,
-                output: item_method.sig.output.clone(),
             },
-            block: Box::new(item_method.block.clone()),
         }))
     } else {
         Ok(None)
     }
+}
+
+fn is_factory(attrs: &[Attribute]) -> bool {
+    FrbOption::parse_attrs(attrs).any(|opt| matches!(opt, FrbOption::Factory))
 }
 
 fn extract_comments(attrs: &[Attribute]) -> Vec<IrComment> {
@@ -468,6 +483,8 @@ pub mod frb_keyword {
     syn::custom_keyword!(non_final);
     syn::custom_keyword!(dart_metadata);
     syn::custom_keyword!(import);
+    syn::custom_keyword!(pos);
+    syn::custom_keyword!(factory);
 }
 
 #[derive(Clone, Debug)]
@@ -492,8 +509,7 @@ impl Parse for MirrorOption {
     fn parse(input: ParseStream<'_>) -> syn::Result<Self> {
         let content;
         parenthesized!(content in input);
-        let path: Path = content.parse()?;
-        Ok(Self(path))
+        Ok(Self(content.parse()?))
     }
 }
 
@@ -561,14 +577,38 @@ impl Parse for DartImports {
 enum FrbOption {
     Mirror(MirrorOption),
     NonFinal,
+    Positional,
+    Factory,
     Metadata(NamedOption<frb_keyword::dart_metadata, MetadataAnnotations>),
     Default(DefaultValues),
+}
+
+impl FrbOption {
+    fn parse_attrs<'a>(attrs: &'a [Attribute]) -> impl Iterator<Item = Self> + 'a {
+        attrs
+            .iter()
+            .filter(|attr| attr.path().is_ident("frb"))
+            .filter_map(|attr| {
+                attr.parse_args_with(Punctuated::<Self, Token![,]>::parse_terminated)
+                    .map_err(|err| {
+                        let meta = &attr.meta;
+                        let tokens = quote::quote!(#meta);
+                        if tokens.is_empty() {
+                            return;
+                        };
+                        log::warn!("Could not parse FRB attributes `{}`: {}", tokens, err)
+                    })
+                    .ok()
+            })
+            .flatten()
+    }
 }
 
 impl Parse for FrbOption {
     fn parse(input: ParseStream<'_>) -> syn::Result<Self> {
         let lookahead = input.lookahead1();
         if lookahead.peek(frb_keyword::mirror) {
+            input.parse::<frb_keyword::mirror>()?;
             input.parse().map(FrbOption::Mirror)
         } else if lookahead.peek(frb_keyword::non_final) {
             input
@@ -580,21 +620,26 @@ impl Parse for FrbOption {
             input.parse::<Token![default]>()?;
             input.parse::<Token![=]>()?;
             input.parse().map(FrbOption::Default)
+        } else if lookahead.peek(frb_keyword::pos) {
+            input
+                .parse::<frb_keyword::pos>()
+                .map(|_| FrbOption::Positional)
+        } else if lookahead.peek(frb_keyword::factory) {
+            input
+                .parse::<frb_keyword::factory>()
+                .map(|_| FrbOption::Factory)
         } else {
             Err(lookahead.error())
         }
     }
 }
 fn extract_metadata(attrs: &[Attribute]) -> Vec<IrDartAnnotation> {
-    attrs
-        .iter()
-        .filter(|attr| attr.path().is_ident("frb"))
-        .map(|attr| attr.parse_args::<FrbOption>())
+    FrbOption::parse_attrs(attrs)
         .flat_map(|frb_option| match frb_option {
-            Ok(FrbOption::Metadata(NamedOption {
+            FrbOption::Metadata(NamedOption {
                 name: _,
                 value: MetadataAnnotations(annotations),
-            })) => annotations,
+            }) => annotations,
             _ => vec![],
         })
         .collect()
@@ -647,12 +692,9 @@ mod _serde {
 
 impl DefaultValues {
     pub(crate) fn extract(attrs: &[Attribute]) -> Option<Self> {
-        let defaults = attrs
-            .iter()
-            .filter(|attr| attr.path().is_ident("frb"))
-            .map(|attr| attr.parse_args::<FrbOption>())
+        let defaults = FrbOption::parse_attrs(attrs)
             .filter_map(|attr| {
-                if let Ok(FrbOption::Default(default)) = attr {
+                if let FrbOption::Default(default) = attr {
                     Some(default)
                 } else {
                     None
