@@ -171,6 +171,7 @@ impl_into_into_dart!(f64);
 impl_into_into_dart!(bool);
 impl_into_into_dart!(());
 impl_into_into_dart!(usize);
+impl_into_into_dart!(char);
 impl_into_into_dart!(String);
 impl_into_into_dart!(DartOpaque);
 #[cfg(not(target_family = "wasm"))]
