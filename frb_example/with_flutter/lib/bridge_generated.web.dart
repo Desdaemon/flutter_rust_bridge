@@ -27,46 +27,6 @@ class FlutterRustBridgeExamplePlatform extends FlutterRustBridgeBase<FlutterRust
   }
 
   @protected
-  List<dynamic> api2wire_box_autoadd_boxed_point(BoxedPoint raw) {
-    return api2wire_boxed_point(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_point(Point raw) {
-    return api2wire_point(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_size(Size raw) {
-    return api2wire_size(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_sum_with(SumWith raw) {
-    return api2wire_sum_with(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_tree_node(TreeNode raw) {
-    return api2wire_tree_node(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_user_id(UserId raw) {
-    return api2wire_user_id(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_point(Point raw) {
-    return api2wire_point(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_boxed_point(BoxedPoint raw) {
-    return [api2wire_box_point(raw.point)];
-  }
-
-  @protected
   List<dynamic> api2wire_list_size(List<Size> raw) {
     return raw.map(api2wire_size).toList();
   }

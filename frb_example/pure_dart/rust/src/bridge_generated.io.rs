@@ -104,33 +104,25 @@ pub extern "C" fn wire_handle_zero_copy_vec_of_primitive_sync(n: i32) -> support
 }
 
 #[no_mangle]
-pub extern "C" fn wire_handle_struct(port_: i64, arg: *mut wire_MySize, boxed: *mut wire_MySize) {
+pub extern "C" fn wire_handle_struct(port_: i64, arg: wire_MySize, boxed: *mut wire_MySize) {
     wire_handle_struct_impl(port_, arg, boxed)
 }
 
 #[no_mangle]
 pub extern "C" fn wire_handle_struct_sync(
-    arg: *mut wire_MySize,
+    arg: wire_MySize,
     boxed: *mut wire_MySize,
 ) -> support::WireSyncReturn {
     wire_handle_struct_sync_impl(arg, boxed)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_handle_struct_sync_freezed(
-    arg: *mut wire_MySizeFreezed,
-    boxed: *mut wire_MySizeFreezed,
-) -> support::WireSyncReturn {
-    wire_handle_struct_sync_freezed_impl(arg, boxed)
-}
-
-#[no_mangle]
-pub extern "C" fn wire_handle_newtype(port_: i64, arg: *mut wire_NewTypeInt) {
+pub extern "C" fn wire_handle_newtype(port_: i64, arg: wire_NewTypeInt) {
     wire_handle_newtype_impl(port_, arg)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_handle_newtype_sync(arg: *mut wire_NewTypeInt) -> support::WireSyncReturn {
+pub extern "C" fn wire_handle_newtype_sync(arg: wire_NewTypeInt) -> support::WireSyncReturn {
     wire_handle_newtype_sync_impl(arg)
 }
 
@@ -159,19 +151,17 @@ pub extern "C" fn wire_handle_string_list_sync(
 }
 
 #[no_mangle]
-pub extern "C" fn wire_handle_complex_struct(port_: i64, s: *mut wire_MyTreeNode) {
+pub extern "C" fn wire_handle_complex_struct(port_: i64, s: wire_MyTreeNode) {
     wire_handle_complex_struct_impl(port_, s)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_handle_complex_struct_sync(
-    s: *mut wire_MyTreeNode,
-) -> support::WireSyncReturn {
+pub extern "C" fn wire_handle_complex_struct_sync(s: wire_MyTreeNode) -> support::WireSyncReturn {
     wire_handle_complex_struct_sync_impl(s)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_handle_nested_struct(port_: i64, s: *mut wire_MyNestedStruct) {
+pub extern "C" fn wire_handle_nested_struct(port_: i64, s: wire_MyNestedStruct) {
     wire_handle_nested_struct_impl(port_, s)
 }
 
@@ -237,7 +227,7 @@ pub extern "C" fn wire_handle_option_box_arguments(
 }
 
 #[no_mangle]
-pub extern "C" fn wire_print_note(port_: i64, note: *mut wire_Note) {
+pub extern "C" fn wire_print_note(port_: i64, note: wire_Note) {
     wire_print_note_impl(port_, note)
 }
 
@@ -252,17 +242,17 @@ pub extern "C" fn wire_handle_enum_parameter(port_: i64, weekday: i32) {
 }
 
 #[no_mangle]
-pub extern "C" fn wire_handle_customized_struct(port_: i64, val: *mut wire_Customized) {
+pub extern "C" fn wire_handle_customized_struct(port_: i64, val: wire_Customized) {
     wire_handle_customized_struct_impl(port_, val)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_handle_enum_struct(port_: i64, val: *mut wire_KitchenSink) {
+pub extern "C" fn wire_handle_enum_struct(port_: i64, val: wire_KitchenSink) {
     wire_handle_enum_struct_impl(port_, val)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_use_imported_struct(port_: i64, my_struct: *mut wire_MyStruct) {
+pub extern "C" fn wire_use_imported_struct(port_: i64, my_struct: wire_MyStruct) {
     wire_use_imported_struct_impl(port_, my_struct)
 }
 
@@ -282,7 +272,7 @@ pub extern "C" fn wire_get_fallible_app_settings(port_: i64) {
 }
 
 #[no_mangle]
-pub extern "C" fn wire_is_app_embedded(port_: i64, app_settings: *mut wire_ApplicationSettings) {
+pub extern "C" fn wire_is_app_embedded(port_: i64, app_settings: wire_ApplicationSettings) {
     wire_is_app_embedded_impl(port_, app_settings)
 }
 
@@ -322,12 +312,12 @@ pub extern "C" fn wire_repeat_sequence(port_: i64, seq: i32, times: usize) {
 }
 
 #[no_mangle]
-pub extern "C" fn wire_first_number(port_: i64, nums: *mut wire_Numbers) {
+pub extern "C" fn wire_first_number(port_: i64, nums: wire_Numbers) {
     wire_first_number_impl(port_, nums)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_first_sequence(port_: i64, seqs: *mut wire_Sequences) {
+pub extern "C" fn wire_first_sequence(port_: i64, seqs: wire_Sequences) {
     wire_first_sequence_impl(port_, seqs)
 }
 
@@ -347,7 +337,7 @@ pub extern "C" fn wire_get_usize(port_: i64, u: usize) {
 }
 
 #[no_mangle]
-pub extern "C" fn wire_next_user_id(port_: i64, user_id: *mut wire_UserId) {
+pub extern "C" fn wire_next_user_id(port_: i64, user_id: wire_UserId) {
     wire_next_user_id_impl(port_, user_id)
 }
 
@@ -396,7 +386,7 @@ pub extern "C" fn wire_get_sum_array(port_: i64, a: u32, b: u32, c: u32) {
 }
 
 #[no_mangle]
-pub extern "C" fn wire_multiply_by_ten(port_: i64, measure: *mut wire_Measure) {
+pub extern "C" fn wire_multiply_by_ten(port_: i64, measure: wire_Measure) {
     wire_multiply_by_ten_impl(port_, measure)
 }
 
@@ -465,7 +455,7 @@ pub extern "C" fn wire_test_precise_chrono(port_: i64) {
 }
 
 #[no_mangle]
-pub extern "C" fn wire_how_long_does_it_take(port_: i64, mine: *mut wire_FeatureChrono) {
+pub extern "C" fn wire_how_long_does_it_take(port_: i64, mine: wire_FeatureChrono) {
     wire_how_long_does_it_take_impl(port_, mine)
 }
 
@@ -480,7 +470,7 @@ pub extern "C" fn wire_handle_uuids(port_: i64, ids: *mut wire_uint_8_list) {
 }
 
 #[no_mangle]
-pub extern "C" fn wire_handle_nested_uuids(port_: i64, ids: *mut wire_FeatureUuid) {
+pub extern "C" fn wire_handle_nested_uuids(port_: i64, ids: wire_FeatureUuid) {
     wire_handle_nested_uuids_impl(port_, ids)
 }
 
@@ -490,7 +480,7 @@ pub extern "C" fn wire_new_msgid(port_: i64, id: *mut wire_uint_8_list) {
 }
 
 #[no_mangle]
-pub extern "C" fn wire_use_msgid(port_: i64, id: *mut wire_MessageId) {
+pub extern "C" fn wire_use_msgid(port_: i64, id: wire_MessageId) {
     wire_use_msgid_impl(port_, id)
 }
 
@@ -510,12 +500,12 @@ pub extern "C" fn wire_return_boxed_feed_id(port_: i64, id: *mut wire_uint_8_lis
 }
 
 #[no_mangle]
-pub extern "C" fn wire_return_boxed_raw_feed_id(port_: i64, id: *mut wire_FeedId) {
+pub extern "C" fn wire_return_boxed_raw_feed_id(port_: i64, id: wire_FeedId) {
     wire_return_boxed_raw_feed_id_impl(port_, id)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_test_id(port_: i64, id: *mut wire_TestId) {
+pub extern "C" fn wire_test_id(port_: i64, id: wire_TestId) {
     wire_test_id_impl(port_, id)
 }
 
@@ -605,7 +595,7 @@ pub extern "C" fn wire_create_array_opaque_enum(port_: i64) {
 }
 
 #[no_mangle]
-pub extern "C" fn wire_run_enum_opaque(port_: i64, opaque: *mut wire_EnumOpaque) {
+pub extern "C" fn wire_run_enum_opaque(port_: i64, opaque: wire_EnumOpaque) {
     wire_run_enum_opaque_impl(port_, opaque)
 }
 
@@ -707,7 +697,7 @@ pub extern "C" fn wire_sync_void() -> support::WireSyncReturn {
 }
 
 #[no_mangle]
-pub extern "C" fn wire_run_nested_opaque(port_: i64, opaque: *mut wire_OpaqueNested) {
+pub extern "C" fn wire_run_nested_opaque(port_: i64, opaque: wire_OpaqueNested) {
     wire_run_nested_opaque_impl(port_, opaque)
 }
 
@@ -721,7 +711,7 @@ pub extern "C" fn wire_create_nested_dart_opaque(
 }
 
 #[no_mangle]
-pub extern "C" fn wire_get_nested_dart_opaque(port_: i64, opaque: *mut wire_DartOpaqueNested) {
+pub extern "C" fn wire_get_nested_dart_opaque(port_: i64, opaque: wire_DartOpaqueNested) {
     wire_get_nested_dart_opaque_impl(port_, opaque)
 }
 
@@ -731,7 +721,7 @@ pub extern "C" fn wire_create_enum_dart_opaque(port_: i64, opaque: wire_DartOpaq
 }
 
 #[no_mangle]
-pub extern "C" fn wire_get_enum_dart_opaque(port_: i64, opaque: *mut wire_EnumDartOpaque) {
+pub extern "C" fn wire_get_enum_dart_opaque(port_: i64, opaque: wire_EnumDartOpaque) {
     wire_get_enum_dart_opaque_impl(port_, opaque)
 }
 
@@ -783,7 +773,7 @@ pub extern "C" fn wire_handle_type_alias_model(port_: i64, input: u64) {
 }
 
 #[no_mangle]
-pub extern "C" fn wire_empty_struct(port_: i64, empty: *mut wire_Empty) {
+pub extern "C" fn wire_empty_struct(port_: i64, empty: wire_Empty) {
     wire_empty_struct_impl(port_, empty)
 }
 
@@ -844,13 +834,13 @@ pub extern "C" fn wire_handle_many_optionals(
 }
 
 #[no_mangle]
-pub extern "C" fn wire_test_raw_string_item_struct(port_: i64) {
-    wire_test_raw_string_item_struct_impl(port_)
+pub extern "C" fn wire_handle_with_enum(port_: i64, with_enum: wire_WithEnum) {
+    wire_handle_with_enum_impl(port_, with_enum)
 }
 
 #[no_mangle]
-pub extern "C" fn wire_test_more_than_just_one_raw_string_struct(port_: i64) {
-    wire_test_more_than_just_one_raw_string_struct_impl(port_)
+pub extern "C" fn wire_handle_opt_enum(port_: i64, weekday: *mut i32) {
+    wire_handle_opt_enum_impl(port_, weekday)
 }
 
 #[no_mangle]
@@ -926,7 +916,7 @@ pub extern "C" fn wire_new__static_method__ConcatenateWith(port_: i64, a: *mut w
 #[no_mangle]
 pub extern "C" fn wire_concatenate__method__ConcatenateWith(
     port_: i64,
-    that: *mut wire_ConcatenateWith,
+    that: wire_ConcatenateWith,
     b: *mut wire_uint_8_list,
 ) {
     wire_concatenate__method__ConcatenateWith_impl(port_, that, b)
@@ -944,7 +934,7 @@ pub extern "C" fn wire_concatenate_static__static_method__ConcatenateWith(
 #[no_mangle]
 pub extern "C" fn wire_handle_some_stream_sink__method__ConcatenateWith(
     port_: i64,
-    that: *mut wire_ConcatenateWith,
+    that: wire_ConcatenateWith,
     key: u32,
     max: u32,
 ) {
@@ -954,7 +944,7 @@ pub extern "C" fn wire_handle_some_stream_sink__method__ConcatenateWith(
 #[no_mangle]
 pub extern "C" fn wire_handle_some_stream_sink_at_1__method__ConcatenateWith(
     port_: i64,
-    that: *mut wire_ConcatenateWith,
+    that: wire_ConcatenateWith,
 ) {
     wire_handle_some_stream_sink_at_1__method__ConcatenateWith_impl(port_, that)
 }
@@ -978,7 +968,7 @@ pub extern "C" fn wire_handle_some_static_stream_sink_single_arg__static_method_
 #[no_mangle]
 pub extern "C" fn wire_handle_self_by_value__method__take_self__IntWrapper(
     port_: i64,
-    that: *mut wire_IntWrapper,
+    that: wire_IntWrapper,
 ) {
     wire_handle_self_by_value__method__take_self__IntWrapper_impl(port_, that)
 }
@@ -1035,6 +1025,31 @@ pub extern "C" fn new_StringList_0(len: i32) -> *mut wire_StringList {
 }
 
 #[no_mangle]
+pub extern "C" fn new_application_env_0() -> wire_ApplicationEnv {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_application_env_var_0() -> wire_ApplicationEnvVar {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_application_settings_0() -> wire_ApplicationSettings {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_attribute_0() -> wire_Attribute {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_blob_0() -> wire_Blob {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
 pub extern "C" fn new_box_application_env_0() -> *mut wire_ApplicationEnv {
     support::new_leak_box_ptr(wire_ApplicationEnv::new_with_null_ptr())
 }
@@ -1055,28 +1070,8 @@ pub extern "C" fn new_box_autoadd_HideData_0() -> *mut wire_HideData {
 }
 
 #[no_mangle]
-pub extern "C" fn new_box_autoadd___record__String_i32_0() -> *mut wire___record__String_i32 {
-    support::new_leak_box_ptr(wire___record__String_i32::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_a_0() -> *mut wire_A {
-    support::new_leak_box_ptr(wire_A::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_abc_0() -> *mut wire_Abc {
-    support::new_leak_box_ptr(wire_Abc::new_with_null_ptr())
-}
-
-#[no_mangle]
 pub extern "C" fn new_box_autoadd_application_env_0() -> *mut wire_ApplicationEnv {
     support::new_leak_box_ptr(wire_ApplicationEnv::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_application_settings_0() -> *mut wire_ApplicationSettings {
-    support::new_leak_box_ptr(wire_ApplicationSettings::new_with_null_ptr())
 }
 
 #[no_mangle]
@@ -1085,53 +1080,8 @@ pub extern "C" fn new_box_autoadd_attribute_0() -> *mut wire_Attribute {
 }
 
 #[no_mangle]
-pub extern "C" fn new_box_autoadd_b_0() -> *mut wire_B {
-    support::new_leak_box_ptr(wire_B::new_with_null_ptr())
-}
-
-#[no_mangle]
 pub extern "C" fn new_box_autoadd_bool_0(value: bool) -> *mut bool {
     support::new_leak_box_ptr(value)
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_c_0() -> *mut wire_C {
-    support::new_leak_box_ptr(wire_C::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_concatenate_with_0() -> *mut wire_ConcatenateWith {
-    support::new_leak_box_ptr(wire_ConcatenateWith::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_customized_0() -> *mut wire_Customized {
-    support::new_leak_box_ptr(wire_Customized::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_dart_opaque_nested_0() -> *mut wire_DartOpaqueNested {
-    support::new_leak_box_ptr(wire_DartOpaqueNested::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_empty_0() -> *mut wire_Empty {
-    support::new_leak_box_ptr(wire_Empty::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_enum_dart_opaque_0() -> *mut wire_EnumDartOpaque {
-    support::new_leak_box_ptr(wire_EnumDartOpaque::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_enum_opaque_0() -> *mut wire_EnumOpaque {
-    support::new_leak_box_ptr(wire_EnumOpaque::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_event_0() -> *mut wire_Event {
-    support::new_leak_box_ptr(wire_Event::new_with_null_ptr())
 }
 
 #[no_mangle]
@@ -1145,21 +1095,6 @@ pub extern "C" fn new_box_autoadd_f64_0(value: f64) -> *mut f64 {
 }
 
 #[no_mangle]
-pub extern "C" fn new_box_autoadd_feature_chrono_0() -> *mut wire_FeatureChrono {
-    support::new_leak_box_ptr(wire_FeatureChrono::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_feature_uuid_0() -> *mut wire_FeatureUuid {
-    support::new_leak_box_ptr(wire_FeatureUuid::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_feed_id_0() -> *mut wire_FeedId {
-    support::new_leak_box_ptr(wire_FeedId::new_with_null_ptr())
-}
-
-#[no_mangle]
 pub extern "C" fn new_box_autoadd_i32_0(value: i32) -> *mut i32 {
     support::new_leak_box_ptr(value)
 }
@@ -1170,88 +1105,8 @@ pub extern "C" fn new_box_autoadd_i64_0(value: i64) -> *mut i64 {
 }
 
 #[no_mangle]
-pub extern "C" fn new_box_autoadd_int_wrapper_0() -> *mut wire_IntWrapper {
-    support::new_leak_box_ptr(wire_IntWrapper::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_kitchen_sink_0() -> *mut wire_KitchenSink {
-    support::new_leak_box_ptr(wire_KitchenSink::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_measure_0() -> *mut wire_Measure {
-    support::new_leak_box_ptr(wire_Measure::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_message_id_0() -> *mut wire_MessageId {
-    support::new_leak_box_ptr(wire_MessageId::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_my_nested_struct_0() -> *mut wire_MyNestedStruct {
-    support::new_leak_box_ptr(wire_MyNestedStruct::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_my_size_0() -> *mut wire_MySize {
-    support::new_leak_box_ptr(wire_MySize::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_my_size_freezed_0() -> *mut wire_MySizeFreezed {
-    support::new_leak_box_ptr(wire_MySizeFreezed::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_my_struct_0() -> *mut wire_MyStruct {
-    support::new_leak_box_ptr(wire_MyStruct::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_my_tree_node_0() -> *mut wire_MyTreeNode {
-    support::new_leak_box_ptr(wire_MyTreeNode::new_with_null_ptr())
-}
-
-#[no_mangle]
 pub extern "C" fn new_box_autoadd_new_type_int_0() -> *mut wire_NewTypeInt {
     support::new_leak_box_ptr(wire_NewTypeInt::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_note_0() -> *mut wire_Note {
-    support::new_leak_box_ptr(wire_Note::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_numbers_0() -> *mut wire_Numbers {
-    support::new_leak_box_ptr(wire_Numbers::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_opaque_nested_0() -> *mut wire_OpaqueNested {
-    support::new_leak_box_ptr(wire_OpaqueNested::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_sequences_0() -> *mut wire_Sequences {
-    support::new_leak_box_ptr(wire_Sequences::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_struct_with_enum_0() -> *mut wire_StructWithEnum {
-    support::new_leak_box_ptr(wire_StructWithEnum::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_sum_with_0() -> *mut wire_SumWith {
-    support::new_leak_box_ptr(wire_SumWith::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_test_id_0() -> *mut wire_TestId {
-    support::new_leak_box_ptr(wire_TestId::new_with_null_ptr())
 }
 
 #[no_mangle]
@@ -1260,12 +1115,12 @@ pub extern "C" fn new_box_autoadd_u8_0(value: u8) -> *mut u8 {
 }
 
 #[no_mangle]
-pub extern "C" fn new_box_autoadd_user_id_0() -> *mut wire_UserId {
-    support::new_leak_box_ptr(wire_UserId::new_with_null_ptr())
+pub extern "C" fn new_box_autoadd_usize_0(value: usize) -> *mut usize {
+    support::new_leak_box_ptr(value)
 }
 
 #[no_mangle]
-pub extern "C" fn new_box_autoadd_usize_0(value: usize) -> *mut usize {
+pub extern "C" fn new_box_autoadd_weekdays_0(value: i32) -> *mut i32 {
     support::new_leak_box_ptr(value)
 }
 
@@ -1320,11 +1175,6 @@ pub extern "C" fn new_box_my_size_0() -> *mut wire_MySize {
 }
 
 #[no_mangle]
-pub extern "C" fn new_box_my_size_freezed_0() -> *mut wire_MySizeFreezed {
-    support::new_leak_box_ptr(wire_MySizeFreezed::new_with_null_ptr())
-}
-
-#[no_mangle]
 pub extern "C" fn new_box_speed_0() -> *mut wire_Speed {
     support::new_leak_box_ptr(wire_Speed::new_with_null_ptr())
 }
@@ -1337,6 +1187,61 @@ pub extern "C" fn new_box_u8_0(value: u8) -> *mut u8 {
 #[no_mangle]
 pub extern "C" fn new_box_weekdays_0(value: i32) -> *mut i32 {
     support::new_leak_box_ptr(value)
+}
+
+#[no_mangle]
+pub extern "C" fn new_concatenate_with_0() -> wire_ConcatenateWith {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_customized_0() -> wire_Customized {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_dart_opaque_nested_0() -> wire_DartOpaqueNested {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_distance_0() -> wire_Distance {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_empty_0() -> wire_Empty {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_enum_dart_opaque_0() -> wire_EnumDartOpaque {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_enum_opaque_0() -> wire_EnumOpaque {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_exotic_optionals_0() -> wire_ExoticOptionals {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_feature_chrono_0() -> wire_FeatureChrono {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_feature_uuid_0() -> wire_FeatureUuid {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_feed_id_0() -> wire_FeedId {
+    NewWithNullPtr::new_with_null_ptr()
 }
 
 #[no_mangle]
@@ -1382,6 +1287,16 @@ pub extern "C" fn new_int_8_list_0(len: i32) -> *mut wire_int_8_list {
         len,
     };
     support::new_leak_box_ptr(ans)
+}
+
+#[no_mangle]
+pub extern "C" fn new_int_wrapper_0() -> wire_IntWrapper {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_kitchen_sink_0() -> wire_KitchenSink {
+    NewWithNullPtr::new_with_null_ptr()
 }
 
 #[no_mangle]
@@ -1466,12 +1381,73 @@ pub extern "C" fn new_list_test_id_0(len: i32) -> *mut wire_list_test_id {
 }
 
 #[no_mangle]
-pub extern "C" fn new_list_weekdays_0(len: i32) -> *mut wire_list_weekdays {
-    let wrap = wire_list_weekdays {
-        ptr: support::new_leak_vec_ptr(Default::default(), len),
-        len,
-    };
-    support::new_leak_box_ptr(wrap)
+pub extern "C" fn new_measure_0() -> wire_Measure {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_message_id_0() -> wire_MessageId {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_my_nested_struct_0() -> wire_MyNestedStruct {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_my_size_0() -> wire_MySize {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_my_struct_0() -> wire_MyStruct {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_my_tree_node_0() -> wire_MyTreeNode {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_new_type_int_0() -> wire_NewTypeInt {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_note_0() -> wire_Note {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_numbers_0() -> wire_Numbers {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_opaque_nested_0() -> wire_OpaqueNested {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_sequences_0() -> wire_Sequences {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_speed_0() -> wire_Speed {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_sum_with_0() -> wire_SumWith {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_test_id_0() -> wire_TestId {
+    NewWithNullPtr::new_with_null_ptr()
 }
 
 #[no_mangle]
@@ -1481,6 +1457,16 @@ pub extern "C" fn new_uint_8_list_0(len: i32) -> *mut wire_uint_8_list {
         len,
     };
     support::new_leak_box_ptr(ans)
+}
+
+#[no_mangle]
+pub extern "C" fn new_user_id_0() -> wire_UserId {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_with_enum_0() -> wire_WithEnum {
+    NewWithNullPtr::new_with_null_ptr()
 }
 
 // Section: related functions
@@ -1863,34 +1849,10 @@ impl Wire2Api<RustOpaque<HideData>> for *mut wire_HideData {
         Wire2Api::<RustOpaque<HideData>>::wire2api(*wrap).into()
     }
 }
-impl Wire2Api<(String, i32)> for *mut wire___record__String_i32 {
-    fn wire2api(self) -> (String, i32) {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<(String, i32)>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<A> for *mut wire_A {
-    fn wire2api(self) -> A {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<A>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<Abc> for *mut wire_Abc {
-    fn wire2api(self) -> Abc {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<Abc>::wire2api(*wrap).into()
-    }
-}
 impl Wire2Api<ApplicationEnv> for *mut wire_ApplicationEnv {
     fn wire2api(self) -> ApplicationEnv {
         let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<ApplicationEnv>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<ApplicationSettings> for *mut wire_ApplicationSettings {
-    fn wire2api(self) -> ApplicationSettings {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<ApplicationSettings>::wire2api(*wrap).into()
+        Wire2Api::<A>::wire2api(*wrap).into()
     }
 }
 impl Wire2Api<Attribute> for *mut wire_Attribute {
@@ -1910,54 +1872,6 @@ impl Wire2Api<bool> for *mut bool {
         unsafe { *support::box_from_leak_ptr(self) }
     }
 }
-impl Wire2Api<C> for *mut wire_C {
-    fn wire2api(self) -> C {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<C>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<ConcatenateWith> for *mut wire_ConcatenateWith {
-    fn wire2api(self) -> ConcatenateWith {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<ConcatenateWith>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<Customized> for *mut wire_Customized {
-    fn wire2api(self) -> Customized {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<Customized>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<DartOpaqueNested> for *mut wire_DartOpaqueNested {
-    fn wire2api(self) -> DartOpaqueNested {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<DartOpaqueNested>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<Empty> for *mut wire_Empty {
-    fn wire2api(self) -> Empty {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<Empty>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<EnumDartOpaque> for *mut wire_EnumDartOpaque {
-    fn wire2api(self) -> EnumDartOpaque {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<EnumDartOpaque>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<EnumOpaque> for *mut wire_EnumOpaque {
-    fn wire2api(self) -> EnumOpaque {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<EnumOpaque>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<Event> for *mut wire_Event {
-    fn wire2api(self) -> Event {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<Event>::wire2api(*wrap).into()
-    }
-}
 impl Wire2Api<ExoticOptionals> for *mut wire_ExoticOptionals {
     fn wire2api(self) -> ExoticOptionals {
         let wrap = unsafe { support::box_from_leak_ptr(self) };
@@ -1967,24 +1881,6 @@ impl Wire2Api<ExoticOptionals> for *mut wire_ExoticOptionals {
 impl Wire2Api<f64> for *mut f64 {
     fn wire2api(self) -> f64 {
         unsafe { *support::box_from_leak_ptr(self) }
-    }
-}
-impl Wire2Api<FeatureChrono> for *mut wire_FeatureChrono {
-    fn wire2api(self) -> FeatureChrono {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<FeatureChrono>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<FeatureUuid> for *mut wire_FeatureUuid {
-    fn wire2api(self) -> FeatureUuid {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<FeatureUuid>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<FeedId> for *mut wire_FeedId {
-    fn wire2api(self) -> FeedId {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<FeedId>::wire2api(*wrap).into()
     }
 }
 impl Wire2Api<i32> for *mut i32 {
@@ -1997,106 +1893,10 @@ impl Wire2Api<i64> for *mut i64 {
         unsafe { *support::box_from_leak_ptr(self) }
     }
 }
-impl Wire2Api<IntWrapper> for *mut wire_IntWrapper {
-    fn wire2api(self) -> IntWrapper {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<IntWrapper>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<KitchenSink> for *mut wire_KitchenSink {
-    fn wire2api(self) -> KitchenSink {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<KitchenSink>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<Measure> for *mut wire_Measure {
-    fn wire2api(self) -> Measure {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<Measure>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<MessageId> for *mut wire_MessageId {
-    fn wire2api(self) -> MessageId {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<MessageId>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<MyNestedStruct> for *mut wire_MyNestedStruct {
-    fn wire2api(self) -> MyNestedStruct {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<MyNestedStruct>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<MySize> for *mut wire_MySize {
-    fn wire2api(self) -> MySize {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<MySize>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<MySizeFreezed> for *mut wire_MySizeFreezed {
-    fn wire2api(self) -> MySizeFreezed {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<MySizeFreezed>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<MyStruct> for *mut wire_MyStruct {
-    fn wire2api(self) -> MyStruct {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<MyStruct>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<MyTreeNode> for *mut wire_MyTreeNode {
-    fn wire2api(self) -> MyTreeNode {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<MyTreeNode>::wire2api(*wrap).into()
-    }
-}
 impl Wire2Api<NewTypeInt> for *mut wire_NewTypeInt {
     fn wire2api(self) -> NewTypeInt {
         let wrap = unsafe { support::box_from_leak_ptr(self) };
         Wire2Api::<NewTypeInt>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<Note> for *mut wire_Note {
-    fn wire2api(self) -> Note {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<Note>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<Numbers> for *mut wire_Numbers {
-    fn wire2api(self) -> Numbers {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<Numbers>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<OpaqueNested> for *mut wire_OpaqueNested {
-    fn wire2api(self) -> OpaqueNested {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<OpaqueNested>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<Sequences> for *mut wire_Sequences {
-    fn wire2api(self) -> Sequences {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<Sequences>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<StructWithEnum> for *mut wire_StructWithEnum {
-    fn wire2api(self) -> StructWithEnum {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<StructWithEnum>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<SumWith> for *mut wire_SumWith {
-    fn wire2api(self) -> SumWith {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<SumWith>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<TestId> for *mut wire_TestId {
-    fn wire2api(self) -> TestId {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<TestId>::wire2api(*wrap).into()
     }
 }
 impl Wire2Api<u8> for *mut u8 {
@@ -2104,15 +1904,15 @@ impl Wire2Api<u8> for *mut u8 {
         unsafe { *support::box_from_leak_ptr(self) }
     }
 }
-impl Wire2Api<UserId> for *mut wire_UserId {
-    fn wire2api(self) -> UserId {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<UserId>::wire2api(*wrap).into()
-    }
-}
 impl Wire2Api<usize> for *mut usize {
     fn wire2api(self) -> usize {
         unsafe { *support::box_from_leak_ptr(self) }
+    }
+}
+impl Wire2Api<Weekdays> for *mut i32 {
+    fn wire2api(self) -> Weekdays {
+        let wrap = unsafe { support::box_from_leak_ptr(self) };
+        Wire2Api::<Weekdays>::wire2api(*wrap).into()
     }
 }
 impl Wire2Api<Box<Blob>> for *mut wire_Blob {
@@ -2703,6 +2503,15 @@ impl Wire2Api<UserId> for wire_UserId {
     }
 }
 
+impl Wire2Api<WithEnum> for wire_WithEnum {
+    fn wire2api(self) -> WithEnum {
+        WithEnum {
+            weekdays: self.weekdays.wire2api(),
+            kitchen_sink: self.kitchen_sink.wire2api(),
+            wrapper: self.wrapper.wire2api(),
+        }
+    }
+}
 // Section: wire structs
 
 #[repr(C)]
@@ -2844,13 +2653,8 @@ pub struct wire_DartOpaqueNested {
 
 #[repr(C)]
 #[derive(Clone)]
-pub struct wire_Empty {}
-
-#[repr(C)]
-#[derive(Clone)]
-pub struct wire_Event {
-    address: *mut wire_uint_8_list,
-    payload: *mut wire_uint_8_list,
+pub struct wire_Empty {
+    pad_: u8,
 }
 
 #[repr(C)]
@@ -3113,41 +2917,10 @@ pub struct wire_UserId {
 
 #[repr(C)]
 #[derive(Clone)]
-pub struct wire_Abc {
-    tag: i32,
-    kind: *mut AbcKind,
-}
-
-#[repr(C)]
-pub union AbcKind {
-    A: *mut wire_Abc_A,
-    B: *mut wire_Abc_B,
-    C: *mut wire_Abc_C,
-    JustInt: *mut wire_Abc_JustInt,
-}
-
-#[repr(C)]
-#[derive(Clone)]
-pub struct wire_Abc_A {
-    field0: *mut wire_A,
-}
-
-#[repr(C)]
-#[derive(Clone)]
-pub struct wire_Abc_B {
-    field0: *mut wire_B,
-}
-
-#[repr(C)]
-#[derive(Clone)]
-pub struct wire_Abc_C {
-    field0: *mut wire_C,
-}
-
-#[repr(C)]
-#[derive(Clone)]
-pub struct wire_Abc_JustInt {
-    field0: i32,
+pub struct wire_WithEnum {
+    weekdays: i32,
+    kitchen_sink: wire_KitchenSink,
+    wrapper: wire_NewTypeInt,
 }
 
 #[repr(C)]
@@ -3670,7 +3443,7 @@ pub extern "C" fn inflate_Distance_Map() -> *mut DistanceKind {
 
 impl NewWithNullPtr for wire_Empty {
     fn new_with_null_ptr() -> Self {
-        Self {}
+        Self { pad_: 0 }
     }
 }
 
@@ -3861,7 +3634,15 @@ impl Default for wire_FeedId {
     }
 }
 
-impl Default for wire_KitchenSink {
+impl NewWithNullPtr for wire_IntWrapper {
+    fn new_with_null_ptr() -> Self {
+        Self {
+            field0: Default::default(),
+        }
+    }
+}
+
+impl Default for wire_IntWrapper {
     fn default() -> Self {
         Self::new_with_null_ptr()
     }
@@ -3975,7 +3756,7 @@ impl Default for wire_MessageId {
 impl NewWithNullPtr for wire_MyNestedStruct {
     fn new_with_null_ptr() -> Self {
         Self {
-            tree_node: Default::default(),
+            tree_node: wire_MyTreeNode::new_with_null_ptr(),
             weekday: Default::default(),
         }
     }
@@ -4196,6 +3977,22 @@ impl NewWithNullPtr for wire_UserId {
 }
 
 impl Default for wire_UserId {
+    fn default() -> Self {
+        Self::new_with_null_ptr()
+    }
+}
+
+impl NewWithNullPtr for wire_WithEnum {
+    fn new_with_null_ptr() -> Self {
+        Self {
+            weekdays: Default::default(),
+            kitchen_sink: wire_KitchenSink::new_with_null_ptr(),
+            wrapper: wire_NewTypeInt::new_with_null_ptr(),
+        }
+    }
+}
+
+impl Default for wire_WithEnum {
     fn default() -> Self {
         Self::new_with_null_ptr()
     }

@@ -1,4 +1,5 @@
 use crate::generator::dart::ty::*;
+use crate::ir::IrType::*;
 use crate::ir::*;
 use crate::target::Acc;
 use crate::type_dart_generator_struct;
@@ -83,7 +84,7 @@ impl TypeDartGeneratorTrait for TypeBoxedGenerator<'_> {
             }
             #[cfg(feature = "chrono")]
             Delegate(IrTypeDelegate::Time(time)) => gen_wire2api_chrono(time),
-            _ => gen_wire2api_simple_type_cast(&self.ir.dart_api_type()),
+            _ => super::gen_wire2api_simple_type_cast(&self.ir.dart_api_type()),
         }
     }
 }

@@ -1,5 +1,6 @@
 use itertools::Itertools;
 
+use crate::fmt;
 use crate::generator::dart::dart_comments;
 use crate::generator::dart::ty::*;
 use crate::ir::*;
@@ -10,41 +11,18 @@ type_dart_generator_struct!(TypeEnumRefGenerator, IrTypeEnumRef);
 
 impl TypeDartGeneratorTrait for TypeEnumRefGenerator<'_> {
     fn api2wire_body(&self) -> Acc<Option<String>> {
-        let variants = (self.ir.get(self.context.ir_file).variants())
-            .iter()
-            .enumerate()
-            .map(|(idx, variant)| {
-                let fields = match &variant.kind {
-                    IrVariantKind::Value => vec![],
-                    IrVariantKind::Struct(st) => (st.fields)
-                        .iter()
-                        .map(|field| {
-                            format!(
-                                ",api2wire_{}(raw.{})",
-                                field.ty.safe_ident(),
-                                field.name.dart_style()
-                            )
-                        })
-                        .collect(),
-                }
-                .join("");
-                format!(
-                    "if (raw is {variant}) {{
-                        return [{} {}];
-                    }}",
-                    idx,
-                    fields,
-                    variant = variant.wrapper_name.rust_style(),
-                )
-            })
-            .join("\n");
-
         Acc {
-            wasm: Some(format!(
-                "{variants}
-
-                throw Exception('unreachable');"
-            )),
+            wasm: Some(self.api2wire_body_wasm()),
+            io: Some(
+                fmt!(
+                    "final shell = inner.new_{ident}_{}();"
+                    "_api_fill_to_wire_{ident}(raw, shell);"
+                    "return shell;",
+                    self.context.config.block_index,
+                    ident = self.ir.safe_ident()
+                )
+                .to_string(),
+            ),
             ..Default::default()
         }
     }
@@ -260,5 +238,45 @@ impl TypeDartGeneratorTrait for TypeEnumRefGenerator<'_> {
                 comments, self.ir.name, variants
             )
         }
+    }
+}
+
+impl TypeEnumRefGenerator<'_> {
+    fn api2wire_body_wasm(&self) -> String {
+        let variants = (self.ir.get(self.context.ir_file).variants())
+            .iter()
+            .enumerate()
+            .map(|(idx, variant)| {
+                let fields = match &variant.kind {
+                    IrVariantKind::Value => vec![],
+                    IrVariantKind::Struct(st) => (st.fields)
+                        .iter()
+                        .map(|field| {
+                            format!(
+                                ",api2wire_{}(raw.{})",
+                                field.ty.safe_ident(),
+                                field.name.dart_style()
+                            )
+                        })
+                        .collect(),
+                }
+                .join("");
+                fmt!(
+                    "if (raw is {variant}) {{"
+                    "  return [{} {}];"
+                    "}}",
+                    idx,
+                    fields,
+                    variant = variant.wrapper_name.rust_style(),
+                )
+                .to_string()
+            })
+            .join("");
+        fmt!(
+            "{}"
+            "throw Exception('unreachable');",
+            variants
+        )
+        .to_string()
     }
 }

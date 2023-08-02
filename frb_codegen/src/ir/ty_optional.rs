@@ -1,4 +1,3 @@
-use crate::ir::IrType::*;
 use crate::ir::*;
 use crate::target::Target;
 
@@ -63,13 +62,7 @@ impl IrTypeTrait for IrTypeOptional {
     }
 
     fn visit_children_types<F: FnMut(&IrType) -> bool>(&self, f: &mut F, ir_file: &IrFile) {
-        if self.inner.needs_box(Target::Io)
-            // HACK: Do not generate duplicates.
-            && !matches!(
-                self.inner.as_ref(),
-                Delegate(..) | PrimitiveList(..) | GeneralList(..) | Boxed(..)
-            )
-        {
+        if self.inner.needs_indirection(Target::Io) {
             IrType::Boxed(IrTypeBoxed {
                 exist_in_real_api: false,
                 inner: self.inner.clone(),

@@ -346,9 +346,9 @@ _install_crate name="cargo-lipo":
 #        dart test test/*.dart && \
 #        dart test -p {{platform}} test/*.dart
 
-pure:
-    cd {{frb_pure}}/rust && cargo clean -p flutter_rust_bridge_example_single_block_test && cargo build
-    cd {{frb_pure}}/dart && dart analyze
-    cd {{frb_pure}}/rust && cargo c --target wasm32-unknown-unknown
+# pure:
+#     cd {{frb_pure}}/rust && cargo clean -p flutter_rust_bridge_example_single_block_test && cargo build
+#     cd {{frb_pure}}/dart && dart analyze
+#     cd {{frb_pure}}/rust && cargo c --target wasm32-unknown-unknown
 
 # vim:expandtab:ts=4:sw=4

@@ -1,7 +1,9 @@
 use crate::generator::dart::ty::*;
 use crate::generator::dart::{dart_comments, dart_metadata, GeneratedApiMethod};
+use crate::method_utils::FunctionName;
 use crate::target::Acc;
 use crate::type_dart_generator_struct;
+use crate::{fmt, ir::*};
 use crate::utils::method::FunctionName;
 use crate::{ir::*, Opts};
 use convert_case::{Case, Casing};
@@ -29,6 +31,16 @@ impl TypeDartGeneratorTrait for TypeStructRefGenerator<'_> {
                         .join(",")
                 )
             }),
+            io: Some(
+                fmt!(
+                    "final shell = inner.new_{ident}_{}();"
+                    "_api_fill_to_wire_{ident}(raw, shell);"
+                    "return shell;",
+                    self.context.config.block_index,
+                    ident = self.ir.safe_ident()
+                )
+                .to_string(),
+            ),
             ..Default::default()
         }
     }

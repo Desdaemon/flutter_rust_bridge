@@ -4,8 +4,8 @@ use super::*;
 #[no_mangle]
 pub extern "C" fn wire_draw_mandelbrot(
     port_: i64,
-    image_size: *mut wire_Size,
-    zoom_point: *mut wire_Point,
+    image_size: wire_Size,
+    zoom_point: wire_Point,
     scale: f64,
     num_threads: i32,
 ) {
@@ -13,7 +13,7 @@ pub extern "C" fn wire_draw_mandelbrot(
 }
 
 #[no_mangle]
-pub extern "C" fn wire_passing_complex_structs(port_: i64, root: *mut wire_TreeNode) {
+pub extern "C" fn wire_passing_complex_structs(port_: i64, root: wire_TreeNode) {
     wire_passing_complex_structs_impl(port_, root)
 }
 
@@ -53,7 +53,7 @@ pub extern "C" fn wire_off_topic_memory_test_output_vec_of_object(port_: i64, le
 #[no_mangle]
 pub extern "C" fn wire_off_topic_memory_test_input_complex_struct(
     port_: i64,
-    input: *mut wire_TreeNode,
+    input: wire_TreeNode,
 ) {
     wire_off_topic_memory_test_input_complex_struct_impl(port_, input)
 }
@@ -96,41 +96,6 @@ pub extern "C" fn wire_sum_static__static_method__SumWith(port_: i64, x: u32, y:
 // Section: allocate functions
 
 #[no_mangle]
-pub extern "C" fn new_box_autoadd_boxed_point_0() -> *mut wire_BoxedPoint {
-    support::new_leak_box_ptr(wire_BoxedPoint::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_point_0() -> *mut wire_Point {
-    support::new_leak_box_ptr(wire_Point::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_size_0() -> *mut wire_Size {
-    support::new_leak_box_ptr(wire_Size::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_sum_with_0() -> *mut wire_SumWith {
-    support::new_leak_box_ptr(wire_SumWith::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_tree_node_0() -> *mut wire_TreeNode {
-    support::new_leak_box_ptr(wire_TreeNode::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_autoadd_user_id_0() -> *mut wire_UserId {
-    support::new_leak_box_ptr(wire_UserId::new_with_null_ptr())
-}
-
-#[no_mangle]
-pub extern "C" fn new_box_point_0() -> *mut wire_Point {
-    support::new_leak_box_ptr(wire_Point::new_with_null_ptr())
-}
-
-#[no_mangle]
 pub extern "C" fn new_list_size_0(len: i32) -> *mut wire_list_size {
     let wrap = wire_list_size {
         ptr: support::new_leak_vec_ptr(<wire_Size>::new_with_null_ptr(), len),
@@ -146,6 +111,21 @@ pub extern "C" fn new_list_tree_node_0(len: i32) -> *mut wire_list_tree_node {
         len,
     };
     support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
+pub extern "C" fn new_point_0() -> wire_Point {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_size_0() -> wire_Size {
+    NewWithNullPtr::new_with_null_ptr()
+}
+
+#[no_mangle]
+pub extern "C" fn new_tree_node_0() -> wire_TreeNode {
+    NewWithNullPtr::new_with_null_ptr()
 }
 
 #[no_mangle]
@@ -165,55 +145,6 @@ impl Wire2Api<String> for *mut wire_uint_8_list {
     fn wire2api(self) -> String {
         let vec: Vec<u8> = self.wire2api();
         String::from_utf8_lossy(&vec).into_owned()
-    }
-}
-impl Wire2Api<BoxedPoint> for *mut wire_BoxedPoint {
-    fn wire2api(self) -> BoxedPoint {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<BoxedPoint>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<Point> for *mut wire_Point {
-    fn wire2api(self) -> Point {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<Point>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<Size> for *mut wire_Size {
-    fn wire2api(self) -> Size {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<Size>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<SumWith> for *mut wire_SumWith {
-    fn wire2api(self) -> SumWith {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<SumWith>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<TreeNode> for *mut wire_TreeNode {
-    fn wire2api(self) -> TreeNode {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<TreeNode>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<UserId> for *mut wire_UserId {
-    fn wire2api(self) -> UserId {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<UserId>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<Box<Point>> for *mut wire_Point {
-    fn wire2api(self) -> Box<Point> {
-        let wrap = unsafe { support::box_from_leak_ptr(self) };
-        Wire2Api::<Point>::wire2api(*wrap).into()
-    }
-}
-impl Wire2Api<BoxedPoint> for wire_BoxedPoint {
-    fn wire2api(self) -> BoxedPoint {
-        BoxedPoint {
-            point: self.point.wire2api(),
-        }
     }
 }
 

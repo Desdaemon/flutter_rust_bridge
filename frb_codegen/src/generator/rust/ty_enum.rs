@@ -6,6 +6,7 @@ use crate::generator::rust::ExternFuncCollector;
 use crate::generator::rust::NO_PARAMS;
 use crate::ir::*;
 use crate::target::Acc;
+use crate::target::Target;
 use crate::target::Target::*;
 use crate::type_rust_generator_struct;
 
@@ -338,5 +339,23 @@ impl TypeRustGeneratorTrait for TypeEnumRefGenerator<'_> {
     fn imports(&self) -> Option<String> {
         let api_enum = self.ir.get(self.context.ir_file);
         Some(format!("use {};", api_enum.path.join("::")))
+    }
+
+    fn allocate_funcs(
+        &self,
+        collector: &mut ExternFuncCollector,
+        block_index: crate::utils::BlockIndex,
+    ) -> Acc<Option<String>> {
+        let func = collector.generate(
+            &format!("new_{}_{}", self.ir.safe_ident(), block_index),
+            NO_PARAMS,
+            Some(&self.ir.rust_wire_type(Target::Io)),
+            "NewWithNullPtr::new_with_null_ptr()",
+            Target::Io,
+        );
+        Acc {
+            io: Some(func),
+            ..Default::default()
+        }
     }
 }

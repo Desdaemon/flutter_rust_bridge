@@ -6,6 +6,8 @@ use crate::target::Acc;
 use crate::target::Target;
 use crate::type_rust_generator_struct;
 
+use super::NO_PARAMS;
+
 type_rust_generator_struct!(TypeStructRefGenerator, IrTypeStructRef);
 
 impl TypeRustGeneratorTrait for TypeStructRefGenerator<'_> {
@@ -55,6 +57,9 @@ impl TypeRustGeneratorTrait for TypeStructRefGenerator<'_> {
 
     fn wire_struct_fields(&self) -> Option<Vec<String>> {
         let s = self.ir.get(self.context.ir_file);
+        if s.fields.is_empty() {
+            return Some(vec!["pad_: u8".to_owned()]);
+        }
         Some(
             s.fields
                 .iter()
@@ -168,7 +173,7 @@ impl TypeRustGeneratorTrait for TypeStructRefGenerator<'_> {
     fn new_with_nullptr(&self, _collector: &mut ExternFuncCollector) -> String {
         let src = self.ir.get(self.context.ir_file);
 
-        let body = {
+        let body = if !src.fields.is_empty() {
             src.fields
                 .iter()
                 .map(|field| {
@@ -177,7 +182,10 @@ impl TypeRustGeneratorTrait for TypeStructRefGenerator<'_> {
                         field.name.rust_style(),
                         if field.ty.rust_wire_is_pointer(Target::Io) {
                             "core::ptr::null_mut()".to_owned()
-                        } else if field.ty.is_rust_opaque() || field.ty.is_dart_opaque() {
+                        } else if field.ty.is_rust_opaque()
+                            || field.ty.is_dart_opaque()
+                            || field.ty.is_struct()
+                        {
                             format!(
                                 "{}::new_with_null_ptr()",
                                 field.ty.rust_wire_type(Target::Io)
@@ -189,6 +197,8 @@ impl TypeRustGeneratorTrait for TypeStructRefGenerator<'_> {
                 })
                 .collect::<Vec<_>>()
                 .join("\n")
+        } else {
+            "pad_: 0".to_owned()
         };
         format!(
             r#"impl NewWithNullPtr for {} {{
@@ -218,6 +228,24 @@ impl TypeRustGeneratorTrait for TypeStructRefGenerator<'_> {
             ))
         } else {
             None
+        }
+    }
+
+    fn allocate_funcs(
+        &self,
+        collector: &mut ExternFuncCollector,
+        block_index: crate::utils::BlockIndex,
+    ) -> Acc<Option<String>> {
+        let func = collector.generate(
+            &format!("new_{}_{}", self.ir.safe_ident(), block_index),
+            NO_PARAMS,
+            Some(&self.ir.rust_wire_type(Target::Io)),
+            "NewWithNullPtr::new_with_null_ptr()",
+            Target::Io,
+        );
+        Acc {
+            io: Some(func),
+            ..Default::default()
         }
     }
 }

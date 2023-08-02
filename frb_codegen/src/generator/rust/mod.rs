@@ -600,6 +600,7 @@ pub fn generate_list_allocate_func(
     )
 }
 
+/// For use in `ExternFuncCollector::generate`.
 pub const NO_PARAMS: Option<(&str, &str)> = None;
 
 pub struct ExternFuncCollector {

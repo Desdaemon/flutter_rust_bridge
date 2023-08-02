@@ -808,6 +808,16 @@ pub fn wire_handle_many_optionals(
 }
 
 #[wasm_bindgen]
+pub fn wire_handle_with_enum(port_: MessagePort, with_enum: JsValue) {
+    wire_handle_with_enum_impl(port_, with_enum)
+}
+
+#[wasm_bindgen]
+pub fn wire_handle_opt_enum(port_: MessagePort, weekday: JsValue) {
+    wire_handle_opt_enum_impl(port_, weekday)
+}
+
+#[wasm_bindgen]
 pub fn wire_test_raw_string_item_struct(port_: MessagePort) {
     wire_test_raw_string_item_struct_impl(port_)
 }
@@ -1780,6 +1790,11 @@ impl Wire2Api<OpaqueNested> for JsValue {
         }
     }
 }
+impl Wire2Api<Option<chrono::DateTime<chrono::Utc>>> for JsValue {
+    fn wire2api(self) -> Option<chrono::DateTime<chrono::Utc>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
 impl Wire2Api<Option<DartOpaque>> for JsValue {
     fn wire2api(self) -> Option<DartOpaque> {
         (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
@@ -1930,6 +1945,11 @@ impl Wire2Api<Option<usize>> for JsValue {
         (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
     }
 }
+impl Wire2Api<Option<Weekdays>> for JsValue {
+    fn wire2api(self) -> Option<Weekdays> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
 impl Wire2Api<Sequences> for JsValue {
     fn wire2api(self) -> Sequences {
         let self_ = self.dyn_into::<JsArray>().unwrap();
@@ -2038,6 +2058,22 @@ impl Wire2Api<UserId> for JsValue {
     }
 }
 
+impl Wire2Api<WithEnum> for JsValue {
+    fn wire2api(self) -> WithEnum {
+        let self_ = self.dyn_into::<JsArray>().unwrap();
+        assert_eq!(
+            self_.length(),
+            3,
+            "Expected 3 elements, got {}",
+            self_.length()
+        );
+        WithEnum {
+            weekdays: self_.get(0).wire2api(),
+            kitchen_sink: self_.get(1).wire2api(),
+            wrapper: self_.get(2).wire2api(),
+        }
+    }
+}
 // Section: impl Wire2Api for JsValue
 
 impl Wire2Api<Arc<str>> for JsValue {
@@ -2397,14 +2433,10 @@ impl Wire2Api<Vec<ApplicationEnvVar>> for JsValue {
         arr.iter().map(Wire2Api::wire2api).collect()
     }
 }
-impl Wire2Api<Option<chrono::DateTime<chrono::Utc>>> for JsValue {
-    fn wire2api(self) -> Option<chrono::DateTime<chrono::Utc>> {
-        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
-    }
-}
-impl Wire2Api<Option<bool>> for JsValue {
-    fn wire2api(self) -> Option<bool> {
-        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+impl Wire2Api<Vec<Attribute>> for JsValue {
+    fn wire2api(self) -> Vec<Attribute> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
     }
 }
 impl Wire2Api<Vec<MySize>> for JsValue {

@@ -26,8 +26,8 @@ class FlutterRustBridgeExampleImpl implements FlutterRustBridgeExample {
       required double scale,
       required int numThreads,
       dynamic hint}) {
-    var arg0 = _platform.api2wire_box_autoadd_size(imageSize);
-    var arg1 = _platform.api2wire_box_autoadd_point(zoomPoint);
+    var arg0 = _platform.api2wire_size(imageSize);
+    var arg1 = _platform.api2wire_point(zoomPoint);
     var arg2 = api2wire_f64(scale);
     var arg3 = api2wire_i32(numThreads);
     return _platform.executeNormal(FlutterRustBridgeTask(
@@ -45,7 +45,7 @@ class FlutterRustBridgeExampleImpl implements FlutterRustBridgeExample {
       );
 
   Future<String> passingComplexStructs({required TreeNode root, dynamic hint}) {
-    var arg0 = _platform.api2wire_box_autoadd_tree_node(root);
+    var arg0 = _platform.api2wire_tree_node(root);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_passing_complex_structs(port_, arg0),
       parseSuccessData: _wire2api_String,
@@ -159,7 +159,7 @@ class FlutterRustBridgeExampleImpl implements FlutterRustBridgeExample {
       );
 
   Future<int> offTopicMemoryTestInputComplexStruct({required TreeNode input, dynamic hint}) {
-    var arg0 = _platform.api2wire_box_autoadd_tree_node(input);
+    var arg0 = _platform.api2wire_tree_node(input);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_off_topic_memory_test_input_complex_struct(port_, arg0),
       parseSuccessData: _wire2api_i32,

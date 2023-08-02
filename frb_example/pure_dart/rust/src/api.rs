@@ -1,4 +1,4 @@
-#![allow(unused_variables)]
+#![allow(unused_variables, clippy::boxed_local)]
 
 pub use std::borrow::Cow;
 use std::fmt::Debug;
@@ -1541,6 +1541,20 @@ pub fn handle_many_optionals(
     skip_rows_after_header: Option<usize>,
     chunk_size: Option<usize>,
 ) {
+}
+
+pub struct WithEnum {
+    pub weekdays: Weekdays,
+    pub kitchen_sink: KitchenSink,
+    pub wrapper: NewTypeInt,
+}
+
+pub fn handle_with_enum(with_enum: WithEnum) -> WithEnum {
+    with_enum
+}
+
+pub fn handle_opt_enum(weekday: Option<Weekdays>) -> Option<Weekdays> {
+    weekday
 }
 
 pub struct RawStringItemStruct {

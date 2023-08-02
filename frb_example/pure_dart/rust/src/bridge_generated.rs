@@ -2244,59 +2244,32 @@ fn wire_handle_many_optionals_impl(
         },
     )
 }
-fn wire_test_raw_string_item_struct_impl(port_: MessagePort) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, RawStringItemStruct>(
+fn wire_handle_with_enum_impl(port_: MessagePort, with_enum: impl Wire2Api<WithEnum> + UnwindSafe) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
         WrapInfo {
-            debug_name: "test_raw_string_item_struct",
-            port: Some(port_),
-            mode: FfiCallMode::Normal,
-        },
-        move || move |task_callback| Ok(test_raw_string_item_struct()),
-    )
-}
-fn wire_test_more_than_just_one_raw_string_struct_impl(port_: MessagePort) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, MoreThanJustOneRawStringStruct>(
-        WrapInfo {
-            debug_name: "test_more_than_just_one_raw_string_struct",
-            port: Some(port_),
-            mode: FfiCallMode::Normal,
-        },
-        move || move |task_callback| Ok(test_more_than_just_one_raw_string_struct()),
-    )
-}
-fn wire_test_raw_string_mirrored_impl(port_: MessagePort) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, mirror_RawStringMirrored>(
-        WrapInfo {
-            debug_name: "test_raw_string_mirrored",
-            port: Some(port_),
-            mode: FfiCallMode::Normal,
-        },
-        move || move |task_callback| Ok(test_raw_string_mirrored()),
-    )
-}
-fn wire_test_nested_raw_string_mirrored_impl(port_: MessagePort) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, mirror_NestedRawStringMirrored>(
-        WrapInfo {
-            debug_name: "test_nested_raw_string_mirrored",
-            port: Some(port_),
-            mode: FfiCallMode::Normal,
-        },
-        move || move |task_callback| Ok(test_nested_raw_string_mirrored()),
-    )
-}
-fn wire_test_raw_string_enum_mirrored_impl(
-    port_: MessagePort,
-    nested: impl Wire2Api<bool> + UnwindSafe,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, mirror_RawStringEnumMirrored>(
-        WrapInfo {
-            debug_name: "test_raw_string_enum_mirrored",
+            debug_name: "handle_with_enum",
             port: Some(port_),
             mode: FfiCallMode::Normal,
         },
         move || {
-            let api_nested = nested.wire2api();
-            move |task_callback| Ok(test_raw_string_enum_mirrored(api_nested))
+            let api_with_enum = with_enum.wire2api();
+            move |task_callback| Ok(handle_with_enum(api_with_enum))
+        },
+    )
+}
+fn wire_handle_opt_enum_impl(
+    port_: MessagePort,
+    weekday: impl Wire2Api<Option<Weekdays>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, mirror_RawStringEnumMirrored>(
+        WrapInfo {
+            debug_name: "handle_opt_enum",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_weekday = weekday.wire2api();
+            move |task_callback| Ok(handle_opt_enum(api_weekday))
         },
     )
 }
@@ -2835,6 +2808,7 @@ impl Wire2Api<Weekdays> for i32 {
         }
     }
 }
+
 // Section: impl IntoDart
 
 impl support::IntoDart for A {
@@ -3760,12 +3734,17 @@ impl support::IntoDart for Weekdays {
         .into_dart()
     }
 }
-impl support::IntoDartExceptPrimitive for Weekdays {}
-impl rust2dart::IntoIntoDart<Weekdays> for Weekdays {
-    fn into_into_dart(self) -> Self {
-        self
+impl support::IntoDart for WithEnum {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.weekdays.into_dart(),
+            self.kitchen_sink.into_dart(),
+            self.wrapper.into_dart(),
+        ]
+        .into_dart()
     }
 }
+impl support::IntoDartExceptPrimitive for WithEnum {}
 
 impl support::IntoDart for ZeroCopyVecOfPrimitivePack {
     fn into_dart(self) -> support::DartAbi {
