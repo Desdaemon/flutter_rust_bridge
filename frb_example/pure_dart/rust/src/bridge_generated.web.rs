@@ -833,6 +833,27 @@ pub fn wire_handle_complex_type_2() -> support::WireSyncReturn {
 }
 
 #[wasm_bindgen]
+pub fn wire_handle_list_optionals(
+    port_: MessagePort,
+    prims: JsValue,
+    arrays: JsValue,
+    strings: JsValue,
+    zcopy: JsValue,
+    weekdays: JsValue,
+    times: JsValue,
+    uuids: JsValue,
+    bytes: JsValue,
+    structs: JsValue,
+    enums: JsValue,
+    objects: JsValue,
+) {
+    wire_handle_list_optionals_impl(
+        port_, prims, arrays, strings, zcopy, weekdays, times, uuids, bytes, structs, enums,
+        objects,
+    )
+}
+
+#[wasm_bindgen]
 pub fn wire_test_raw_string_item_struct(port_: MessagePort) {
     wire_test_raw_string_item_struct_impl(port_)
 }
@@ -1542,6 +1563,12 @@ impl Wire2Api<Vec<f64>> for Box<[f64]> {
     }
 }
 
+impl Wire2Api<[i32; 1]> for Box<[i32]> {
+    fn wire2api(self) -> [i32; 1] {
+        let vec: Vec<i32> = self.wire2api();
+        support::from_vec_to_array(vec)
+    }
+}
 impl Wire2Api<[i32; 2]> for Box<[i32]> {
     fn wire2api(self) -> [i32; 2] {
         let vec: Vec<i32> = self.wire2api();
@@ -1624,9 +1651,88 @@ impl Wire2Api<Vec<MyTreeNode>> for JsArray {
         self.iter().map(Wire2Api::wire2api).collect()
     }
 }
+impl Wire2Api<Vec<Option<chrono::DateTime<chrono::Utc>>>> for JsArray {
+    fn wire2api(self) -> Vec<Option<chrono::DateTime<chrono::Utc>>> {
+        self.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<DartOpaque>>> for JsArray {
+    fn wire2api(self) -> Vec<Option<DartOpaque>> {
+        self.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<String>>> for JsArray {
+    fn wire2api(self) -> Vec<Option<String>> {
+        self.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<uuid::Uuid>>> for JsArray {
+    fn wire2api(self) -> Vec<Option<uuid::Uuid>> {
+        self.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<ZeroCopyBuffer<Vec<u8>>>>> for JsArray {
+    fn wire2api(self) -> Vec<Option<ZeroCopyBuffer<Vec<u8>>>> {
+        self.iter().map(Wire2Api::wire2api).collect()
+    }
+}
 impl Wire2Api<Vec<Option<Attribute>>> for JsArray {
     fn wire2api(self) -> Vec<Option<Attribute>> {
         self.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<i32>>> for JsArray {
+    fn wire2api(self) -> Vec<Option<i32>> {
+        self.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<[i32; 1]>>> for JsArray {
+    fn wire2api(self) -> Vec<Option<[i32; 1]>> {
+        self.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<KitchenSink>>> for JsArray {
+    fn wire2api(self) -> Vec<Option<KitchenSink>> {
+        self.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<ListOptionals>>> for JsArray {
+    fn wire2api(self) -> Vec<Option<ListOptionals>> {
+        self.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<Vec<u8>>>> for JsArray {
+    fn wire2api(self) -> Vec<Option<Vec<u8>>> {
+        self.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<Weekdays>>> for JsArray {
+    fn wire2api(self) -> Vec<Option<Weekdays>> {
+        self.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<ListOptionals> for JsValue {
+    fn wire2api(self) -> ListOptionals {
+        let self_ = self.dyn_into::<JsArray>().unwrap();
+        assert_eq!(
+            self_.length(),
+            11,
+            "Expected 11 elements, got {}",
+            self_.length()
+        );
+        ListOptionals {
+            prims: self_.get(0).wire2api(),
+            arrays: self_.get(1).wire2api(),
+            strings: self_.get(2).wire2api(),
+            zcopy: self_.get(3).wire2api(),
+            weekdays: self_.get(4).wire2api(),
+            times: self_.get(5).wire2api(),
+            uuids: self_.get(6).wire2api(),
+            bytes: self_.get(7).wire2api(),
+            structs: self_.get(8).wire2api(),
+            enums: self_.get(9).wire2api(),
+            objects: self_.get(10).wire2api(),
+        }
     }
 }
 impl Wire2Api<Vec<TestId>> for JsArray {
@@ -1830,6 +1936,11 @@ impl Wire2Api<Option<Vec<String>>> for JsValue {
         (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
     }
 }
+impl Wire2Api<Option<uuid::Uuid>> for Option<Box<[u8]>> {
+    fn wire2api(self) -> Option<uuid::Uuid> {
+        self.map(Wire2Api::wire2api)
+    }
+}
 impl Wire2Api<Option<ZeroCopyBuffer<Vec<u8>>>> for Option<Box<[u8]>> {
     fn wire2api(self) -> Option<ZeroCopyBuffer<Vec<u8>>> {
         self.map(Wire2Api::wire2api)
@@ -1915,6 +2026,11 @@ impl Wire2Api<Option<i32>> for JsValue {
         (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
     }
 }
+impl Wire2Api<Option<[i32; 1]>> for Option<Box<[i32]>> {
+    fn wire2api(self) -> Option<[i32; 1]> {
+        self.map(Wire2Api::wire2api)
+    }
+}
 impl Wire2Api<Option<i64>> for JsValue {
     fn wire2api(self) -> Option<i64> {
         (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
@@ -1930,13 +2046,78 @@ impl Wire2Api<Option<Vec<i8>>> for Option<Box<[i8]>> {
         self.map(Wire2Api::wire2api)
     }
 }
+impl Wire2Api<Option<KitchenSink>> for JsValue {
+    fn wire2api(self) -> Option<KitchenSink> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
 impl Wire2Api<Option<Vec<Attribute>>> for JsValue {
     fn wire2api(self) -> Option<Vec<Attribute>> {
         (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
     }
 }
+impl Wire2Api<Option<Vec<Option<chrono::DateTime<chrono::Utc>>>>> for JsValue {
+    fn wire2api(self) -> Option<Vec<Option<chrono::DateTime<chrono::Utc>>>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
+impl Wire2Api<Option<Vec<Option<DartOpaque>>>> for JsValue {
+    fn wire2api(self) -> Option<Vec<Option<DartOpaque>>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
+impl Wire2Api<Option<Vec<Option<String>>>> for JsValue {
+    fn wire2api(self) -> Option<Vec<Option<String>>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
+impl Wire2Api<Option<Vec<Option<uuid::Uuid>>>> for JsValue {
+    fn wire2api(self) -> Option<Vec<Option<uuid::Uuid>>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
+impl Wire2Api<Option<Vec<Option<ZeroCopyBuffer<Vec<u8>>>>>> for JsValue {
+    fn wire2api(self) -> Option<Vec<Option<ZeroCopyBuffer<Vec<u8>>>>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
 impl Wire2Api<Option<Vec<Option<Attribute>>>> for JsValue {
     fn wire2api(self) -> Option<Vec<Option<Attribute>>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
+impl Wire2Api<Option<Vec<Option<i32>>>> for JsValue {
+    fn wire2api(self) -> Option<Vec<Option<i32>>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
+impl Wire2Api<Option<Vec<Option<[i32; 1]>>>> for JsValue {
+    fn wire2api(self) -> Option<Vec<Option<[i32; 1]>>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
+impl Wire2Api<Option<Vec<Option<KitchenSink>>>> for JsValue {
+    fn wire2api(self) -> Option<Vec<Option<KitchenSink>>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
+impl Wire2Api<Option<Vec<Option<ListOptionals>>>> for JsValue {
+    fn wire2api(self) -> Option<Vec<Option<ListOptionals>>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
+impl Wire2Api<Option<Vec<Option<Vec<u8>>>>> for JsValue {
+    fn wire2api(self) -> Option<Vec<Option<Vec<u8>>>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
+impl Wire2Api<Option<Vec<Option<Weekdays>>>> for JsValue {
+    fn wire2api(self) -> Option<Vec<Option<Weekdays>>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
+impl Wire2Api<Option<ListOptionals>> for JsValue {
+    fn wire2api(self) -> Option<ListOptionals> {
         (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
     }
 }
@@ -2407,6 +2588,12 @@ impl Wire2Api<i32> for JsValue {
         self.unchecked_into_f64() as _
     }
 }
+impl Wire2Api<[i32; 1]> for JsValue {
+    fn wire2api(self) -> [i32; 1] {
+        let vec: Vec<i32> = self.wire2api();
+        support::from_vec_to_array(vec)
+    }
+}
 impl Wire2Api<[i32; 2]> for JsValue {
     fn wire2api(self) -> [i32; 2] {
         let vec: Vec<i32> = self.wire2api();
@@ -2476,8 +2663,74 @@ impl Wire2Api<Vec<MyTreeNode>> for JsValue {
         arr.iter().map(Wire2Api::wire2api).collect()
     }
 }
+impl Wire2Api<Vec<Option<chrono::DateTime<chrono::Utc>>>> for JsValue {
+    fn wire2api(self) -> Vec<Option<chrono::DateTime<chrono::Utc>>> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<DartOpaque>>> for JsValue {
+    fn wire2api(self) -> Vec<Option<DartOpaque>> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<String>>> for JsValue {
+    fn wire2api(self) -> Vec<Option<String>> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<uuid::Uuid>>> for JsValue {
+    fn wire2api(self) -> Vec<Option<uuid::Uuid>> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<ZeroCopyBuffer<Vec<u8>>>>> for JsValue {
+    fn wire2api(self) -> Vec<Option<ZeroCopyBuffer<Vec<u8>>>> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
 impl Wire2Api<Vec<Option<Attribute>>> for JsValue {
     fn wire2api(self) -> Vec<Option<Attribute>> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<i32>>> for JsValue {
+    fn wire2api(self) -> Vec<Option<i32>> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<[i32; 1]>>> for JsValue {
+    fn wire2api(self) -> Vec<Option<[i32; 1]>> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<KitchenSink>>> for JsValue {
+    fn wire2api(self) -> Vec<Option<KitchenSink>> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<ListOptionals>>> for JsValue {
+    fn wire2api(self) -> Vec<Option<ListOptionals>> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<Vec<u8>>>> for JsValue {
+    fn wire2api(self) -> Vec<Option<Vec<u8>>> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<Weekdays>>> for JsValue {
+    fn wire2api(self) -> Vec<Option<Weekdays>> {
         let arr = self.dyn_into::<JsArray>().unwrap();
         arr.iter().map(Wire2Api::wire2api).collect()
     }
@@ -2498,6 +2751,11 @@ impl Wire2Api<Option<String>> for JsValue {
         (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
     }
 }
+impl Wire2Api<Option<uuid::Uuid>> for JsValue {
+    fn wire2api(self) -> Option<uuid::Uuid> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
 impl Wire2Api<Option<ZeroCopyBuffer<Vec<u8>>>> for JsValue {
     fn wire2api(self) -> Option<ZeroCopyBuffer<Vec<u8>>> {
         (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
@@ -2510,6 +2768,11 @@ impl Wire2Api<Option<Vec<f32>>> for JsValue {
 }
 impl Wire2Api<Option<Vec<f64>>> for JsValue {
     fn wire2api(self) -> Option<Vec<f64>> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
+impl Wire2Api<Option<[i32; 1]>> for JsValue {
+    fn wire2api(self) -> Option<[i32; 1]> {
         (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
     }
 }

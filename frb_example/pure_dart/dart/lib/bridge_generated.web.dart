@@ -371,6 +371,16 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  List<dynamic> api2wire_box_autoadd_kitchen_sink(KitchenSink raw) {
+    return api2wire_kitchen_sink(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_list_optionals(ListOptionals raw) {
+    return api2wire_list_optionals(raw);
+  }
+
+  @protected
   List<dynamic> api2wire_box_autoadd_new_type_int(NewTypeInt raw) {
     return api2wire_new_type_int(raw);
   }
@@ -596,6 +606,11 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  Int32List api2wire_i32_array_1(I32Array1 raw) {
+    return Int32List.fromList(raw);
+  }
+
+  @protected
   Int32List api2wire_i32_array_2(I32Array2 raw) {
     return Int32List.fromList(raw);
   }
@@ -721,8 +736,80 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  List<dynamic> api2wire_list_opt_Chrono_Utc(List<DateTime?> raw) {
+    return raw.map(api2wire_opt_Chrono_Utc).toList();
+  }
+
+  @protected
+  List<dynamic> api2wire_list_opt_DartOpaque(List<Object?> raw) {
+    return raw.map(api2wire_opt_DartOpaque).toList();
+  }
+
+  @protected
+  List<dynamic> api2wire_list_opt_String(List<String?> raw) {
+    return raw.map(api2wire_opt_String).toList();
+  }
+
+  @protected
+  List<dynamic> api2wire_list_opt_Uuid(List<UuidValue?> raw) {
+    return raw.map(api2wire_opt_Uuid).toList();
+  }
+
+  @protected
+  List<dynamic> api2wire_list_opt_ZeroCopyBuffer_Uint8List(List<Uint8List?> raw) {
+    return raw.map(api2wire_opt_ZeroCopyBuffer_Uint8List).toList();
+  }
+
+  @protected
   List<dynamic> api2wire_list_opt_attribute(List<Attribute?> raw) {
     return raw.map(api2wire_opt_attribute).toList();
+  }
+
+  @protected
+  List<dynamic> api2wire_list_opt_i32(List<int?> raw) {
+    return raw.map(api2wire_opt_i32).toList();
+  }
+
+  @protected
+  List<dynamic> api2wire_list_opt_i32_array_1(List<I32Array1?> raw) {
+    return raw.map(api2wire_opt_i32_array_1).toList();
+  }
+
+  @protected
+  List<dynamic> api2wire_list_opt_kitchen_sink(List<KitchenSink?> raw) {
+    return raw.map(api2wire_opt_kitchen_sink).toList();
+  }
+
+  @protected
+  List<dynamic> api2wire_list_opt_list_optionals(List<ListOptionals?> raw) {
+    return raw.map(api2wire_opt_list_optionals).toList();
+  }
+
+  @protected
+  List<dynamic> api2wire_list_opt_uint_8_list(List<Uint8List?> raw) {
+    return raw.map(api2wire_opt_uint_8_list).toList();
+  }
+
+  @protected
+  List<dynamic> api2wire_list_opt_weekdays(List<Weekdays?> raw) {
+    return raw.map(api2wire_opt_weekdays).toList();
+  }
+
+  @protected
+  List<dynamic> api2wire_list_optionals(ListOptionals raw) {
+    return [
+      api2wire_opt_list_opt_i32(raw.prims),
+      api2wire_opt_list_opt_i32_array_1(raw.arrays),
+      api2wire_opt_list_opt_String(raw.strings),
+      api2wire_opt_list_opt_ZeroCopyBuffer_Uint8List(raw.zcopy),
+      api2wire_opt_list_opt_weekdays(raw.weekdays),
+      api2wire_opt_list_opt_Chrono_Utc(raw.times),
+      api2wire_opt_list_opt_Uuid(raw.uuids),
+      api2wire_opt_list_opt_uint_8_list(raw.bytes),
+      api2wire_opt_list_opt_list_optionals(raw.structs),
+      api2wire_opt_list_opt_kitchen_sink(raw.enums),
+      api2wire_opt_list_opt_DartOpaque(raw.objects)
+    ];
   }
 
   @protected
@@ -835,6 +922,11 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  Uint8List? api2wire_opt_Uuid(UuidValue? raw) {
+    return raw == null ? null : api2wire_Uuid(raw);
+  }
+
+  @protected
   Uint8List? api2wire_opt_ZeroCopyBuffer_Uint8List(Uint8List? raw) {
     return raw == null ? null : api2wire_ZeroCopyBuffer_Uint8List(raw);
   }
@@ -920,6 +1012,11 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  Int32List? api2wire_opt_i32_array_1(I32Array1? raw) {
+    return raw == null ? null : api2wire_i32_array_1(raw);
+  }
+
+  @protected
   Object? api2wire_opt_i64(int? raw) {
     return raw == null ? null : api2wire_i64(raw);
   }
@@ -935,13 +1032,78 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  List<dynamic>? api2wire_opt_kitchen_sink(KitchenSink? raw) {
+    return raw == null ? null : api2wire_kitchen_sink(raw);
+  }
+
+  @protected
   List<dynamic>? api2wire_opt_list_attribute(List<Attribute>? raw) {
     return raw == null ? null : api2wire_list_attribute(raw);
   }
 
   @protected
+  List<dynamic>? api2wire_opt_list_opt_Chrono_Utc(List<DateTime?>? raw) {
+    return raw == null ? null : api2wire_list_opt_Chrono_Utc(raw);
+  }
+
+  @protected
+  List<dynamic>? api2wire_opt_list_opt_DartOpaque(List<Object?>? raw) {
+    return raw == null ? null : api2wire_list_opt_DartOpaque(raw);
+  }
+
+  @protected
+  List<dynamic>? api2wire_opt_list_opt_String(List<String?>? raw) {
+    return raw == null ? null : api2wire_list_opt_String(raw);
+  }
+
+  @protected
+  List<dynamic>? api2wire_opt_list_opt_Uuid(List<UuidValue?>? raw) {
+    return raw == null ? null : api2wire_list_opt_Uuid(raw);
+  }
+
+  @protected
+  List<dynamic>? api2wire_opt_list_opt_ZeroCopyBuffer_Uint8List(List<Uint8List?>? raw) {
+    return raw == null ? null : api2wire_list_opt_ZeroCopyBuffer_Uint8List(raw);
+  }
+
+  @protected
   List<dynamic>? api2wire_opt_list_opt_attribute(List<Attribute?>? raw) {
     return raw == null ? null : api2wire_list_opt_attribute(raw);
+  }
+
+  @protected
+  List<dynamic>? api2wire_opt_list_opt_i32(List<int?>? raw) {
+    return raw == null ? null : api2wire_list_opt_i32(raw);
+  }
+
+  @protected
+  List<dynamic>? api2wire_opt_list_opt_i32_array_1(List<I32Array1?>? raw) {
+    return raw == null ? null : api2wire_list_opt_i32_array_1(raw);
+  }
+
+  @protected
+  List<dynamic>? api2wire_opt_list_opt_kitchen_sink(List<KitchenSink?>? raw) {
+    return raw == null ? null : api2wire_list_opt_kitchen_sink(raw);
+  }
+
+  @protected
+  List<dynamic>? api2wire_opt_list_opt_list_optionals(List<ListOptionals?>? raw) {
+    return raw == null ? null : api2wire_list_opt_list_optionals(raw);
+  }
+
+  @protected
+  List<dynamic>? api2wire_opt_list_opt_uint_8_list(List<Uint8List?>? raw) {
+    return raw == null ? null : api2wire_list_opt_uint_8_list(raw);
+  }
+
+  @protected
+  List<dynamic>? api2wire_opt_list_opt_weekdays(List<Weekdays?>? raw) {
+    return raw == null ? null : api2wire_list_opt_weekdays(raw);
+  }
+
+  @protected
+  List<dynamic>? api2wire_opt_list_optionals(ListOptionals? raw) {
+    return raw == null ? null : api2wire_list_optionals(raw);
   }
 
   @protected
@@ -1458,6 +1620,20 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
 
   external dynamic /* List<dynamic> */ wire_handle_complex_type_2();
 
+  external dynamic /* void */ wire_handle_list_optionals(
+      NativePortType port_,
+      List<dynamic>? prims,
+      List<dynamic>? arrays,
+      List<dynamic>? strings,
+      List<dynamic>? zcopy,
+      List<dynamic>? weekdays,
+      List<dynamic>? times,
+      List<dynamic>? uuids,
+      List<dynamic>? bytes,
+      List<dynamic>? structs,
+      List<dynamic>? enums,
+      List<dynamic>? objects);
+
   external dynamic /* void */ wire_sum__method__SumWith(NativePortType port_, List<dynamic> that, int y, int z);
 
   external dynamic /* void */ wire_new__static_method__ConcatenateWith(NativePortType port_, String a);
@@ -1915,6 +2091,22 @@ class FlutterRustBridgeExampleSingleBlockTestWire
   dynamic /* List<dynamic> */ wire_handle_complex_type_1() => wasmModule.wire_handle_complex_type_1();
 
   dynamic /* List<dynamic> */ wire_handle_complex_type_2() => wasmModule.wire_handle_complex_type_2();
+
+  void wire_handle_list_optionals(
+          NativePortType port_,
+          List<dynamic>? prims,
+          List<dynamic>? arrays,
+          List<dynamic>? strings,
+          List<dynamic>? zcopy,
+          List<dynamic>? weekdays,
+          List<dynamic>? times,
+          List<dynamic>? uuids,
+          List<dynamic>? bytes,
+          List<dynamic>? structs,
+          List<dynamic>? enums,
+          List<dynamic>? objects) =>
+      wasmModule.wire_handle_list_optionals(
+          port_, prims, arrays, strings, zcopy, weekdays, times, uuids, bytes, structs, enums, objects);
 
   void wire_sum__method__SumWith(NativePortType port_, List<dynamic> that, int y, int z) =>
       wasmModule.wire_sum__method__SumWith(port_, that, y, z);

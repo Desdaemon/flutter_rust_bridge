@@ -2533,6 +2533,57 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: [],
       );
 
+  Future<ListOptionals> handleListOptionals(
+      {List<int?>? prims,
+      List<I32Array1?>? arrays,
+      List<String?>? strings,
+      List<Uint8List?>? zcopy,
+      List<Weekdays?>? weekdays,
+      List<DateTime?>? times,
+      List<UuidValue?>? uuids,
+      List<Uint8List?>? bytes,
+      List<ListOptionals?>? structs,
+      List<KitchenSink?>? enums,
+      List<Object?>? objects,
+      dynamic hint}) {
+    var arg0 = _platform.api2wire_opt_list_opt_i32(prims);
+    var arg1 = _platform.api2wire_opt_list_opt_i32_array_1(arrays);
+    var arg2 = _platform.api2wire_opt_list_opt_String(strings);
+    var arg3 = _platform.api2wire_opt_list_opt_ZeroCopyBuffer_Uint8List(zcopy);
+    var arg4 = _platform.api2wire_opt_list_opt_weekdays(weekdays);
+    var arg5 = _platform.api2wire_opt_list_opt_Chrono_Utc(times);
+    var arg6 = _platform.api2wire_opt_list_opt_Uuid(uuids);
+    var arg7 = _platform.api2wire_opt_list_opt_uint_8_list(bytes);
+    var arg8 = _platform.api2wire_opt_list_opt_list_optionals(structs);
+    var arg9 = _platform.api2wire_opt_list_opt_kitchen_sink(enums);
+    var arg10 = _platform.api2wire_opt_list_opt_DartOpaque(objects);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_handle_list_optionals(port_, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10),
+      parseSuccessData: _wire2api_list_optionals,
+      constMeta: kHandleListOptionalsConstMeta,
+      argValues: [prims, arrays, strings, zcopy, weekdays, times, uuids, bytes, structs, enums, objects],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHandleListOptionalsConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "handle_list_optionals",
+        argNames: [
+          "prims",
+          "arrays",
+          "strings",
+          "zcopy",
+          "weekdays",
+          "times",
+          "uuids",
+          "bytes",
+          "structs",
+          "enums",
+          "objects"
+        ],
+      );
+
   Future<List<RawStringMirrored>> testFallibleOfRawStringMirrored({dynamic hint}) {
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_test_fallible_of_raw_string_mirrored(port_),
@@ -3213,6 +3264,14 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     return _wire2api_i64(raw);
   }
 
+  KitchenSink _wire2api_box_autoadd_kitchen_sink(dynamic raw) {
+    return _wire2api_kitchen_sink(raw);
+  }
+
+  ListOptionals _wire2api_box_autoadd_list_optionals(dynamic raw) {
+    return _wire2api_list_optionals(raw);
+  }
+
   ListOfNestedRawStringMirrored _wire2api_box_autoadd_list_of_nested_raw_string_mirrored(dynamic raw) {
     return _wire2api_list_of_nested_raw_string_mirrored(raw);
   }
@@ -3440,6 +3499,10 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     return raw as int;
   }
 
+  I32Array1 _wire2api_i32_array_1(dynamic raw) {
+    return I32Array1(_wire2api_int_32_list(raw));
+  }
+
   I32Array2 _wire2api_i32_array_2(dynamic raw) {
     return I32Array2(_wire2api_int_32_list(raw));
   }
@@ -3541,8 +3604,70 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     return (raw as List<dynamic>).map(_wire2api_my_tree_node).toList();
   }
 
+  List<DateTime?> _wire2api_list_opt_Chrono_Utc(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_opt_Chrono_Utc).toList();
+  }
+
+  List<Object?> _wire2api_list_opt_DartOpaque(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_opt_DartOpaque).toList();
+  }
+
+  List<String?> _wire2api_list_opt_String(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_opt_String).toList();
+  }
+
+  List<UuidValue?> _wire2api_list_opt_Uuid(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_opt_Uuid).toList();
+  }
+
+  List<Uint8List?> _wire2api_list_opt_ZeroCopyBuffer_Uint8List(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_opt_ZeroCopyBuffer_Uint8List).toList();
+  }
+
   List<Attribute?> _wire2api_list_opt_attribute(dynamic raw) {
     return (raw as List<dynamic>).map(_wire2api_opt_attribute).toList();
+  }
+
+  List<int?> _wire2api_list_opt_i32(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_opt_i32).toList();
+  }
+
+  List<I32Array1?> _wire2api_list_opt_i32_array_1(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_opt_i32_array_1).toList();
+  }
+
+  List<KitchenSink?> _wire2api_list_opt_kitchen_sink(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_opt_kitchen_sink).toList();
+  }
+
+  List<ListOptionals?> _wire2api_list_opt_list_optionals(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_opt_list_optionals).toList();
+  }
+
+  List<Uint8List?> _wire2api_list_opt_uint_8_list(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_opt_uint_8_list).toList();
+  }
+
+  List<Weekdays?> _wire2api_list_opt_weekdays(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_opt_weekdays).toList();
+  }
+
+  ListOptionals _wire2api_list_optionals(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 11) throw Exception('unexpected arr length: expect 11 but see ${arr.length}');
+    return ListOptionals(
+      prims: _wire2api_opt_list_opt_i32(arr[0]),
+      arrays: _wire2api_opt_list_opt_i32_array_1(arr[1]),
+      strings: _wire2api_opt_list_opt_String(arr[2]),
+      zcopy: _wire2api_opt_list_opt_ZeroCopyBuffer_Uint8List(arr[3]),
+      weekdays: _wire2api_opt_list_opt_weekdays(arr[4]),
+      times: _wire2api_opt_list_opt_Chrono_Utc(arr[5]),
+      uuids: _wire2api_opt_list_opt_Uuid(arr[6]),
+      bytes: _wire2api_opt_list_opt_uint_8_list(arr[7]),
+      structs: _wire2api_opt_list_opt_list_optionals(arr[8]),
+      enums: _wire2api_opt_list_opt_kitchen_sink(arr[9]),
+      objects: _wire2api_opt_list_opt_DartOpaque(arr[10]),
+    );
   }
 
   List<Point> _wire2api_list_point(dynamic raw) {
@@ -3763,6 +3888,10 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     return raw == null ? null : _wire2api_StringList(raw);
   }
 
+  UuidValue? _wire2api_opt_Uuid(dynamic raw) {
+    return raw == null ? null : _wire2api_Uuid(raw);
+  }
+
   Uint8List? _wire2api_opt_ZeroCopyBuffer_Uint8List(dynamic raw) {
     return raw == null ? null : _wire2api_ZeroCopyBuffer_Uint8List(raw);
   }
@@ -3803,6 +3932,10 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     return raw == null ? null : _wire2api_i32(raw);
   }
 
+  I32Array1? _wire2api_opt_i32_array_1(dynamic raw) {
+    return raw == null ? null : _wire2api_i32_array_1(raw);
+  }
+
   int? _wire2api_opt_i64(dynamic raw) {
     return raw == null ? null : _wire2api_i64(raw);
   }
@@ -3815,6 +3948,10 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     return raw == null ? null : _wire2api_int_8_list(raw);
   }
 
+  KitchenSink? _wire2api_opt_kitchen_sink(dynamic raw) {
+    return raw == null ? null : _wire2api_kitchen_sink(raw);
+  }
+
   List<Attribute>? _wire2api_opt_list_attribute(dynamic raw) {
     return raw == null ? null : _wire2api_list_attribute(raw);
   }
@@ -3823,8 +3960,56 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     return raw == null ? null : _wire2api_list_element(raw);
   }
 
+  List<DateTime?>? _wire2api_opt_list_opt_Chrono_Utc(dynamic raw) {
+    return raw == null ? null : _wire2api_list_opt_Chrono_Utc(raw);
+  }
+
+  List<Object?>? _wire2api_opt_list_opt_DartOpaque(dynamic raw) {
+    return raw == null ? null : _wire2api_list_opt_DartOpaque(raw);
+  }
+
+  List<String?>? _wire2api_opt_list_opt_String(dynamic raw) {
+    return raw == null ? null : _wire2api_list_opt_String(raw);
+  }
+
+  List<UuidValue?>? _wire2api_opt_list_opt_Uuid(dynamic raw) {
+    return raw == null ? null : _wire2api_list_opt_Uuid(raw);
+  }
+
+  List<Uint8List?>? _wire2api_opt_list_opt_ZeroCopyBuffer_Uint8List(dynamic raw) {
+    return raw == null ? null : _wire2api_list_opt_ZeroCopyBuffer_Uint8List(raw);
+  }
+
   List<Attribute?>? _wire2api_opt_list_opt_attribute(dynamic raw) {
     return raw == null ? null : _wire2api_list_opt_attribute(raw);
+  }
+
+  List<int?>? _wire2api_opt_list_opt_i32(dynamic raw) {
+    return raw == null ? null : _wire2api_list_opt_i32(raw);
+  }
+
+  List<I32Array1?>? _wire2api_opt_list_opt_i32_array_1(dynamic raw) {
+    return raw == null ? null : _wire2api_list_opt_i32_array_1(raw);
+  }
+
+  List<KitchenSink?>? _wire2api_opt_list_opt_kitchen_sink(dynamic raw) {
+    return raw == null ? null : _wire2api_list_opt_kitchen_sink(raw);
+  }
+
+  List<ListOptionals?>? _wire2api_opt_list_opt_list_optionals(dynamic raw) {
+    return raw == null ? null : _wire2api_list_opt_list_optionals(raw);
+  }
+
+  List<Uint8List?>? _wire2api_opt_list_opt_uint_8_list(dynamic raw) {
+    return raw == null ? null : _wire2api_list_opt_uint_8_list(raw);
+  }
+
+  List<Weekdays?>? _wire2api_opt_list_opt_weekdays(dynamic raw) {
+    return raw == null ? null : _wire2api_list_opt_weekdays(raw);
+  }
+
+  ListOptionals? _wire2api_opt_list_optionals(dynamic raw) {
+    return raw == null ? null : _wire2api_list_optionals(raw);
   }
 
   Measure? _wire2api_opt_measure(dynamic raw) {

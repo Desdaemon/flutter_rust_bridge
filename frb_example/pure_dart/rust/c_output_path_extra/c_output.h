@@ -405,6 +405,75 @@ typedef struct wire_WithEnum {
   struct wire_NewTypeInt wrapper;
 } wire_WithEnum;
 
+typedef struct wire_list_opt_i32 {
+  int32_t **ptr;
+  int32_t len;
+} wire_list_opt_i32;
+
+typedef struct wire_list_opt_i32_array_1 {
+  struct wire_int_32_list **ptr;
+  int32_t len;
+} wire_list_opt_i32_array_1;
+
+typedef struct wire_list_opt_String {
+  struct wire_uint_8_list **ptr;
+  int32_t len;
+} wire_list_opt_String;
+
+typedef struct wire_list_opt_ZeroCopyBuffer_Uint8List {
+  struct wire_uint_8_list **ptr;
+  int32_t len;
+} wire_list_opt_ZeroCopyBuffer_Uint8List;
+
+typedef struct wire_list_opt_weekdays {
+  int32_t **ptr;
+  int32_t len;
+} wire_list_opt_weekdays;
+
+typedef struct wire_list_opt_Chrono_Utc {
+  int64_t **ptr;
+  int32_t len;
+} wire_list_opt_Chrono_Utc;
+
+typedef struct wire_list_opt_Uuid {
+  struct wire_uint_8_list **ptr;
+  int32_t len;
+} wire_list_opt_Uuid;
+
+typedef struct wire_list_opt_uint_8_list {
+  struct wire_uint_8_list **ptr;
+  int32_t len;
+} wire_list_opt_uint_8_list;
+
+typedef struct wire_list_opt_kitchen_sink {
+  struct wire_KitchenSink **ptr;
+  int32_t len;
+} wire_list_opt_kitchen_sink;
+
+typedef struct wire_list_opt_DartOpaque {
+  struct wire_DartOpaque **ptr;
+  int32_t len;
+} wire_list_opt_DartOpaque;
+
+typedef struct wire_ListOptionals {
+  struct wire_list_opt_i32 *prims;
+  struct wire_list_opt_i32_array_1 *arrays;
+  struct wire_list_opt_String *strings;
+  struct wire_list_opt_ZeroCopyBuffer_Uint8List *zcopy;
+  struct wire_list_opt_weekdays *weekdays;
+  struct wire_list_opt_Chrono_Utc *times;
+  struct wire_list_opt_Uuid *uuids;
+  struct wire_list_opt_uint_8_list *bytes;
+  struct wire_list_opt_list_optionals *structs;
+  struct wire_list_opt_kitchen_sink *enums;
+  struct wire_list_opt_DartOpaque *objects;
+} wire_ListOptionals;
+
+typedef struct wire_list_opt_list_optionals {
+  struct wire_ListOptionals **ptr;
+  int32_t len;
+} wire_list_opt_list_optionals;
+
 typedef struct wire_list_weekdays {
   int32_t *ptr;
   int32_t len;
@@ -831,6 +900,19 @@ WireSyncReturn wire_handle_complex_type_1(void);
 
 WireSyncReturn wire_handle_complex_type_2(void);
 
+void wire_handle_list_optionals(int64_t port_,
+                                struct wire_list_opt_i32 *prims,
+                                struct wire_list_opt_i32_array_1 *arrays,
+                                struct wire_list_opt_String *strings,
+                                struct wire_list_opt_ZeroCopyBuffer_Uint8List *zcopy,
+                                struct wire_list_opt_weekdays *weekdays,
+                                struct wire_list_opt_Chrono_Utc *times,
+                                struct wire_list_opt_Uuid *uuids,
+                                struct wire_list_opt_uint_8_list *bytes,
+                                struct wire_list_opt_list_optionals *structs,
+                                struct wire_list_opt_kitchen_sink *enums,
+                                struct wire_list_opt_DartOpaque *objects);
+
 void wire_sum__method__SumWith(int64_t port_, struct wire_SumWith that, uint32_t y, uint32_t z);
 
 void wire_new__static_method__ConcatenateWith(int64_t port_, struct wire_uint_8_list *a);
@@ -913,6 +995,10 @@ double *new_box_autoadd_f64_0(double value);
 int32_t *new_box_autoadd_i32_0(int32_t value);
 
 int64_t *new_box_autoadd_i64_0(int64_t value);
+
+struct wire_KitchenSink *new_box_autoadd_kitchen_sink_0(void);
+
+struct wire_ListOptionals *new_box_autoadd_list_optionals_0(void);
 
 struct wire_NewTypeInt *new_box_autoadd_new_type_int_0(void);
 
@@ -1000,7 +1086,31 @@ struct wire_list_my_size *new_list_my_size_0(int32_t len);
 
 struct wire_list_my_tree_node *new_list_my_tree_node_0(int32_t len);
 
+struct wire_list_opt_Chrono_Utc *new_list_opt_Chrono_Utc_0(int32_t len);
+
+struct wire_list_opt_DartOpaque *new_list_opt_DartOpaque_0(int32_t len);
+
+struct wire_list_opt_String *new_list_opt_String_0(int32_t len);
+
+struct wire_list_opt_Uuid *new_list_opt_Uuid_0(int32_t len);
+
+struct wire_list_opt_ZeroCopyBuffer_Uint8List *new_list_opt_ZeroCopyBuffer_Uint8List_0(int32_t len);
+
 struct wire_list_opt_attribute *new_list_opt_attribute_0(int32_t len);
+
+struct wire_list_opt_i32 *new_list_opt_i32_0(int32_t len);
+
+struct wire_list_opt_i32_array_1 *new_list_opt_i32_array_1_0(int32_t len);
+
+struct wire_list_opt_kitchen_sink *new_list_opt_kitchen_sink_0(int32_t len);
+
+struct wire_list_opt_list_optionals *new_list_opt_list_optionals_0(int32_t len);
+
+struct wire_list_opt_uint_8_list *new_list_opt_uint_8_list_0(int32_t len);
+
+struct wire_list_opt_weekdays *new_list_opt_weekdays_0(int32_t len);
+
+struct wire_ListOptionals new_list_optionals_0(void);
 
 struct wire_list_test_id *new_list_test_id_0(int32_t len);
 
@@ -1319,6 +1429,8 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_f64_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_i32_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_i64_0);
+    dummy_var ^= ((int64_t) (void*) new_box_autoadd_kitchen_sink_0);
+    dummy_var ^= ((int64_t) (void*) new_box_autoadd_list_optionals_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_new_type_int_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_u8_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_usize_0);
@@ -1362,7 +1474,19 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) new_list_attribute_0);
     dummy_var ^= ((int64_t) (void*) new_list_my_size_0);
     dummy_var ^= ((int64_t) (void*) new_list_my_tree_node_0);
+    dummy_var ^= ((int64_t) (void*) new_list_opt_Chrono_Utc_0);
+    dummy_var ^= ((int64_t) (void*) new_list_opt_DartOpaque_0);
+    dummy_var ^= ((int64_t) (void*) new_list_opt_String_0);
+    dummy_var ^= ((int64_t) (void*) new_list_opt_Uuid_0);
+    dummy_var ^= ((int64_t) (void*) new_list_opt_ZeroCopyBuffer_Uint8List_0);
     dummy_var ^= ((int64_t) (void*) new_list_opt_attribute_0);
+    dummy_var ^= ((int64_t) (void*) new_list_opt_i32_0);
+    dummy_var ^= ((int64_t) (void*) new_list_opt_i32_array_1_0);
+    dummy_var ^= ((int64_t) (void*) new_list_opt_kitchen_sink_0);
+    dummy_var ^= ((int64_t) (void*) new_list_opt_list_optionals_0);
+    dummy_var ^= ((int64_t) (void*) new_list_opt_uint_8_list_0);
+    dummy_var ^= ((int64_t) (void*) new_list_opt_weekdays_0);
+    dummy_var ^= ((int64_t) (void*) new_list_optionals_0);
     dummy_var ^= ((int64_t) (void*) new_list_test_id_0);
     dummy_var ^= ((int64_t) (void*) new_measure_0);
     dummy_var ^= ((int64_t) (void*) new_message_id_0);

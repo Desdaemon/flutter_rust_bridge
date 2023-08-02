@@ -47,4 +47,8 @@ impl TypeDartGeneratorTrait for TypePrimitiveListGenerator<'_> {
             _ => gen_wire2api_simple_type_cast(&self.ir.dart_api_type()),
         }
     }
+
+    fn api_fill_to_wire_body(&self) -> Option<String> {
+        Some(format!("throw UnimplementedError();"))
+    }
 }

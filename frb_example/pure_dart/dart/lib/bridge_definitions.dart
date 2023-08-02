@@ -677,6 +677,22 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
 
   FlutterRustBridgeTaskConstMeta get kHandleComplexType2ConstMeta;
 
+  Future<ListOptionals> handleListOptionals(
+      {List<int?>? prims,
+      List<I32Array1?>? arrays,
+      List<String?>? strings,
+      List<Uint8List?>? zcopy,
+      List<Weekdays?>? weekdays,
+      List<DateTime?>? times,
+      List<UuidValue?>? uuids,
+      List<Uint8List?>? bytes,
+      List<ListOptionals?>? structs,
+      List<KitchenSink?>? enums,
+      List<Object?>? objects,
+      dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHandleListOptionalsConstMeta;
+
   Future<int> sumMethodSumWith({required SumWith that, required int y, required int z, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kEmptyStructConstMeta;
@@ -1332,6 +1348,15 @@ class FeedId {
   });
 }
 
+class I32Array1 extends NonGrowableListView<int> {
+  static const arraySize = 1;
+  I32Array1(Int32List inner)
+      : assert(inner.length == arraySize),
+        super(inner);
+  I32Array1.unchecked(Int32List inner) : super(inner);
+  I32Array1.init() : super(Int32List(arraySize));
+}
+
 class I32Array2 extends NonGrowableListView<int> {
   static const arraySize = 2;
   I32Array2(Int32List inner)
@@ -1380,6 +1405,23 @@ sealed class KitchenSink with _$KitchenSink {
   const factory KitchenSink.enums([
     @Default(Weekdays.sunday) Weekdays field0,
   ]) = KitchenSink_Enums;
+}
+
+@freezed
+class ListOptionals with _$ListOptionals {
+  const factory ListOptionals({
+    List<int?>? prims,
+    List<I32Array1?>? arrays,
+    List<String?>? strings,
+    List<Uint8List?>? zcopy,
+    List<Weekdays?>? weekdays,
+    List<DateTime?>? times,
+    List<UuidValue?>? uuids,
+    List<Uint8List?>? bytes,
+    List<ListOptionals?>? structs,
+    List<KitchenSink?>? enums,
+    List<Object?>? objects,
+  }) = _ListOptionals;
 }
 
 class ListOfNestedRawStringMirrored {

@@ -2319,6 +2319,56 @@ fn wire_handle_complex_type_2_impl() -> support::WireSyncReturn {
         },
     )
 }
+fn wire_handle_list_optionals_impl(
+    port_: MessagePort,
+    prims: impl Wire2Api<Option<Vec<Option<i32>>>> + UnwindSafe,
+    arrays: impl Wire2Api<Option<Vec<Option<[i32; 1]>>>> + UnwindSafe,
+    strings: impl Wire2Api<Option<Vec<Option<String>>>> + UnwindSafe,
+    zcopy: impl Wire2Api<Option<Vec<Option<ZeroCopyBuffer<Vec<u8>>>>>> + UnwindSafe,
+    weekdays: impl Wire2Api<Option<Vec<Option<Weekdays>>>> + UnwindSafe,
+    times: impl Wire2Api<Option<Vec<Option<chrono::DateTime<chrono::Utc>>>>> + UnwindSafe,
+    uuids: impl Wire2Api<Option<Vec<Option<uuid::Uuid>>>> + UnwindSafe,
+    bytes: impl Wire2Api<Option<Vec<Option<Vec<u8>>>>> + UnwindSafe,
+    structs: impl Wire2Api<Option<Vec<Option<ListOptionals>>>> + UnwindSafe,
+    enums: impl Wire2Api<Option<Vec<Option<KitchenSink>>>> + UnwindSafe,
+    objects: impl Wire2Api<Option<Vec<Option<DartOpaque>>>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "handle_list_optionals",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_prims = prims.wire2api();
+            let api_arrays = arrays.wire2api();
+            let api_strings = strings.wire2api();
+            let api_zcopy = zcopy.wire2api();
+            let api_weekdays = weekdays.wire2api();
+            let api_times = times.wire2api();
+            let api_uuids = uuids.wire2api();
+            let api_bytes = bytes.wire2api();
+            let api_structs = structs.wire2api();
+            let api_enums = enums.wire2api();
+            let api_objects = objects.wire2api();
+            move |task_callback| {
+                Ok(handle_list_optionals(
+                    api_prims,
+                    api_arrays,
+                    api_strings,
+                    api_zcopy,
+                    api_weekdays,
+                    api_times,
+                    api_uuids,
+                    api_bytes,
+                    api_structs,
+                    api_enums,
+                    api_objects,
+                ))
+            }
+        },
+    )
+}
 fn wire_test_list_of_raw_nested_string_mirrored_impl(port_: MessagePort) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, mirror_ListOfNestedRawStringMirrored>(
         WrapInfo {
@@ -3285,6 +3335,26 @@ impl rust2dart::IntoIntoDart<KitchenSink> for KitchenSink {
         self
     }
 }
+
+impl support::IntoDart for ListOptionals {
+    fn into_dart(self) -> support::DartAbi {
+        vec![
+            self.prims.into_dart(),
+            self.arrays.into_dart(),
+            self.strings.into_dart(),
+            self.zcopy.into_dart(),
+            self.weekdays.into_dart(),
+            self.times.into_dart(),
+            self.uuids.into_dart(),
+            self.bytes.into_dart(),
+            self.structs.into_dart(),
+            self.enums.into_dart(),
+            self.objects.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for ListOptionals {}
 
 impl support::IntoDart for mirror_ListOfNestedRawStringMirrored {
     fn into_dart(self) -> support::DartAbi {

@@ -859,6 +859,27 @@ pub extern "C" fn wire_handle_complex_type_2() -> support::WireSyncReturn {
 }
 
 #[no_mangle]
+pub extern "C" fn wire_handle_list_optionals(
+    port_: i64,
+    prims: *mut wire_list_opt_i32,
+    arrays: *mut wire_list_opt_i32_array_1,
+    strings: *mut wire_list_opt_String,
+    zcopy: *mut wire_list_opt_ZeroCopyBuffer_Uint8List,
+    weekdays: *mut wire_list_opt_weekdays,
+    times: *mut wire_list_opt_Chrono_Utc,
+    uuids: *mut wire_list_opt_Uuid,
+    bytes: *mut wire_list_opt_uint_8_list,
+    structs: *mut wire_list_opt_list_optionals,
+    enums: *mut wire_list_opt_kitchen_sink,
+    objects: *mut wire_list_opt_DartOpaque,
+) {
+    wire_handle_list_optionals_impl(
+        port_, prims, arrays, strings, zcopy, weekdays, times, uuids, bytes, structs, enums,
+        objects,
+    )
+}
+
+#[no_mangle]
 pub extern "C" fn wire_sum__method__SumWith(port_: i64, that: wire_SumWith, y: u32, z: u32) {
 pub extern "C" fn wire_handle_with_enum(port_: i64, with_enum: wire_WithEnum) {
     wire_handle_with_enum_impl(port_, with_enum)
@@ -1147,6 +1168,16 @@ pub extern "C" fn new_box_autoadd_i64_0(value: i64) -> *mut i64 {
 }
 
 #[no_mangle]
+pub extern "C" fn new_box_autoadd_kitchen_sink_0() -> *mut wire_KitchenSink {
+    support::new_leak_box_ptr(wire_KitchenSink::new_with_null_ptr())
+}
+
+#[no_mangle]
+pub extern "C" fn new_box_autoadd_list_optionals_0() -> *mut wire_ListOptionals {
+    support::new_leak_box_ptr(wire_ListOptionals::new_with_null_ptr())
+}
+
+#[no_mangle]
 pub extern "C" fn new_box_autoadd_new_type_int_0() -> *mut wire_NewTypeInt {
     support::new_leak_box_ptr(wire_NewTypeInt::new_with_null_ptr())
 }
@@ -1405,12 +1436,118 @@ pub extern "C" fn new_list_my_tree_node_0(len: i32) -> *mut wire_list_my_tree_no
 }
 
 #[no_mangle]
+pub extern "C" fn new_list_opt_Chrono_Utc_0(len: i32) -> *mut wire_list_opt_Chrono_Utc {
+    let wrap = wire_list_opt_Chrono_Utc {
+        ptr: support::new_leak_vec_ptr(<*mut i64>::new_with_null_ptr(), len),
+        len,
+    };
+    support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
+pub extern "C" fn new_list_opt_DartOpaque_0(len: i32) -> *mut wire_list_opt_DartOpaque {
+    let wrap = wire_list_opt_DartOpaque {
+        ptr: support::new_leak_vec_ptr(<*mut wire_DartOpaque>::new_with_null_ptr(), len),
+        len,
+    };
+    support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
+pub extern "C" fn new_list_opt_String_0(len: i32) -> *mut wire_list_opt_String {
+    let wrap = wire_list_opt_String {
+        ptr: support::new_leak_vec_ptr(<*mut wire_uint_8_list>::new_with_null_ptr(), len),
+        len,
+    };
+    support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
+pub extern "C" fn new_list_opt_Uuid_0(len: i32) -> *mut wire_list_opt_Uuid {
+    let wrap = wire_list_opt_Uuid {
+        ptr: support::new_leak_vec_ptr(<*mut wire_uint_8_list>::new_with_null_ptr(), len),
+        len,
+    };
+    support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
+pub extern "C" fn new_list_opt_ZeroCopyBuffer_Uint8List_0(
+    len: i32,
+) -> *mut wire_list_opt_ZeroCopyBuffer_Uint8List {
+    let wrap = wire_list_opt_ZeroCopyBuffer_Uint8List {
+        ptr: support::new_leak_vec_ptr(<*mut wire_uint_8_list>::new_with_null_ptr(), len),
+        len,
+    };
+    support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
 pub extern "C" fn new_list_opt_attribute_0(len: i32) -> *mut wire_list_opt_attribute {
     let wrap = wire_list_opt_attribute {
         ptr: support::new_leak_vec_ptr(<*mut wire_Attribute>::new_with_null_ptr(), len),
         len,
     };
     support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
+pub extern "C" fn new_list_opt_i32_0(len: i32) -> *mut wire_list_opt_i32 {
+    let wrap = wire_list_opt_i32 {
+        ptr: support::new_leak_vec_ptr(<*mut i32>::new_with_null_ptr(), len),
+        len,
+    };
+    support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
+pub extern "C" fn new_list_opt_i32_array_1_0(len: i32) -> *mut wire_list_opt_i32_array_1 {
+    let wrap = wire_list_opt_i32_array_1 {
+        ptr: support::new_leak_vec_ptr(<*mut wire_int_32_list>::new_with_null_ptr(), len),
+        len,
+    };
+    support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
+pub extern "C" fn new_list_opt_kitchen_sink_0(len: i32) -> *mut wire_list_opt_kitchen_sink {
+    let wrap = wire_list_opt_kitchen_sink {
+        ptr: support::new_leak_vec_ptr(<*mut wire_KitchenSink>::new_with_null_ptr(), len),
+        len,
+    };
+    support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
+pub extern "C" fn new_list_opt_list_optionals_0(len: i32) -> *mut wire_list_opt_list_optionals {
+    let wrap = wire_list_opt_list_optionals {
+        ptr: support::new_leak_vec_ptr(<*mut wire_ListOptionals>::new_with_null_ptr(), len),
+        len,
+    };
+    support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
+pub extern "C" fn new_list_opt_uint_8_list_0(len: i32) -> *mut wire_list_opt_uint_8_list {
+    let wrap = wire_list_opt_uint_8_list {
+        ptr: support::new_leak_vec_ptr(<*mut wire_uint_8_list>::new_with_null_ptr(), len),
+        len,
+    };
+    support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
+pub extern "C" fn new_list_opt_weekdays_0(len: i32) -> *mut wire_list_opt_weekdays {
+    let wrap = wire_list_opt_weekdays {
+        ptr: support::new_leak_vec_ptr(<*mut i32>::new_with_null_ptr(), len),
+        len,
+    };
+    support::new_leak_box_ptr(wrap)
+}
+
+#[no_mangle]
+pub extern "C" fn new_list_optionals_0() -> wire_ListOptionals {
+    NewWithNullPtr::new_with_null_ptr()
 }
 
 #[no_mangle]
@@ -1940,6 +2077,18 @@ impl Wire2Api<i64> for *mut i64 {
         unsafe { *support::box_from_leak_ptr(self) }
     }
 }
+impl Wire2Api<KitchenSink> for *mut wire_KitchenSink {
+    fn wire2api(self) -> KitchenSink {
+        let wrap = unsafe { support::box_from_leak_ptr(self) };
+        Wire2Api::<KitchenSink>::wire2api(*wrap).into()
+    }
+}
+impl Wire2Api<ListOptionals> for *mut wire_ListOptionals {
+    fn wire2api(self) -> ListOptionals {
+        let wrap = unsafe { support::box_from_leak_ptr(self) };
+        Wire2Api::<ListOptionals>::wire2api(*wrap).into()
+    }
+}
 impl Wire2Api<NewTypeInt> for *mut wire_NewTypeInt {
     fn wire2api(self) -> NewTypeInt {
         let wrap = unsafe { support::box_from_leak_ptr(self) };
@@ -2217,6 +2366,12 @@ impl Wire2Api<Vec<f64>> for *mut wire_float_64_list {
     }
 }
 
+impl Wire2Api<[i32; 1]> for *mut wire_int_32_list {
+    fn wire2api(self) -> [i32; 1] {
+        let vec: Vec<i32> = self.wire2api();
+        support::from_vec_to_array(vec)
+    }
+}
 impl Wire2Api<[i32; 2]> for *mut wire_int_32_list {
     fn wire2api(self) -> [i32; 2] {
         let vec: Vec<i32> = self.wire2api();
@@ -2353,6 +2508,53 @@ impl Wire2Api<Vec<MyTreeNode>> for *mut wire_list_my_tree_node {
         vec.into_iter().map(Wire2Api::wire2api).collect()
     }
 }
+impl Wire2Api<Vec<Option<chrono::DateTime<chrono::Utc>>>> for *mut wire_list_opt_Chrono_Utc {
+    fn wire2api(self) -> Vec<Option<chrono::DateTime<chrono::Utc>>> {
+        let vec = unsafe {
+            let wrap = support::box_from_leak_ptr(self);
+            support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        };
+        vec.into_iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<DartOpaque>>> for *mut wire_list_opt_DartOpaque {
+    fn wire2api(self) -> Vec<Option<DartOpaque>> {
+        let vec = unsafe {
+            let wrap = support::box_from_leak_ptr(self);
+            support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        };
+        vec.into_iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<String>>> for *mut wire_list_opt_String {
+    fn wire2api(self) -> Vec<Option<String>> {
+        let vec = unsafe {
+            let wrap = support::box_from_leak_ptr(self);
+            support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        };
+        vec.into_iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<uuid::Uuid>>> for *mut wire_list_opt_Uuid {
+    fn wire2api(self) -> Vec<Option<uuid::Uuid>> {
+        let vec = unsafe {
+            let wrap = support::box_from_leak_ptr(self);
+            support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        };
+        vec.into_iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<ZeroCopyBuffer<Vec<u8>>>>>
+    for *mut wire_list_opt_ZeroCopyBuffer_Uint8List
+{
+    fn wire2api(self) -> Vec<Option<ZeroCopyBuffer<Vec<u8>>>> {
+        let vec = unsafe {
+            let wrap = support::box_from_leak_ptr(self);
+            support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        };
+        vec.into_iter().map(Wire2Api::wire2api).collect()
+    }
+}
 impl Wire2Api<Vec<Option<Attribute>>> for *mut wire_list_opt_attribute {
     fn wire2api(self) -> Vec<Option<Attribute>> {
         let vec = unsafe {
@@ -2360,6 +2562,77 @@ impl Wire2Api<Vec<Option<Attribute>>> for *mut wire_list_opt_attribute {
             support::vec_from_leak_ptr(wrap.ptr, wrap.len)
         };
         vec.into_iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<i32>>> for *mut wire_list_opt_i32 {
+    fn wire2api(self) -> Vec<Option<i32>> {
+        let vec = unsafe {
+            let wrap = support::box_from_leak_ptr(self);
+            support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        };
+        vec.into_iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<[i32; 1]>>> for *mut wire_list_opt_i32_array_1 {
+    fn wire2api(self) -> Vec<Option<[i32; 1]>> {
+        let vec = unsafe {
+            let wrap = support::box_from_leak_ptr(self);
+            support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        };
+        vec.into_iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<KitchenSink>>> for *mut wire_list_opt_kitchen_sink {
+    fn wire2api(self) -> Vec<Option<KitchenSink>> {
+        let vec = unsafe {
+            let wrap = support::box_from_leak_ptr(self);
+            support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        };
+        vec.into_iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<ListOptionals>>> for *mut wire_list_opt_list_optionals {
+    fn wire2api(self) -> Vec<Option<ListOptionals>> {
+        let vec = unsafe {
+            let wrap = support::box_from_leak_ptr(self);
+            support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        };
+        vec.into_iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<Vec<u8>>>> for *mut wire_list_opt_uint_8_list {
+    fn wire2api(self) -> Vec<Option<Vec<u8>>> {
+        let vec = unsafe {
+            let wrap = support::box_from_leak_ptr(self);
+            support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        };
+        vec.into_iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Option<Weekdays>>> for *mut wire_list_opt_weekdays {
+    fn wire2api(self) -> Vec<Option<Weekdays>> {
+        let vec = unsafe {
+            let wrap = support::box_from_leak_ptr(self);
+            support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        };
+        vec.into_iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<ListOptionals> for wire_ListOptionals {
+    fn wire2api(self) -> ListOptionals {
+        ListOptionals {
+            prims: self.prims.wire2api(),
+            arrays: self.arrays.wire2api(),
+            strings: self.strings.wire2api(),
+            zcopy: self.zcopy.wire2api(),
+            weekdays: self.weekdays.wire2api(),
+            times: self.times.wire2api(),
+            uuids: self.uuids.wire2api(),
+            bytes: self.bytes.wire2api(),
+            structs: self.structs.wire2api(),
+            enums: self.enums.wire2api(),
+            objects: self.objects.wire2api(),
+        }
     }
 }
 impl Wire2Api<Vec<TestId>> for *mut wire_list_test_id {
@@ -2837,9 +3110,102 @@ pub struct wire_list_my_tree_node {
 
 #[repr(C)]
 #[derive(Clone)]
+pub struct wire_list_opt_Chrono_Utc {
+    ptr: *mut *mut i64,
+    len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_list_opt_DartOpaque {
+    ptr: *mut *mut wire_DartOpaque,
+    len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_list_opt_String {
+    ptr: *mut *mut wire_uint_8_list,
+    len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_list_opt_Uuid {
+    ptr: *mut *mut wire_uint_8_list,
+    len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_list_opt_ZeroCopyBuffer_Uint8List {
+    ptr: *mut *mut wire_uint_8_list,
+    len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
 pub struct wire_list_opt_attribute {
     ptr: *mut *mut wire_Attribute,
     len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_list_opt_i32 {
+    ptr: *mut *mut i32,
+    len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_list_opt_i32_array_1 {
+    ptr: *mut *mut wire_int_32_list,
+    len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_list_opt_kitchen_sink {
+    ptr: *mut *mut wire_KitchenSink,
+    len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_list_opt_list_optionals {
+    ptr: *mut *mut wire_ListOptionals,
+    len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_list_opt_uint_8_list {
+    ptr: *mut *mut wire_uint_8_list,
+    len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_list_opt_weekdays {
+    ptr: *mut *mut i32,
+    len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_ListOptionals {
+    prims: *mut wire_list_opt_i32,
+    arrays: *mut wire_list_opt_i32_array_1,
+    strings: *mut wire_list_opt_String,
+    zcopy: *mut wire_list_opt_ZeroCopyBuffer_Uint8List,
+    weekdays: *mut wire_list_opt_weekdays,
+    times: *mut wire_list_opt_Chrono_Utc,
+    uuids: *mut wire_list_opt_Uuid,
+    bytes: *mut wire_list_opt_uint_8_list,
+    structs: *mut wire_list_opt_list_optionals,
+    enums: *mut wire_list_opt_kitchen_sink,
+    objects: *mut wire_list_opt_DartOpaque,
 }
 
 #[repr(C)]

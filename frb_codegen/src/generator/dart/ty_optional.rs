@@ -1,7 +1,7 @@
 use crate::generator::dart::ty::*;
-use crate::ir::*;
 use crate::target::{Acc, Target};
 use crate::type_dart_generator_struct;
+use crate::{fmt, ir::*};
 
 type_dart_generator_struct!(TypeOptionalGenerator, IrTypeOptional);
 
@@ -26,19 +26,30 @@ impl TypeDartGeneratorTrait for TypeOptionalGenerator<'_> {
     }
 
     fn api_fill_to_wire_body(&self) -> Option<String> {
-        self.ir.inner.needs_indirection(Target::Io).then(|| {
-            if self.ir.inner.is_primitive() {
-                format!(
-                    "if (apiObj != null) wireObj.value = api2wire_{}(apiObj);",
-                    self.ir.inner.safe_ident()
-                )
+        let inner = self.ir.inner.safe_ident();
+        if self.ir.inner.needs_indirection(Target::Io) {
+            return Some(if self.ir.inner.is_primitive() {
+                format!("if (apiObj != null) wireObj.value = api2wire_{inner}(apiObj);")
             } else {
-                format!(
-                    "if (apiObj != null) _api_fill_to_wire_{}(apiObj, wireObj.ref);",
-                    self.ir.inner.safe_ident()
-                )
-            }
-        })
+                format!("if (apiObj != null) _api_fill_to_wire_{inner}(apiObj, wireObj.ref);")
+            });
+        }
+
+        let body = match self.ir.inner.as_ref() {
+            // IrType::Delegate(delegate) => fmt!(
+            //     "final delegate = api2wire_{}(apiObj);"
+            //     "_api_fill_to_wire_{}(delegate, wireObj);",
+            //     delegate.safe_ident(),
+            //     delegate.get_delegate().safe_ident()
+            // )
+            // .to_string(),
+            IrType::Delegate(delegate) => format!("throw UnimplementedError(r'{:?}');", delegate),
+            IrType::Boxed(boxed) => format!("throw UnimplementedError(r'{:?}');", boxed),
+            IrType::PrimitiveList(prims) => format!("throw UnimplementedError(r'{:?}');", prims),
+            _ => return None,
+        };
+
+        Some(format!("if (apiObj == null) return; {body}"))
     }
 
     fn wire2api_body(&self) -> String {

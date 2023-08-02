@@ -1569,6 +1569,55 @@ pub fn handle_complex_type_2() -> Result<SyncReturn<Vec<ApplicationMessage>>> {
     Ok(SyncReturn(vec![]))
 }
 
+#[frb(dart_metadata = ("freezed"))]
+pub struct ListOptionals {
+    pub prims: Option<Vec<Option<i32>>>,
+    pub arrays: Option<Vec<Option<[i32; 1]>>>,
+    pub strings: Option<Vec<Option<String>>>,
+    pub zcopy: Option<Vec<Option<ZeroCopyBuffer<Vec<u8>>>>>,
+    pub weekdays: Option<Vec<Option<Weekdays>>>,
+    pub times: Option<Vec<Option<chrono::DateTime<chrono::Utc>>>>,
+    pub uuids: Option<Vec<Option<uuid::Uuid>>>,
+    pub bytes: Option<Vec<Option<Vec<u8>>>>,
+    pub structs: Option<Vec<Option<ListOptionals>>>,
+    // pub boxes: Option<Vec<Option<Box<ListOptionals>>>>,
+    pub enums: Option<Vec<Option<KitchenSink>>>,
+    pub objects: Option<Vec<Option<DartOpaque>>>,
+    // pub opaques: Option<Vec<Option<RustOpaque<[i32; 0]>>>>,
+}
+
+pub fn handle_list_optionals(
+    prims: Option<Vec<Option<i32>>>,
+    arrays: Option<Vec<Option<[i32; 1]>>>,
+    strings: Option<Vec<Option<String>>>,
+    zcopy: Option<Vec<Option<ZeroCopyBuffer<Vec<u8>>>>>,
+    weekdays: Option<Vec<Option<Weekdays>>>,
+    times: Option<Vec<Option<chrono::DateTime<chrono::Utc>>>>,
+    uuids: Option<Vec<Option<uuid::Uuid>>>,
+    bytes: Option<Vec<Option<Vec<u8>>>>,
+    structs: Option<Vec<Option<ListOptionals>>>,
+    // boxes: Option<Vec<Option<Box<ListOptionals>>>>,
+    enums: Option<Vec<Option<KitchenSink>>>,
+    objects: Option<Vec<Option<DartOpaque>>>,
+    // opaques: Option<Vec<Option<RustOpaque<[i32; 0]>>>>,
+) -> ListOptionals {
+    ListOptionals {
+        prims,
+        arrays,
+        strings,
+        zcopy,
+        weekdays,
+        times,
+        uuids,
+        bytes,
+        structs,
+        // boxes,
+        enums,
+        objects,
+        // opaques,
+    }
+}
+
 pub struct RawStringItemStruct {
     pub r#type: String,
 }

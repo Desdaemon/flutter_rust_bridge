@@ -168,7 +168,7 @@ impl IrType {
 
     #[inline]
     pub fn needs_indirection(&self, target: Target) -> bool {
-        self.needs_box(target) && !self.rust_wire_is_pointer(target)
+        !self.rust_wire_is_pointer(target) && self.needs_box(target)
     }
 
     pub fn wrapper_struct<'file>(&self, ir_file: &'file IrFile) -> Option<&'file str> {

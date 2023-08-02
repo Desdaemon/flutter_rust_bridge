@@ -3683,6 +3683,428 @@ abstract class KitchenSink_Enums implements KitchenSink {
 }
 
 /// @nodoc
+mixin _$ListOptionals {
+  List<int?>? get prims => throw _privateConstructorUsedError;
+  List<I32Array1?>? get arrays => throw _privateConstructorUsedError;
+  List<String?>? get strings => throw _privateConstructorUsedError;
+  List<Uint8List?>? get zcopy => throw _privateConstructorUsedError;
+  List<Weekdays?>? get weekdays => throw _privateConstructorUsedError;
+  List<DateTime?>? get times => throw _privateConstructorUsedError;
+  List<UuidValue?>? get uuids => throw _privateConstructorUsedError;
+  List<Uint8List?>? get bytes => throw _privateConstructorUsedError;
+  List<ListOptionals?>? get structs => throw _privateConstructorUsedError;
+  List<KitchenSink?>? get enums => throw _privateConstructorUsedError;
+  List<Object?>? get objects => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $ListOptionalsCopyWith<ListOptionals> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ListOptionalsCopyWith<$Res> {
+  factory $ListOptionalsCopyWith(ListOptionals value, $Res Function(ListOptionals) then) =
+      _$ListOptionalsCopyWithImpl<$Res, ListOptionals>;
+  @useResult
+  $Res call(
+      {List<int?>? prims,
+      List<I32Array1?>? arrays,
+      List<String?>? strings,
+      List<Uint8List?>? zcopy,
+      List<Weekdays?>? weekdays,
+      List<DateTime?>? times,
+      List<UuidValue?>? uuids,
+      List<Uint8List?>? bytes,
+      List<ListOptionals?>? structs,
+      List<KitchenSink?>? enums,
+      List<Object?>? objects});
+}
+
+/// @nodoc
+class _$ListOptionalsCopyWithImpl<$Res, $Val extends ListOptionals> implements $ListOptionalsCopyWith<$Res> {
+  _$ListOptionalsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? prims = freezed,
+    Object? arrays = freezed,
+    Object? strings = freezed,
+    Object? zcopy = freezed,
+    Object? weekdays = freezed,
+    Object? times = freezed,
+    Object? uuids = freezed,
+    Object? bytes = freezed,
+    Object? structs = freezed,
+    Object? enums = freezed,
+    Object? objects = freezed,
+  }) {
+    return _then(_value.copyWith(
+      prims: freezed == prims
+          ? _value.prims
+          : prims // ignore: cast_nullable_to_non_nullable
+              as List<int?>?,
+      arrays: freezed == arrays
+          ? _value.arrays
+          : arrays // ignore: cast_nullable_to_non_nullable
+              as List<I32Array1?>?,
+      strings: freezed == strings
+          ? _value.strings
+          : strings // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      zcopy: freezed == zcopy
+          ? _value.zcopy
+          : zcopy // ignore: cast_nullable_to_non_nullable
+              as List<Uint8List?>?,
+      weekdays: freezed == weekdays
+          ? _value.weekdays
+          : weekdays // ignore: cast_nullable_to_non_nullable
+              as List<Weekdays?>?,
+      times: freezed == times
+          ? _value.times
+          : times // ignore: cast_nullable_to_non_nullable
+              as List<DateTime?>?,
+      uuids: freezed == uuids
+          ? _value.uuids
+          : uuids // ignore: cast_nullable_to_non_nullable
+              as List<UuidValue?>?,
+      bytes: freezed == bytes
+          ? _value.bytes
+          : bytes // ignore: cast_nullable_to_non_nullable
+              as List<Uint8List?>?,
+      structs: freezed == structs
+          ? _value.structs
+          : structs // ignore: cast_nullable_to_non_nullable
+              as List<ListOptionals?>?,
+      enums: freezed == enums
+          ? _value.enums
+          : enums // ignore: cast_nullable_to_non_nullable
+              as List<KitchenSink?>?,
+      objects: freezed == objects
+          ? _value.objects
+          : objects // ignore: cast_nullable_to_non_nullable
+              as List<Object?>?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_ListOptionalsCopyWith<$Res> implements $ListOptionalsCopyWith<$Res> {
+  factory _$$_ListOptionalsCopyWith(_$_ListOptionals value, $Res Function(_$_ListOptionals) then) =
+      __$$_ListOptionalsCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {List<int?>? prims,
+      List<I32Array1?>? arrays,
+      List<String?>? strings,
+      List<Uint8List?>? zcopy,
+      List<Weekdays?>? weekdays,
+      List<DateTime?>? times,
+      List<UuidValue?>? uuids,
+      List<Uint8List?>? bytes,
+      List<ListOptionals?>? structs,
+      List<KitchenSink?>? enums,
+      List<Object?>? objects});
+}
+
+/// @nodoc
+class __$$_ListOptionalsCopyWithImpl<$Res> extends _$ListOptionalsCopyWithImpl<$Res, _$_ListOptionals>
+    implements _$$_ListOptionalsCopyWith<$Res> {
+  __$$_ListOptionalsCopyWithImpl(_$_ListOptionals _value, $Res Function(_$_ListOptionals) _then) : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? prims = freezed,
+    Object? arrays = freezed,
+    Object? strings = freezed,
+    Object? zcopy = freezed,
+    Object? weekdays = freezed,
+    Object? times = freezed,
+    Object? uuids = freezed,
+    Object? bytes = freezed,
+    Object? structs = freezed,
+    Object? enums = freezed,
+    Object? objects = freezed,
+  }) {
+    return _then(_$_ListOptionals(
+      prims: freezed == prims
+          ? _value._prims
+          : prims // ignore: cast_nullable_to_non_nullable
+              as List<int?>?,
+      arrays: freezed == arrays
+          ? _value._arrays
+          : arrays // ignore: cast_nullable_to_non_nullable
+              as List<I32Array1?>?,
+      strings: freezed == strings
+          ? _value._strings
+          : strings // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      zcopy: freezed == zcopy
+          ? _value._zcopy
+          : zcopy // ignore: cast_nullable_to_non_nullable
+              as List<Uint8List?>?,
+      weekdays: freezed == weekdays
+          ? _value._weekdays
+          : weekdays // ignore: cast_nullable_to_non_nullable
+              as List<Weekdays?>?,
+      times: freezed == times
+          ? _value._times
+          : times // ignore: cast_nullable_to_non_nullable
+              as List<DateTime?>?,
+      uuids: freezed == uuids
+          ? _value._uuids
+          : uuids // ignore: cast_nullable_to_non_nullable
+              as List<UuidValue?>?,
+      bytes: freezed == bytes
+          ? _value._bytes
+          : bytes // ignore: cast_nullable_to_non_nullable
+              as List<Uint8List?>?,
+      structs: freezed == structs
+          ? _value._structs
+          : structs // ignore: cast_nullable_to_non_nullable
+              as List<ListOptionals?>?,
+      enums: freezed == enums
+          ? _value._enums
+          : enums // ignore: cast_nullable_to_non_nullable
+              as List<KitchenSink?>?,
+      objects: freezed == objects
+          ? _value._objects
+          : objects // ignore: cast_nullable_to_non_nullable
+              as List<Object?>?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_ListOptionals implements _ListOptionals {
+  const _$_ListOptionals(
+      {final List<int?>? prims,
+      final List<I32Array1?>? arrays,
+      final List<String?>? strings,
+      final List<Uint8List?>? zcopy,
+      final List<Weekdays?>? weekdays,
+      final List<DateTime?>? times,
+      final List<UuidValue?>? uuids,
+      final List<Uint8List?>? bytes,
+      final List<ListOptionals?>? structs,
+      final List<KitchenSink?>? enums,
+      final List<Object?>? objects})
+      : _prims = prims,
+        _arrays = arrays,
+        _strings = strings,
+        _zcopy = zcopy,
+        _weekdays = weekdays,
+        _times = times,
+        _uuids = uuids,
+        _bytes = bytes,
+        _structs = structs,
+        _enums = enums,
+        _objects = objects;
+
+  final List<int?>? _prims;
+  @override
+  List<int?>? get prims {
+    final value = _prims;
+    if (value == null) return null;
+    if (_prims is EqualUnmodifiableListView) return _prims;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<I32Array1?>? _arrays;
+  @override
+  List<I32Array1?>? get arrays {
+    final value = _arrays;
+    if (value == null) return null;
+    if (_arrays is EqualUnmodifiableListView) return _arrays;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<String?>? _strings;
+  @override
+  List<String?>? get strings {
+    final value = _strings;
+    if (value == null) return null;
+    if (_strings is EqualUnmodifiableListView) return _strings;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<Uint8List?>? _zcopy;
+  @override
+  List<Uint8List?>? get zcopy {
+    final value = _zcopy;
+    if (value == null) return null;
+    if (_zcopy is EqualUnmodifiableListView) return _zcopy;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<Weekdays?>? _weekdays;
+  @override
+  List<Weekdays?>? get weekdays {
+    final value = _weekdays;
+    if (value == null) return null;
+    if (_weekdays is EqualUnmodifiableListView) return _weekdays;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<DateTime?>? _times;
+  @override
+  List<DateTime?>? get times {
+    final value = _times;
+    if (value == null) return null;
+    if (_times is EqualUnmodifiableListView) return _times;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<UuidValue?>? _uuids;
+  @override
+  List<UuidValue?>? get uuids {
+    final value = _uuids;
+    if (value == null) return null;
+    if (_uuids is EqualUnmodifiableListView) return _uuids;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<Uint8List?>? _bytes;
+  @override
+  List<Uint8List?>? get bytes {
+    final value = _bytes;
+    if (value == null) return null;
+    if (_bytes is EqualUnmodifiableListView) return _bytes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<ListOptionals?>? _structs;
+  @override
+  List<ListOptionals?>? get structs {
+    final value = _structs;
+    if (value == null) return null;
+    if (_structs is EqualUnmodifiableListView) return _structs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<KitchenSink?>? _enums;
+  @override
+  List<KitchenSink?>? get enums {
+    final value = _enums;
+    if (value == null) return null;
+    if (_enums is EqualUnmodifiableListView) return _enums;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<Object?>? _objects;
+  @override
+  List<Object?>? get objects {
+    final value = _objects;
+    if (value == null) return null;
+    if (_objects is EqualUnmodifiableListView) return _objects;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  String toString() {
+    return 'ListOptionals(prims: $prims, arrays: $arrays, strings: $strings, zcopy: $zcopy, weekdays: $weekdays, times: $times, uuids: $uuids, bytes: $bytes, structs: $structs, enums: $enums, objects: $objects)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_ListOptionals &&
+            const DeepCollectionEquality().equals(other._prims, _prims) &&
+            const DeepCollectionEquality().equals(other._arrays, _arrays) &&
+            const DeepCollectionEquality().equals(other._strings, _strings) &&
+            const DeepCollectionEquality().equals(other._zcopy, _zcopy) &&
+            const DeepCollectionEquality().equals(other._weekdays, _weekdays) &&
+            const DeepCollectionEquality().equals(other._times, _times) &&
+            const DeepCollectionEquality().equals(other._uuids, _uuids) &&
+            const DeepCollectionEquality().equals(other._bytes, _bytes) &&
+            const DeepCollectionEquality().equals(other._structs, _structs) &&
+            const DeepCollectionEquality().equals(other._enums, _enums) &&
+            const DeepCollectionEquality().equals(other._objects, _objects));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_prims),
+      const DeepCollectionEquality().hash(_arrays),
+      const DeepCollectionEquality().hash(_strings),
+      const DeepCollectionEquality().hash(_zcopy),
+      const DeepCollectionEquality().hash(_weekdays),
+      const DeepCollectionEquality().hash(_times),
+      const DeepCollectionEquality().hash(_uuids),
+      const DeepCollectionEquality().hash(_bytes),
+      const DeepCollectionEquality().hash(_structs),
+      const DeepCollectionEquality().hash(_enums),
+      const DeepCollectionEquality().hash(_objects));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_ListOptionalsCopyWith<_$_ListOptionals> get copyWith =>
+      __$$_ListOptionalsCopyWithImpl<_$_ListOptionals>(this, _$identity);
+}
+
+abstract class _ListOptionals implements ListOptionals {
+  const factory _ListOptionals(
+      {final List<int?>? prims,
+      final List<I32Array1?>? arrays,
+      final List<String?>? strings,
+      final List<Uint8List?>? zcopy,
+      final List<Weekdays?>? weekdays,
+      final List<DateTime?>? times,
+      final List<UuidValue?>? uuids,
+      final List<Uint8List?>? bytes,
+      final List<ListOptionals?>? structs,
+      final List<KitchenSink?>? enums,
+      final List<Object?>? objects}) = _$_ListOptionals;
+
+  @override
+  List<int?>? get prims;
+  @override
+  List<I32Array1?>? get arrays;
+  @override
+  List<String?>? get strings;
+  @override
+  List<Uint8List?>? get zcopy;
+  @override
+  List<Weekdays?>? get weekdays;
+  @override
+  List<DateTime?>? get times;
+  @override
+  List<UuidValue?>? get uuids;
+  @override
+  List<Uint8List?>? get bytes;
+  @override
+  List<ListOptionals?>? get structs;
+  @override
+  List<KitchenSink?>? get enums;
+  @override
+  List<Object?>? get objects;
+  @override
+  @JsonKey(ignore: true)
+  _$$_ListOptionalsCopyWith<_$_ListOptionals> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$Measure {
   Object get field0 => throw _privateConstructorUsedError;
   @optionalTypeArgs
