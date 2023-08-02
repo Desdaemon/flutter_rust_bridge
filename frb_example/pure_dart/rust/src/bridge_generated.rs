@@ -2138,6 +2138,42 @@ fn wire_return_dart_dynamic_impl(port_: MessagePort) {
         move || move |task_callback| Ok(return_dart_dynamic()),
     )
 }
+fn wire_handle_string_references_impl(
+    port_: MessagePort,
+    boxed: impl Wire2Api<Box<str>> + UnwindSafe,
+    arc: impl Wire2Api<Arc<str>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "handle_string_references",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_boxed = boxed.wire2api();
+            let api_arc = arc.wire2api();
+            move |task_callback| Ok(handle_string_references(api_boxed, api_arc))
+        },
+    )
+}
+fn wire_handle_slices_impl(
+    port_: MessagePort,
+    boxed: impl Wire2Api<Box<[u8]>> + UnwindSafe,
+    arc: impl Wire2Api<Arc<[u8]>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "handle_slices",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_boxed = boxed.wire2api();
+            let api_arc = arc.wire2api();
+            move |task_callback| Ok(handle_slices(api_boxed, api_arc))
+        },
+    )
+}
 fn wire_test_raw_string_item_struct_impl(port_: MessagePort) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, RawStringItemStruct>(
         WrapInfo {

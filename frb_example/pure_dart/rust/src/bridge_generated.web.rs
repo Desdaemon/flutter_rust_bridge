@@ -765,6 +765,16 @@ pub fn wire_return_dart_dynamic(port_: MessagePort) {
 }
 
 #[wasm_bindgen]
+pub fn wire_handle_string_references(port_: MessagePort, boxed: String, arc: String) {
+    wire_handle_string_references_impl(port_, boxed, arc)
+}
+
+#[wasm_bindgen]
+pub fn wire_handle_slices(port_: MessagePort, boxed: Box<[u8]>, arc: Box<[u8]>) {
+    wire_handle_slices_impl(port_, boxed, arc)
+}
+
+#[wasm_bindgen]
 pub fn wire_test_raw_string_item_struct(port_: MessagePort) {
     wire_test_raw_string_item_struct_impl(port_)
 }
@@ -1038,6 +1048,31 @@ pub fn share_opaque_RwLockHideData(ptr: *const c_void) -> *const c_void {
 
 // Section: impl Wire2Api
 
+impl Wire2Api<Arc<str>> for String {
+    fn wire2api(self) -> Arc<str> {
+        let string: String = self.wire2api();
+        <Arc<str>>::from(string)
+    }
+}
+impl Wire2Api<Arc<[u8]>> for Box<[u8]> {
+    fn wire2api(self) -> Arc<[u8]> {
+        let buf: Vec<u8> = self.wire2api();
+        <Arc<[u8]>>::from(buf)
+    }
+}
+
+impl Wire2Api<Box<str>> for String {
+    fn wire2api(self) -> Box<str> {
+        let string: String = self.wire2api();
+        <Box<str>>::from(string)
+    }
+}
+impl Wire2Api<Box<[u8]>> for Box<[u8]> {
+    fn wire2api(self) -> Box<[u8]> {
+        let buf: Vec<u8> = self.wire2api();
+        <Box<[u8]>>::from(buf)
+    }
+}
 impl Wire2Api<chrono::Duration> for i64 {
     fn wire2api(self) -> chrono::Duration {
         chrono::Duration::milliseconds(self)
@@ -1923,6 +1958,17 @@ impl Wire2Api<UserId> for JsValue {
 
 // Section: impl Wire2Api for JsValue
 
+impl Wire2Api<Arc<str>> for JsValue {
+    fn wire2api(self) -> Arc<str> {
+        self.as_string().unwrap().into()
+    }
+}
+impl Wire2Api<Arc<[u8]>> for JsValue {
+    fn wire2api(self) -> Arc<[u8]> {
+        let buf: Vec<u8> = self.wire2api();
+        buf.into()
+    }
+}
 impl Wire2Api<RustOpaque<Box<dyn DartDebug>>> for JsValue {
     fn wire2api(self) -> RustOpaque<Box<dyn DartDebug>> {
         #[cfg(target_pointer_width = "64")]
@@ -1931,6 +1977,17 @@ impl Wire2Api<RustOpaque<Box<dyn DartDebug>>> for JsValue {
         }
 
         unsafe { support::opaque_from_dart((self.as_f64().unwrap() as usize) as _) }
+    }
+}
+impl Wire2Api<Box<str>> for JsValue {
+    fn wire2api(self) -> Box<str> {
+        self.as_string().unwrap().into()
+    }
+}
+impl Wire2Api<Box<[u8]>> for JsValue {
+    fn wire2api(self) -> Box<[u8]> {
+        let buf: Vec<u8> = self.wire2api();
+        buf.into()
     }
 }
 impl Wire2Api<chrono::Duration> for JsValue {

@@ -22,8 +22,28 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
 // Section: api2wire
 
   @protected
+  String api2wire_ArcStr(String raw) {
+    return api2wire_String(raw);
+  }
+
+  @protected
+  Uint8List api2wire_Arc_slice_u8(Uint8List raw) {
+    return api2wire_uint_8_list(raw);
+  }
+
+  @protected
   Object api2wire_BoxDartDebug(BoxDartDebug raw) {
     return raw.shareOrMove();
+  }
+
+  @protected
+  String api2wire_BoxStr(String raw) {
+    return api2wire_String(raw);
+  }
+
+  @protected
+  Uint8List api2wire_Box_slice_u8(Uint8List raw) {
+    return api2wire_uint_8_list(raw);
   }
 
   @protected
@@ -1340,6 +1360,18 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
 
   external dynamic /* void */ wire_return_dart_dynamic(NativePortType port_);
 
+  external dynamic /* void */ wire_handle_string_references(
+      NativePortType port_, String boxed, String arc);
+
+  external dynamic /* void */ wire_handle_slices(
+      NativePortType port_, Uint8List boxed, Uint8List arc);
+
+  external dynamic /* void */ wire_handle_string_references(
+      NativePortType port_, String boxed, String arc);
+
+  external dynamic /* void */ wire_handle_slices(
+      NativePortType port_, Uint8List boxed, Uint8List arc);
+
   external dynamic /* void */ wire_test_raw_string_item_struct(NativePortType port_);
 
   external dynamic /* void */ wire_test_more_than_just_one_raw_string_struct(NativePortType port_);
@@ -1787,6 +1819,25 @@ class FlutterRustBridgeExampleSingleBlockTestWire
       wasmModule.wire_handle_type_alias_model(port_, input);
 
   void wire_empty_struct(NativePortType port_, List<dynamic> empty) => wasmModule.wire_empty_struct(port_, empty);
+
+  void wire_handle_string_references(
+          NativePortType port_, String boxed, String arc) =>
+      wasmModule.wire_handle_string_references(port_, boxed, arc);
+
+  void wire_handle_slices(
+          NativePortType port_, Uint8List boxed, Uint8List arc) =>
+      wasmModule.wire_handle_slices(port_, boxed, arc);
+
+  void wire_handle_string_references(
+          NativePortType port_, String boxed, String arc) =>
+      wasmModule.wire_handle_string_references(port_, boxed, arc);
+
+  void wire_handle_slices(
+          NativePortType port_, Uint8List boxed, Uint8List arc) =>
+      wasmModule.wire_handle_slices(port_, boxed, arc);
+
+  void wire_empty_struct(NativePortType port_, List<dynamic> empty) =>
+      wasmModule.wire_empty_struct(port_, empty);
 
   void wire_return_dart_dynamic(NativePortType port_) => wasmModule.wire_return_dart_dynamic(port_);
 

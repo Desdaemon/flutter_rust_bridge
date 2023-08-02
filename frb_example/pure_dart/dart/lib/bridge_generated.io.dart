@@ -20,10 +20,30 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
 // Section: api2wire
 
   @protected
+  ffi.Pointer<wire_uint_8_list> api2wire_ArcStr(String raw) {
+    return api2wire_String(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_uint_8_list> api2wire_Arc_slice_u8(Uint8List raw) {
+    return api2wire_uint_8_list(raw);
+  }
+
+  @protected
   wire_BoxDartDebug api2wire_BoxDartDebug(BoxDartDebug raw) {
     final ptr = inner.new_BoxDartDebug();
     _api_fill_to_wire_BoxDartDebug(raw, ptr);
     return ptr;
+  }
+
+  @protected
+  ffi.Pointer<wire_uint_8_list> api2wire_BoxStr(String raw) {
+    return api2wire_String(raw);
+  }
+
+  @protected
+  ffi.Pointer<wire_uint_8_list> api2wire_Box_slice_u8(Uint8List raw) {
+    return api2wire_uint_8_list(raw);
   }
 
   @protected

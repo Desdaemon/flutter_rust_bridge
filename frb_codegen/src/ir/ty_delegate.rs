@@ -40,6 +40,8 @@ crate::ir! {
 pub enum IrTypeDelegate {
     Array(IrTypeDelegateArray),
     String,
+    Str(String),
+    Slice(String, IrTypePrimitive),
     StringList,
     ZeroCopyBufferVecPrimitive(IrTypePrimitive),
     PrimitiveEnum {
@@ -171,6 +173,10 @@ impl IrTypeDelegate {
             IrTypeDelegate::String => IrType::PrimitiveList(IrTypePrimitiveList {
                 primitive: IrTypePrimitive::U8,
             }),
+            IrTypeDelegate::Str(..) => IrType::Delegate(IrTypeDelegate::String),
+            IrTypeDelegate::Slice(_, prim) => IrType::PrimitiveList(IrTypePrimitiveList {
+                primitive: prim.clone(),
+            }),
             IrTypeDelegate::ZeroCopyBufferVecPrimitive(primitive) => {
                 IrType::PrimitiveList(IrTypePrimitiveList {
                     primitive: primitive.clone(),
@@ -211,6 +217,10 @@ impl IrTypeTrait for IrTypeDelegate {
         match self {
             IrTypeDelegate::Array(array) => array.safe_ident(),
             IrTypeDelegate::String => "String".to_owned(),
+            IrTypeDelegate::Str(wrapper) => format!("{wrapper}Str"),
+            IrTypeDelegate::Slice(wrapper, prim) => {
+                format!("{wrapper}_slice_{}", prim.safe_ident())
+            }
             IrTypeDelegate::StringList => "StringList".to_owned(),
             IrTypeDelegate::ZeroCopyBufferVecPrimitive(_) => {
                 "ZeroCopyBuffer_".to_owned() + &self.get_delegate().dart_api_type()
@@ -230,7 +240,8 @@ impl IrTypeTrait for IrTypeDelegate {
     fn dart_api_type(&self) -> String {
         match self {
             IrTypeDelegate::Array(array) => array.dart_api_type(),
-            IrTypeDelegate::String => "String".to_string(),
+            IrTypeDelegate::String | IrTypeDelegate::Str(..) => "String".to_string(),
+            IrTypeDelegate::Slice(..) => self.get_delegate().dart_api_type(),
             IrTypeDelegate::StringList => "List<String>".to_owned(),
             IrTypeDelegate::ZeroCopyBufferVecPrimitive(_) => self.get_delegate().dart_api_type(),
             IrTypeDelegate::PrimitiveEnum { ir, .. } => ir.dart_api_type(),
@@ -267,6 +278,10 @@ impl IrTypeTrait for IrTypeDelegate {
                 format!("[{}; {}]", array.inner_rust_api_type(), array.length())
             }
             IrTypeDelegate::String => "String".to_owned(),
+            IrTypeDelegate::Str(wrapper) => format!("{wrapper}<str>"),
+            IrTypeDelegate::Slice(wrapper, prim) => {
+                format!("{wrapper}<[{}]>", prim.rust_api_type())
+            }
             IrTypeDelegate::StringList => "Vec<String>".to_owned(),
             IrTypeDelegate::ZeroCopyBufferVecPrimitive(_) => {
                 format!("ZeroCopyBuffer<{}>", self.get_delegate().rust_api_type())

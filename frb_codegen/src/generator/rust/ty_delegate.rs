@@ -55,6 +55,17 @@ impl TypeRustGeneratorTrait for TypeDelegateGenerator<'_> {
                     ..Default::default()
                 }
             },
+            IrTypeDelegate::Str(wrapper) => {
+                Acc::distribute(Some(format!(
+                    "let string: String = self.wire2api(); <{wrapper}<str>>::from(string)"
+                )))
+            }
+            IrTypeDelegate::Slice(wrapper, prim) => {
+                Acc::distribute(Some(format!(
+                    "let buf: Vec<{prim}> = self.wire2api(); <{wrapper}<[{prim}]>>::from(buf)",
+                    prim = prim.rust_api_type()
+                )))
+            }
             IrTypeDelegate::ZeroCopyBufferVecPrimitive(_) => {
                 Acc::distribute(Some("ZeroCopyBuffer(self.wire2api())".into()))
             },
@@ -197,6 +208,12 @@ impl TypeRustGeneratorTrait for TypeDelegateGenerator<'_> {
             IrTypeDelegate::String => {
                 "self.as_string().expect(\"non-UTF-8 string, or not a string\")".into()
             }
+            IrTypeDelegate::Str(..) => "self.as_string().unwrap().into()".into(),
+            IrTypeDelegate::Slice(_, prim) => format!(
+                "let buf: Vec<{}> = self.wire2api(); buf.into()",
+                prim.rust_api_type()
+            )
+            .into(),
             IrTypeDelegate::PrimitiveEnum { repr, .. } => format!(
                 "(self.unchecked_into_f64() as {}).wire2api()",
                 repr.rust_wire_type(Target::Wasm)

@@ -641,3 +641,41 @@ impl<'a> TypeParser<'a> {
         })
     }
 }
+/// {Cow,Arc,Box}<{str,[{u8,i8,...}]}>
+fn parse_slice(wrapper: &str, generic: &SupportedInnerType) -> Option<IrTypeDelegate> {
+    match generic {
+        SupportedInnerType::Path(path) if path.ident == "str" => {
+            Some(IrTypeDelegate::Str(wrapper.to_owned()))
+        }
+        SupportedInnerType::Slice(ty) => {
+            if let SupportedInnerType::Path(path) = ty.as_ref() {
+                return Some(IrTypeDelegate::Slice(
+                    wrapper.to_owned(),
+                    IrTypePrimitive::try_from_rust_str(&path.ident.to_string())?,
+                ));
+            }
+
+            None
+        }
+        _ => None,
+    }
+}
+/// {Cow,Arc,Box}<{str,[{u8,i8,...}]}>
+fn parse_slice(wrapper: &str, generic: &SupportedInnerType) -> Option<IrTypeDelegate> {
+    match generic {
+        SupportedInnerType::Path(path) if path.ident == "str" => {
+            Some(IrTypeDelegate::Str(wrapper.to_owned()))
+        }
+        SupportedInnerType::Slice(ty) => {
+            if let SupportedInnerType::Path(path) = ty.as_ref() {
+                return Some(IrTypeDelegate::Slice(
+                    wrapper.to_owned(),
+                    IrTypePrimitive::try_from_rust_str(&path.ident.to_string())?,
+                ));
+            }
+
+            None
+        }
+        _ => None,
+    }
+}

@@ -35,14 +35,12 @@ impl TypeDartGeneratorTrait for TypeDelegateGenerator<'_> {
                 wasm: Some("return raw;".into()),
                 ..Default::default()
             },
-            IrTypeDelegate::ZeroCopyBufferVecPrimitive(_) => {
-                // In this case, even though the body is the same, their types are different
-                // and must be split.
-                let body = format!(
+            IrTypeDelegate::Str(..) => Acc::distribute(Some("return api2wire_String(raw);".into())),
+            IrTypeDelegate::ZeroCopyBufferVecPrimitive(..) | IrTypeDelegate::Slice(..) => {
+                Acc::distribute(Some(format!(
                     "return api2wire_{}(raw);",
                     self.ir.get_delegate().safe_ident()
-                );
-                Acc::distribute(Some(body))
+                )))
             }
             IrTypeDelegate::StringList => Acc {
                 io: Some(format!(
@@ -113,7 +111,10 @@ impl TypeDartGeneratorTrait for TypeDelegateGenerator<'_> {
                     self.ir.get_delegate().safe_ident()
                 )
             }
-            IrTypeDelegate::String | IrTypeDelegate::ZeroCopyBufferVecPrimitive(_) => {
+            IrTypeDelegate::String
+            | IrTypeDelegate::Str(..)
+            | IrTypeDelegate::Slice(..)
+            | IrTypeDelegate::ZeroCopyBufferVecPrimitive(_) => {
                 gen_wire2api_simple_type_cast(&self.ir.dart_api_type())
             }
             IrTypeDelegate::StringList => {

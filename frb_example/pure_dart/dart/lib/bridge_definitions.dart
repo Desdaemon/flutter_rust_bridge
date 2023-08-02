@@ -720,9 +720,11 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
 
   FlutterRustBridgeTaskConstMeta get kHandleSomeStaticStreamSinkSingleArgStaticMethodConcatenateWithConstMeta;
 
-  Future<void> handleSelfByValueMethodTakeSelfIntWrapper({required IntWrapper that, dynamic hint});
+  Future<void> handleSelfByValueMethodTakeSelfIntWrapper(
+      {required IntWrapper that, dynamic hint});
 
-  FlutterRustBridgeTaskConstMeta get kHandleSelfByValueMethodTakeSelfIntWrapperConstMeta;
+  FlutterRustBridgeTaskConstMeta
+      get kHandleSelfByValueMethodTakeSelfIntWrapperConstMeta;
 
   DropFnType get dropOpaqueBoxDartDebug;
   ShareFnType get shareOpaqueBoxDartDebug;
@@ -1310,7 +1312,8 @@ class IntWrapper {
     required this.field0,
   });
 
-  Future<void> handleSelfByValue({dynamic hint}) => bridge.handleSelfByValueMethodTakeSelfIntWrapper(
+  Future<void> handleSelfByValue({dynamic hint}) =>
+      bridge.handleSelfByValueMethodTakeSelfIntWrapper(
         that: this,
       );
 }

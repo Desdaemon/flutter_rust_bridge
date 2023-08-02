@@ -793,6 +793,24 @@ pub extern "C" fn wire_return_dart_dynamic(port_: i64) {
 }
 
 #[no_mangle]
+pub extern "C" fn wire_handle_string_references(
+    port_: i64,
+    boxed: *mut wire_uint_8_list,
+    arc: *mut wire_uint_8_list,
+) {
+    wire_handle_string_references_impl(port_, boxed, arc)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_handle_slices(
+    port_: i64,
+    boxed: *mut wire_uint_8_list,
+    arc: *mut wire_uint_8_list,
+) {
+    wire_handle_slices_impl(port_, boxed, arc)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_test_raw_string_item_struct(port_: i64) {
     wire_test_raw_string_item_struct_impl(port_)
 }
@@ -1563,9 +1581,33 @@ pub extern "C" fn share_opaque_RwLockHideData(ptr: *const c_void) -> *const c_vo
 
 // Section: impl Wire2Api
 
+impl Wire2Api<Arc<str>> for *mut wire_uint_8_list {
+    fn wire2api(self) -> Arc<str> {
+        let string: String = self.wire2api();
+        <Arc<str>>::from(string)
+    }
+}
+impl Wire2Api<Arc<[u8]>> for *mut wire_uint_8_list {
+    fn wire2api(self) -> Arc<[u8]> {
+        let buf: Vec<u8> = self.wire2api();
+        <Arc<[u8]>>::from(buf)
+    }
+}
 impl Wire2Api<RustOpaque<Box<dyn DartDebug>>> for wire_BoxDartDebug {
     fn wire2api(self) -> RustOpaque<Box<dyn DartDebug>> {
         unsafe { support::opaque_from_dart(self.ptr as _) }
+    }
+}
+impl Wire2Api<Box<str>> for *mut wire_uint_8_list {
+    fn wire2api(self) -> Box<str> {
+        let string: String = self.wire2api();
+        <Box<str>>::from(string)
+    }
+}
+impl Wire2Api<Box<[u8]>> for *mut wire_uint_8_list {
+    fn wire2api(self) -> Box<[u8]> {
+        let buf: Vec<u8> = self.wire2api();
+        <Box<[u8]>>::from(buf)
     }
 }
 impl Wire2Api<chrono::Duration> for i64 {

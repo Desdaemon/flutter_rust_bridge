@@ -1,9 +1,11 @@
 #![allow(unused_variables)]
 
+pub use std::borrow::Cow;
 use std::fmt::Debug;
 use std::ops::Deref;
+pub use std::rc::Rc;
 use std::sync::atomic::{AtomicI32, Ordering};
-use std::sync::Arc;
+pub use std::sync::Arc;
 pub use std::sync::{Mutex, RwLock};
 use std::thread::sleep;
 use std::time::Duration;
@@ -1519,6 +1521,9 @@ pub struct IntWrapper(pub i32);
 impl IntWrapper {
     pub fn handle_self_by_value(self) {}
 }
+
+pub fn handle_string_references(boxed: Box<str>, arc: Arc<str>) {}
+pub fn handle_slices(boxed: Box<[u8]>, arc: Arc<[u8]>) {}
 
 pub struct RawStringItemStruct {
     pub r#type: String,

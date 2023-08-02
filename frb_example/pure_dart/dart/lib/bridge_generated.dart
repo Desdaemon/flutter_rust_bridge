@@ -2375,6 +2375,45 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: [],
       );
 
+  Future<void> handleStringReferences(
+      {required String boxed, required String arc, dynamic hint}) {
+    var arg0 = _platform.api2wire_BoxStr(boxed);
+    var arg1 = _platform.api2wire_ArcStr(arc);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) =>
+          _platform.inner.wire_handle_string_references(port_, arg0, arg1),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kHandleStringReferencesConstMeta,
+      argValues: [boxed, arc],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHandleStringReferencesConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "handle_string_references",
+        argNames: ["boxed", "arc"],
+      );
+
+  Future<void> handleSlices(
+      {required Uint8List boxed, required Uint8List arc, dynamic hint}) {
+    var arg0 = _platform.api2wire_Box_slice_u8(boxed);
+    var arg1 = _platform.api2wire_Arc_slice_u8(arc);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_handle_slices(port_, arg0, arg1),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kHandleSlicesConstMeta,
+      argValues: [boxed, arc],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHandleSlicesConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "handle_slices",
+        argNames: ["boxed", "arc"],
+      );
+
   Future<RawStringItemStruct> testRawStringItemStruct({dynamic hint}) {
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_test_raw_string_item_struct(port_),
