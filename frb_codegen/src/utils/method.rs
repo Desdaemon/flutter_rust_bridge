@@ -2,6 +2,7 @@ use crate::ir::IrFile;
 
 const STATIC_METHOD_MARKER: &str = "__static_method__";
 const METHOD_MARKER: &str = "__method__";
+const TAKE_SELF_MARKER: &str = "take_self__";
 
 pub(crate) struct MethodNamingUtil;
 
@@ -28,20 +29,43 @@ impl MethodNamingUtil {
 
     // Returns the name of the struct that this method is for
     fn non_static_method_return_struct_name(s: &str) -> String {
-        s.split(METHOD_MARKER).last().unwrap().to_string()
+        s.replace(TAKE_SELF_MARKER, "")
+            .split(METHOD_MARKER)
+            .last()
+            .unwrap()
+            .to_string()
     }
 
     // Returns the name of method itself
     fn non_static_method_return_method_name(s: &str) -> String {
-        s.split(METHOD_MARKER).next().unwrap().to_string()
+        s.replace(TAKE_SELF_MARKER, "")
+            .split(METHOD_MARKER)
+            .next()
+            .unwrap()
+            .to_string()
     }
 
     fn mark_as_static_method(s: &str, struct_name: &str) -> String {
         format!("{s}{STATIC_METHOD_MARKER}{struct_name}")
     }
 
-    fn mark_as_non_static_method(s: &str, struct_name: &str) -> String {
-        format!("{s}{METHOD_MARKER}{struct_name}")
+    fn mark_as_non_static_method(
+        s: &str,
+        struct_name: &str,
+        takes_receiver_by_value: bool,
+    ) -> String {
+        format!(
+            "{s}{METHOD_MARKER}{}{struct_name}",
+            if takes_receiver_by_value {
+                TAKE_SELF_MARKER
+            } else {
+                ""
+            }
+        )
+    }
+
+    fn method_takes_self(s: &str) -> bool {
+        s.contains(TAKE_SELF_MARKER)
     }
 
     //Does `ir_file` has any methods directed for `struct_name`?
@@ -56,14 +80,19 @@ impl MethodNamingUtil {
 #[derive(Debug)]
 pub enum MethodInfo {
     Not,
-    Static { struct_name: String },
-    NonStatic { struct_name: String },
+    Static {
+        struct_name: String,
+    },
+    NonStatic {
+        struct_name: String,
+        takes_receiver_by_value: bool,
+    },
 }
 
 #[derive(Debug)]
 pub struct FunctionName {
     actual_name: String,
-    method_info: MethodInfo,
+    pub(crate) method_info: MethodInfo,
 }
 
 impl FunctionName {
@@ -80,9 +109,14 @@ impl FunctionName {
             MethodInfo::Static { struct_name } => {
                 MethodNamingUtil::mark_as_static_method(&self.actual_name, struct_name)
             }
-            MethodInfo::NonStatic { struct_name } => {
-                MethodNamingUtil::mark_as_non_static_method(&self.actual_name, struct_name)
-            }
+            MethodInfo::NonStatic {
+                struct_name,
+                takes_receiver_by_value,
+            } => MethodNamingUtil::mark_as_non_static_method(
+                &self.actual_name,
+                struct_name,
+                *takes_receiver_by_value,
+            ),
         }
     }
 
@@ -99,6 +133,7 @@ impl FunctionName {
                 actual_name: MethodNamingUtil::non_static_method_return_method_name(s),
                 method_info: MethodInfo::NonStatic {
                     struct_name: MethodNamingUtil::non_static_method_return_struct_name(s),
+                    takes_receiver_by_value: MethodNamingUtil::method_takes_self(s),
                 },
             }
         } else {
@@ -124,7 +159,7 @@ impl FunctionName {
         match &self.method_info {
             MethodInfo::Not => None,
             MethodInfo::Static { struct_name } => Some(struct_name.clone()),
-            MethodInfo::NonStatic { struct_name } => Some(struct_name.clone()),
+            MethodInfo::NonStatic { struct_name, .. } => Some(struct_name.clone()),
         }
     }
 

@@ -2476,6 +2476,22 @@ fn wire_handle_some_static_stream_sink_single_arg__static_method__ConcatenateWit
         },
     )
 }
+fn wire_handle_self_by_value__method__take_self__IntWrapper_impl(
+    port_: MessagePort,
+    that: impl Wire2Api<IntWrapper> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "handle_self_by_value__method__take_self__IntWrapper",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_that = that.wire2api();
+            move |task_callback| Ok(IntWrapper::handle_self_by_value(api_that))
+        },
+    )
+}
 // Section: wrapper structs
 
 #[derive(Clone)]

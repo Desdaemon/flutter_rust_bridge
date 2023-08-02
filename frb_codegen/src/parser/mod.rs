@@ -19,6 +19,7 @@ use topological_sort::TopologicalSort;
 use crate::ir::*;
 
 use crate::generator::rust::HANDLER_NAME;
+use crate::method_utils::{FunctionName, MethodInfo};
 use crate::parser::source_graph::Crate;
 use crate::parser::ty::TypeParser;
 use crate::utils::method::FunctionName;
@@ -343,21 +344,17 @@ fn item_method_to_function(
     if let Type::Path(p) = item_impl.self_ty.as_ref() {
         let struct_name = p.path.segments.first().unwrap().ident.to_string();
         let span = item_method.sig.ident.span();
-        let is_static_method = {
-            let Signature { inputs, .. } = &item_method.sig;
-            {
-                !matches!(inputs.first(), Some(FnArg::Receiver(..)))
+        let (is_static_method, takes_receiver_by_value) = {
+            match item_method.sig.inputs.first() {
+                Some(FnArg::Receiver(recv)) => (false, recv.reference.is_none()),
+                _ => (true, false),
             }
         };
         let method_name = if is_static_method {
             let self_type = {
                 let ItemImpl { self_ty, .. } = item_impl;
-                if let Type::Path(TypePath { qself: _, path }) = &**self_ty {
-                    if let Some(PathSegment {
-                        ident,
-                        arguments: _,
-                    }) = path.segments.first()
-                    {
+                if let Type::Path(TypePath { path, .. }) = self_ty.as_ref() {
+                    if let Some(PathSegment { ident, .. }) = path.segments.first() {
                         Some(ident.to_string())
                     } else {
                         None
@@ -369,7 +366,7 @@ fn item_method_to_function(
             Ident::new(
                 &FunctionName::new(
                     &item_method.sig.ident.to_string(),
-                    crate::utils::method::MethodInfo::Static {
+                    MethodInfo::Static {
                         struct_name: self_type.unwrap(),
                     },
                 )
@@ -380,8 +377,9 @@ fn item_method_to_function(
             Ident::new(
                 &FunctionName::new(
                     &item_method.sig.ident.to_string(),
-                    crate::utils::method::MethodInfo::NonStatic {
+                    MethodInfo::NonStatic {
                         struct_name: struct_name.clone(),
+                        takes_receiver_by_value,
                     },
                 )
                 .serialize(),

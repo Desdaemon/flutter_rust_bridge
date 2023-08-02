@@ -3984,6 +3984,25 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
       _wire_handle_some_static_stream_sink_single_arg__static_method__ConcatenateWithPtr
           .asFunction<void Function(int)>();
 
+  void wire_handle_self_by_value__method__take_self__IntWrapper(
+    int port_,
+    ffi.Pointer<wire_IntWrapper> that,
+  ) {
+    return _wire_handle_self_by_value__method__take_self__IntWrapper(
+      port_,
+      that,
+    );
+  }
+
+  late final _wire_handle_self_by_value__method__take_self__IntWrapperPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Void Function(ffi.Int64, ffi.Pointer<wire_IntWrapper>)>>(
+          'wire_handle_self_by_value__method__take_self__IntWrapper');
+  late final _wire_handle_self_by_value__method__take_self__IntWrapper =
+      _wire_handle_self_by_value__method__take_self__IntWrapperPtr
+          .asFunction<void Function(int, ffi.Pointer<wire_IntWrapper>)>();
+
   wire_BoxDartDebug new_BoxDartDebug() {
     return _new_BoxDartDebug();
   }

@@ -924,6 +924,14 @@ pub extern "C" fn wire_handle_some_static_stream_sink_single_arg__static_method_
     wire_handle_some_static_stream_sink_single_arg__static_method__ConcatenateWith_impl(port_)
 }
 
+#[no_mangle]
+pub extern "C" fn wire_handle_self_by_value__method__take_self__IntWrapper(
+    port_: i64,
+    that: *mut wire_IntWrapper,
+) {
+    wire_handle_self_by_value__method__take_self__IntWrapper_impl(port_, that)
+}
+
 // Section: allocate functions
 
 #[no_mangle]
@@ -1108,6 +1116,11 @@ pub extern "C" fn new_box_autoadd_i32_0(value: i32) -> *mut i32 {
 #[no_mangle]
 pub extern "C" fn new_box_autoadd_i64_0(value: i64) -> *mut i64 {
     support::new_leak_box_ptr(value)
+}
+
+#[no_mangle]
+pub extern "C" fn new_box_autoadd_int_wrapper_0() -> *mut wire_IntWrapper {
+    support::new_leak_box_ptr(wire_IntWrapper::new_with_null_ptr())
 }
 
 #[no_mangle]
@@ -1901,6 +1914,12 @@ impl Wire2Api<i64> for *mut i64 {
         unsafe { *support::box_from_leak_ptr(self) }
     }
 }
+impl Wire2Api<IntWrapper> for *mut wire_IntWrapper {
+    fn wire2api(self) -> IntWrapper {
+        let wrap = unsafe { support::box_from_leak_ptr(self) };
+        Wire2Api::<IntWrapper>::wire2api(*wrap).into()
+    }
+}
 impl Wire2Api<KitchenSink> for *mut wire_KitchenSink {
     fn wire2api(self) -> KitchenSink {
         let wrap = unsafe { support::box_from_leak_ptr(self) };
@@ -2287,6 +2306,11 @@ impl Wire2Api<Vec<i8>> for *mut wire_int_8_list {
             let wrap = support::box_from_leak_ptr(self);
             support::vec_from_leak_ptr(wrap.ptr, wrap.len)
         }
+    }
+}
+impl Wire2Api<IntWrapper> for wire_IntWrapper {
+    fn wire2api(self) -> IntWrapper {
+        IntWrapper(self.field0.wire2api())
     }
 }
 impl Wire2Api<KitchenSink> for wire_KitchenSink {
@@ -2804,6 +2828,12 @@ pub struct wire_int_64_list {
 pub struct wire_int_8_list {
     ptr: *mut i8,
     len: i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_IntWrapper {
+    field0: i32,
 }
 
 #[repr(C)]

@@ -2738,6 +2738,27 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: [],
       );
 
+  Future<void> handleSelfByValueMethodTakeSelfIntWrapper(
+      {required IntWrapper that, dynamic hint}) {
+    var arg0 = _platform.api2wire_box_autoadd_int_wrapper(that);
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner
+          .wire_handle_self_by_value__method__take_self__IntWrapper(
+              port_, arg0),
+      parseSuccessData: _wire2api_unit,
+      constMeta: kHandleSelfByValueMethodTakeSelfIntWrapperConstMeta,
+      argValues: [that],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta
+      get kHandleSelfByValueMethodTakeSelfIntWrapperConstMeta =>
+          const FlutterRustBridgeTaskConstMeta(
+            debugName: "handle_self_by_value__method__take_self__IntWrapper",
+            argNames: ["that"],
+          );
+
   DropFnType get dropOpaqueBoxDartDebug => _platform.inner.drop_opaque_BoxDartDebug;
   ShareFnType get shareOpaqueBoxDartDebug => _platform.inner.share_opaque_BoxDartDebug;
   OpaqueTypeFinalizer get BoxDartDebugFinalizer => _platform.BoxDartDebugFinalizer;

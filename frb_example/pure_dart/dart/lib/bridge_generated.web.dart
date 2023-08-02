@@ -335,6 +335,11 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  List<dynamic> api2wire_box_autoadd_int_wrapper(IntWrapper raw) {
+    return api2wire_int_wrapper(raw);
+  }
+
+  @protected
   List<dynamic> api2wire_box_autoadd_kitchen_sink(KitchenSink raw) {
     return api2wire_kitchen_sink(raw);
   }
@@ -647,6 +652,11 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   @protected
   Int8List api2wire_int_8_list(Int8List raw) {
     return raw;
+  }
+
+  @protected
+  List<dynamic> api2wire_int_wrapper(IntWrapper raw) {
+    return [api2wire_i32(raw.field0)];
   }
 
   @protected
@@ -1380,6 +1390,9 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
   external dynamic /* void */ wire_handle_some_static_stream_sink_single_arg__static_method__ConcatenateWith(
       NativePortType port_);
 
+  external dynamic /* void */ wire_handle_self_by_value__method__take_self__IntWrapper(
+      NativePortType port_, List<dynamic> that);
+
   external dynamic /*  */ drop_opaque_BoxDartDebug(ptr);
 
   external int /* *const c_void */ share_opaque_BoxDartDebug(ptr);
@@ -1838,6 +1851,11 @@ class FlutterRustBridgeExampleSingleBlockTestWire
 
   void wire_handle_some_static_stream_sink_single_arg__static_method__ConcatenateWith(NativePortType port_) =>
       wasmModule.wire_handle_some_static_stream_sink_single_arg__static_method__ConcatenateWith(port_);
+
+  void wire_handle_self_by_value__method__take_self__IntWrapper(
+          NativePortType port_, List<dynamic> that) =>
+      wasmModule.wire_handle_self_by_value__method__take_self__IntWrapper(
+          port_, that);
 
   dynamic /*  */ drop_opaque_BoxDartDebug(ptr) => wasmModule.drop_opaque_BoxDartDebug(ptr);
 

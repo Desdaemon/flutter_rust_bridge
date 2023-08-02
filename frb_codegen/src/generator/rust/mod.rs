@@ -32,6 +32,8 @@ use std::collections::HashSet;
 use std::fmt::Display;
 
 use crate::ir::IrType::*;
+use crate::method_utils::FunctionName;
+use crate::method_utils::MethodInfo;
 use crate::others::*;
 use crate::target::Acc;
 use crate::target::Target;
@@ -332,8 +334,13 @@ impl<'a> Generator<'a> {
             .join("");
 
         let code_call_inner_func = if f.is_non_static_method() || f.is_static_method() {
-            let method_name = if f.is_non_static_method() {
-                inner_func_params[0] = format!("&{}", inner_func_params[0]);
+            let method_name = if let MethodInfo::NonStatic {
+                takes_receiver_by_value,
+                ..
+            } = &f.method_info
+            {
+                let ref_ = if *takes_receiver_by_value { "" } else { "&" };
+                inner_func_params[0] = format!("{ref_}{}", inner_func_params[0]);
                 FunctionName::deserialize(&func.name).method_name()
             } else if f.is_static_method() {
                 FunctionName::deserialize(&func.name)

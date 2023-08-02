@@ -1515,6 +1515,11 @@ pub fn return_dart_dynamic() -> DartAbi {
     vec!["foo".into_dart()].into_dart()
 }
 
+pub struct IntWrapper(pub i32);
+impl IntWrapper {
+    pub fn handle_self_by_value(self) {}
+}
+
 pub struct RawStringItemStruct {
     pub r#type: String,
 }

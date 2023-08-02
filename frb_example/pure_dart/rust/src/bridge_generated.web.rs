@@ -892,6 +892,11 @@ pub fn wire_handle_some_static_stream_sink_single_arg__static_method__Concatenat
     wire_handle_some_static_stream_sink_single_arg__static_method__ConcatenateWith_impl(port_)
 }
 
+#[wasm_bindgen]
+pub fn wire_handle_self_by_value__method__take_self__IntWrapper(port_: MessagePort, that: JsValue) {
+    wire_handle_self_by_value__method__take_self__IntWrapper_impl(port_, that)
+}
+
 // Section: allocate functions
 
 // Section: related functions
@@ -1449,6 +1454,18 @@ impl Wire2Api<Vec<i64>> for Box<[i64]> {
 impl Wire2Api<Vec<i8>> for Box<[i8]> {
     fn wire2api(self) -> Vec<i8> {
         self.into_vec()
+    }
+}
+impl Wire2Api<IntWrapper> for JsValue {
+    fn wire2api(self) -> IntWrapper {
+        let self_ = self.dyn_into::<JsArray>().unwrap();
+        assert_eq!(
+            self_.length(),
+            1,
+            "Expected 1 elements, got {}",
+            self_.length()
+        );
+        IntWrapper(self_.get(0).wire2api())
     }
 }
 impl Wire2Api<KitchenSink> for JsValue {

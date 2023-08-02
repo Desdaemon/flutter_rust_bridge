@@ -596,6 +596,11 @@ impl<'a> TypeParser<'a> {
     fn parse_struct_core(&mut self, ident_string: &String) -> Option<IrStruct> {
         let src_struct = self.src_structs[ident_string];
         let mut fields = Vec::new();
+        assert!(
+            !src_struct.src.fields.is_empty(),
+            "Zero-sized structs are not supported: {}",
+            src_struct.ident,
+        );
         let (is_fields_named, struct_fields) = match &src_struct.src.fields {
             Fields::Named(FieldsNamed { named, .. }) => (true, named),
             Fields::Unnamed(FieldsUnnamed { unnamed, .. }) => (false, unnamed),

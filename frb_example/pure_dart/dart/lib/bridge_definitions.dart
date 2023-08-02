@@ -720,6 +720,10 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
 
   FlutterRustBridgeTaskConstMeta get kHandleSomeStaticStreamSinkSingleArgStaticMethodConcatenateWithConstMeta;
 
+  Future<void> handleSelfByValueMethodTakeSelfIntWrapper({required IntWrapper that, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHandleSelfByValueMethodTakeSelfIntWrapperConstMeta;
+
   DropFnType get dropOpaqueBoxDartDebug;
   ShareFnType get shareOpaqueBoxDartDebug;
   OpaqueTypeFinalizer get BoxDartDebugFinalizer;
@@ -1295,6 +1299,20 @@ class I32Array2 extends NonGrowableListView<int> {
         super(inner);
   I32Array2.unchecked(Int32List inner) : super(inner);
   I32Array2.init() : super(Int32List(arraySize));
+}
+
+class IntWrapper {
+  final FlutterRustBridgeExampleSingleBlockTest bridge;
+  final int field0;
+
+  const IntWrapper({
+    required this.bridge,
+    required this.field0,
+  });
+
+  Future<void> handleSelfByValue({dynamic hint}) => bridge.handleSelfByValueMethodTakeSelfIntWrapper(
+        that: this,
+      );
 }
 
 @freezed
