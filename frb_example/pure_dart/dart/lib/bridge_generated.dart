@@ -302,8 +302,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["n"],
       );
 
-  Future<MySize> handleStruct(
-      {required MySize arg, required MySize boxed, dynamic hint}) {
+  Future<MySize> handleStruct({required MySize arg, required MySize boxed, dynamic hint}) {
     var arg0 = _platform.api2wire_my_size(arg);
     var arg1 = _platform.api2wire_box_my_size(boxed);
     return _platform.executeNormal(FlutterRustBridgeTask(
@@ -320,8 +319,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["arg", "boxed"],
       );
 
-  MySize handleStructSync(
-      {required MySize arg, required MySize boxed, dynamic hint}) {
+  MySize handleStructSync({required MySize arg, required MySize boxed, dynamic hint}) {
     var arg0 = _platform.api2wire_my_size(arg);
     var arg1 = _platform.api2wire_box_my_size(boxed);
     return _platform.executeSync(FlutterRustBridgeSyncTask(
@@ -338,8 +336,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["arg", "boxed"],
       );
 
-  Future<NewTypeInt> handleNewtype(
-      {NewTypeInt arg = const NewTypeInt(field0: 0), dynamic hint}) {
+  Future<NewTypeInt> handleNewtype({NewTypeInt arg = const NewTypeInt(field0: 0), dynamic hint}) {
     var arg0 = _platform.api2wire_new_type_int(arg);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_handle_newtype(port_, arg0),
@@ -435,8 +432,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["names"],
       );
 
-  Future<MyTreeNode> handleComplexStruct(
-      {required MyTreeNode s, dynamic hint}) {
+  Future<MyTreeNode> handleComplexStruct({required MyTreeNode s, dynamic hint}) {
     var arg0 = _platform.api2wire_my_tree_node(s);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_handle_complex_struct(port_, arg0),
@@ -721,8 +717,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["val"],
       );
 
-  Future<KitchenSink> handleEnumStruct(
-      {required KitchenSink val, dynamic hint}) {
+  Future<KitchenSink> handleEnumStruct({required KitchenSink val, dynamic hint}) {
     var arg0 = _platform.api2wire_kitchen_sink(val);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_handle_enum_struct(port_, arg0),
@@ -800,8 +795,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: [],
       );
 
-  Future<bool> isAppEmbedded(
-      {required ApplicationSettings appSettings, dynamic hint}) {
+  Future<bool> isAppEmbedded({required ApplicationSettings appSettings, dynamic hint}) {
     var arg0 = _platform.api2wire_application_settings(appSettings);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_is_app_embedded(port_, arg0),
@@ -1405,8 +1399,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["ids"],
       );
 
-  Future<FeatureUuid> handleNestedUuids(
-      {required FeatureUuid ids, dynamic hint}) {
+  Future<FeatureUuid> handleNestedUuids({required FeatureUuid ids, dynamic hint}) {
     var arg0 = _platform.api2wire_feature_uuid(ids);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_handle_nested_uuids(port_, arg0),
@@ -2146,8 +2139,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["opaque1", "opaque2"],
       );
 
-  Future<void> getNestedDartOpaque(
-      {required DartOpaqueNested opaque, dynamic hint}) {
+  Future<void> getNestedDartOpaque({required DartOpaqueNested opaque, dynamic hint}) {
     var arg0 = _platform.api2wire_dart_opaque_nested(opaque);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_get_nested_dart_opaque(port_, arg0),
@@ -2179,8 +2171,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["opaque"],
       );
 
-  Future<void> getEnumDartOpaque(
-      {required EnumDartOpaque opaque, dynamic hint}) {
+  Future<void> getEnumDartOpaque({required EnumDartOpaque opaque, dynamic hint}) {
     var arg0 = _platform.api2wire_enum_dart_opaque(opaque);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_get_enum_dart_opaque(port_, arg0),
@@ -2413,8 +2404,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHandleVecStringConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kHandleVecStringConstMeta => const FlutterRustBridgeTaskConstMeta(
         debugName: "handle_vec_string",
         argNames: ["strings"],
       );
@@ -2452,35 +2442,17 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     var arg5 = _platform.api2wire_opt_usize(skipRowsAfterHeader);
     var arg6 = _platform.api2wire_opt_usize(chunkSize);
     return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner.wire_handle_many_optionals(
-          port_, arg0, arg1, arg2, arg3, arg4, arg5, arg6),
+      callFfi: (port_) => _platform.inner.wire_handle_many_optionals(port_, arg0, arg1, arg2, arg3, arg4, arg5, arg6),
       parseSuccessData: _wire2api_unit,
       constMeta: kHandleManyOptionalsConstMeta,
-      argValues: [
-        path,
-        hasHeader,
-        columns,
-        delimiter,
-        skipRows,
-        skipRowsAfterHeader,
-        chunkSize
-      ],
+      argValues: [path, hasHeader, columns, delimiter, skipRows, skipRowsAfterHeader, chunkSize],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHandleManyOptionalsConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kHandleManyOptionalsConstMeta => const FlutterRustBridgeTaskConstMeta(
         debugName: "handle_many_optionals",
-        argNames: [
-          "path",
-          "hasHeader",
-          "columns",
-          "delimiter",
-          "skipRows",
-          "skipRowsAfterHeader",
-          "chunkSize"
-        ],
+        argNames: ["path", "hasHeader", "columns", "delimiter", "skipRows", "skipRowsAfterHeader", "chunkSize"],
       );
 
   Future<WithEnum> handleWithEnum({required WithEnum withEnum, dynamic hint}) {
@@ -2494,14 +2466,12 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHandleWithEnumConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kHandleWithEnumConstMeta => const FlutterRustBridgeTaskConstMeta(
         debugName: "handle_with_enum",
         argNames: ["withEnum"],
       );
 
-  Future<String> handleChar(
-      {required String plain, String? opt, dynamic hint}) {
+  Future<String> handleChar({required String plain, String? opt, dynamic hint}) {
     var arg0 = api2wire_char(plain);
     var arg1 = _platform.api2wire_opt_char(opt);
     return _platform.executeNormal(FlutterRustBridgeTask(
@@ -2513,8 +2483,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHandleCharConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kHandleCharConstMeta => const FlutterRustBridgeTaskConstMeta(
         debugName: "handle_char",
         argNames: ["plain", "opt"],
       );
@@ -2530,8 +2499,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kHandleOptEnumConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
+  FlutterRustBridgeTaskConstMeta get kHandleOptEnumConstMeta => const FlutterRustBridgeTaskConstMeta(
         debugName: "handle_opt_enum",
         argNames: ["weekday"],
       );
@@ -2667,8 +2635,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     var arg1 = api2wire_u32(y);
     var arg2 = api2wire_u32(z);
     return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) =>
-          _platform.inner.wire_sum__method__SumWith(port_, arg0, arg1, arg2),
+      callFfi: (port_) => _platform.inner.wire_sum__method__SumWith(port_, arg0, arg1, arg2),
       parseSuccessData: (d) => _wire2api_u32(d),
       constMeta: kSumMethodSumWithConstMeta,
       argValues: [that, y, z],
@@ -2697,13 +2664,11 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["a"],
       );
 
-  Future<String> concatenateMethodConcatenateWith(
-      {required ConcatenateWith that, required String b, dynamic hint}) {
+  Future<String> concatenateMethodConcatenateWith({required ConcatenateWith that, required String b, dynamic hint}) {
     var arg0 = _platform.api2wire_concatenate_with(that);
     var arg1 = _platform.api2wire_String(b);
     return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner
-          .wire_concatenate__method__ConcatenateWith(port_, arg0, arg1),
+      callFfi: (port_) => _platform.inner.wire_concatenate__method__ConcatenateWith(port_, arg0, arg1),
       parseSuccessData: (d) => _wire2api_String(d),
       constMeta: kConcatenateMethodConcatenateWithConstMeta,
       argValues: [that, b],
@@ -2735,17 +2700,13 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
       );
 
   Stream<Log2> handleSomeStreamSinkMethodConcatenateWith(
-      {required ConcatenateWith that,
-      required int key,
-      required int max,
-      dynamic hint}) {
+      {required ConcatenateWith that, required int key, required int max, dynamic hint}) {
     var arg0 = _platform.api2wire_concatenate_with(that);
     var arg1 = api2wire_u32(key);
     var arg2 = api2wire_u32(max);
     return _platform.executeStream(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner
-          .wire_handle_some_stream_sink__method__ConcatenateWith(
-              port_, arg0, arg1, arg2),
+      callFfi: (port_) =>
+          _platform.inner.wire_handle_some_stream_sink__method__ConcatenateWith(port_, arg0, arg1, arg2),
       parseSuccessData: (d) => _wire2api_log_2(d),
       constMeta: kHandleSomeStreamSinkMethodConcatenateWithConstMeta,
       argValues: [that, key, max],
@@ -2759,13 +2720,10 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["that", "key", "max"],
       );
 
-  Stream<int> handleSomeStreamSinkAt1MethodConcatenateWith(
-      {required ConcatenateWith that, dynamic hint}) {
+  Stream<int> handleSomeStreamSinkAt1MethodConcatenateWith({required ConcatenateWith that, dynamic hint}) {
     var arg0 = _platform.api2wire_concatenate_with(that);
     return _platform.executeStream(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner
-          .wire_handle_some_stream_sink_at_1__method__ConcatenateWith(
-              port_, arg0),
+      callFfi: (port_) => _platform.inner.wire_handle_some_stream_sink_at_1__method__ConcatenateWith(port_, arg0),
       parseSuccessData: (d) => _wire2api_u32(d),
       constMeta: kHandleSomeStreamSinkAt1MethodConcatenateWithConstMeta,
       argValues: [that],
@@ -2816,13 +2774,10 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: [],
       );
 
-  Future<void> handleSelfByValueMethodTakeSelfIntWrapper(
-      {required IntWrapper that, dynamic hint}) {
+  Future<void> handleSelfByValueMethodTakeSelfIntWrapper({required IntWrapper that, dynamic hint}) {
     var arg0 = _platform.api2wire_int_wrapper(that);
     return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner
-          .wire_handle_self_by_value__method__take_self__IntWrapper(
-              port_, arg0),
+      callFfi: (port_) => _platform.inner.wire_handle_self_by_value__method__take_self__IntWrapper(port_, arg0),
       parseSuccessData: (d) => _wire2api_unit(d),
       constMeta: kHandleSelfByValueMethodTakeSelfIntWrapperConstMeta,
       argValues: [that],
@@ -4058,8 +4013,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
 
   WithEnum _wire2api_with_enum(dynamic raw) {
     final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    if (arr.length != 3) throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
     return WithEnum(
       weekdays: _wire2api_weekdays(arr[0]),
       kitchenSink: _wire2api_kitchen_sink(arr[1]),
@@ -4067,11 +4021,9 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     );
   }
 
-  ZeroCopyVecOfPrimitivePack _wire2api_zero_copy_vec_of_primitive_pack(
-      dynamic raw) {
+  ZeroCopyVecOfPrimitivePack _wire2api_zero_copy_vec_of_primitive_pack(dynamic raw) {
     final arr = raw as List<dynamic>;
-    if (arr.length != 10)
-      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
+    if (arr.length != 10) throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
     return ZeroCopyVecOfPrimitivePack(
       int8List: _wire2api_ZeroCopyBuffer_Int8List(arr[0]),
       uint8List: _wire2api_ZeroCopyBuffer_Uint8List(arr[1]),

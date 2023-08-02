@@ -147,3 +147,9 @@ impl<T> StreamSink<T> {
         self.rust2dart().close_stream()
     }
 }
+
+impl<T: IntoDart> Drop for StreamSink<T> {
+    fn drop(&mut self) {
+        _ = self.close();
+    }
+}
