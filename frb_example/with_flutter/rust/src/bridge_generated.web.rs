@@ -38,7 +38,7 @@ pub fn wire_off_topic_memory_test_output_vec_u8(port_: MessagePort, len: i32) {
 }
 
 #[wasm_bindgen]
-pub fn wire_off_topic_memory_test_input_vec_of_object(port_: MessagePort, input: JsValue) {
+pub fn wire_off_topic_memory_test_input_vec_of_object(port_: MessagePort, input: JsArray) {
     wire_off_topic_memory_test_input_vec_of_object_impl(port_, input)
 }
 
@@ -99,37 +99,14 @@ impl Wire2Api<String> for String {
     }
 }
 
-impl Wire2Api<BoxedPoint> for JsValue {
-    fn wire2api(self) -> BoxedPoint {
-        let self_ = self.dyn_into::<JsArray>().unwrap();
-        assert_eq!(
-            self_.length(),
-            1,
-            "Expected 1 elements, got {}",
-            self_.length()
-        );
-        BoxedPoint {
-            point: self_.get(0).wire2api(),
-        }
-    }
-}
-
-impl Wire2Api<Vec<Size>> for JsValue {
+impl Wire2Api<Vec<Size>> for JsArray {
     fn wire2api(self) -> Vec<Size> {
-        self.dyn_into::<JsArray>()
-            .unwrap()
-            .iter()
-            .map(Wire2Api::wire2api)
-            .collect()
+        self.iter().map(Wire2Api::wire2api).collect()
     }
 }
-impl Wire2Api<Vec<TreeNode>> for JsValue {
+impl Wire2Api<Vec<TreeNode>> for JsArray {
     fn wire2api(self) -> Vec<TreeNode> {
-        self.dyn_into::<JsArray>()
-            .unwrap()
-            .iter()
-            .map(Wire2Api::wire2api)
-            .collect()
+        self.iter().map(Wire2Api::wire2api).collect()
     }
 }
 impl Wire2Api<Point> for JsValue {
@@ -233,9 +210,16 @@ impl Wire2Api<i32> for JsValue {
         self.unchecked_into_f64() as _
     }
 }
-impl Wire2Api<u32> for JsValue {
-    fn wire2api(self) -> u32 {
-        self.unchecked_into_f64() as _
+impl Wire2Api<Vec<Size>> for JsValue {
+    fn wire2api(self) -> Vec<Size> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<TreeNode>> for JsValue {
+    fn wire2api(self) -> Vec<TreeNode> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
     }
 }
 impl Wire2Api<u8> for JsValue {

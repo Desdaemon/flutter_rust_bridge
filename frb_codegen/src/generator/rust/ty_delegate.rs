@@ -33,19 +33,12 @@ impl TypeRustGeneratorTrait for TypeDelegateGenerator<'_> {
     fn wire2api_body(&self) -> Acc<Option<String>> {
         match &self.ir {
             IrTypeDelegate::Array(array) => {
-                let acc =
-                    Some(
-                        format!(
-                            "let vec: Vec<{}> = self.wire2api(); support::from_vec_to_array(vec)",
-                            array.inner_rust_api_type()
-                        ),
-                    );
-                if array.inner_is_js_value() {
-                    return Acc {
-                        io: acc,
-                        ..Default::default()
-                    };
-                }
+                let acc = Some(
+                    format!(
+                        "let vec: Vec<{}> = self.wire2api(); support::from_vec_to_array(vec)",
+                        array.inner_rust_api_type()
+                    ),
+                );
                 Acc::distribute(acc)
             },
             IrTypeDelegate::String => {
@@ -208,6 +201,7 @@ impl TypeRustGeneratorTrait for TypeDelegateGenerator<'_> {
             IrTypeDelegate::String => {
                 "self.as_string().expect(\"non-UTF-8 string, or not a string\")".into()
             }
+            IrTypeDelegate::StringList => "self.dyn_into::<JsArray>().unwrap().wire2api()".into(),
             IrTypeDelegate::Str(..) => "self.as_string().unwrap().into()".into(),
             IrTypeDelegate::Slice(_, prim) => format!(
                 "let buf: Vec<{}> = self.wire2api(); buf.into()",
@@ -237,7 +231,6 @@ impl TypeRustGeneratorTrait for TypeDelegateGenerator<'_> {
                 array.inner_rust_api_type()
             )
             .into(),
-            _ => return None,
         })
     }
 

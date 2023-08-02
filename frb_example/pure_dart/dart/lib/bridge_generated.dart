@@ -578,8 +578,9 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     var arg0 = api2wire_f64(left);
     var arg1 = api2wire_f64(right);
     return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner.wire_handle_optional_return(port_, arg0, arg1),
-      parseSuccessData: _wire2api_opt_box_autoadd_f64,
+      callFfi: (port_) =>
+          _platform.inner.wire_handle_optional_return(port_, arg0, arg1),
+      parseSuccessData: _wire2api_opt_f64,
       constMeta: kHandleOptionalReturnConstMeta,
       argValues: [left, right],
       hint: hint,
@@ -596,6 +597,8 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_handle_optional_struct(port_, arg0),
       parseSuccessData: _wire2api_opt_box_autoadd_element,
+      callFfi: (port_) => _platform.inner.wire_handle_optional_struct(port_, arg0),
+      parseSuccessData: _wire2api_opt_element,
       constMeta: kHandleOptionalStructConstMeta,
       argValues: [document],
       hint: hint,
@@ -609,9 +612,13 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
 
   Future<ExoticOptionals?> handleOptionalIncrement({ExoticOptionals? opt, dynamic hint}) {
     var arg0 = _platform.api2wire_opt_box_autoadd_exotic_optionals(opt);
+  Future<ExoticOptionals?> handleOptionalIncrement({ExoticOptionals? opt, dynamic hint}) {
+    var arg0 = _platform.api2wire_opt_exotic_optionals(opt);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_handle_optional_increment(port_, arg0),
       parseSuccessData: _wire2api_opt_box_autoadd_exotic_optionals,
+      callFfi: (port_) => _platform.inner.wire_handle_optional_increment(port_, arg0),
+      parseSuccessData: _wire2api_opt_exotic_optionals,
       constMeta: kHandleOptionalIncrementConstMeta,
       argValues: [opt],
       hint: hint,
@@ -690,7 +697,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     var arg0 = _platform.api2wire_String(input);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_handle_return_enum(port_, arg0),
-      parseSuccessData: _wire2api_opt_box_autoadd_weekdays,
+      parseSuccessData: _wire2api_opt_weekdays,
       constMeta: kHandleReturnEnumConstMeta,
       argValues: [input],
       hint: hint,
@@ -941,7 +948,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     var arg0 = _platform.api2wire_box_autoadd_numbers(nums);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_first_number(port_, arg0),
-      parseSuccessData: _wire2api_opt_box_autoadd_i32,
+      parseSuccessData: _wire2api_opt_i32,
       constMeta: kFirstNumberConstMeta,
       argValues: [nums],
       hint: hint,
@@ -957,7 +964,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     var arg0 = _platform.api2wire_box_autoadd_sequences(seqs);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_first_sequence(port_, arg0),
-      parseSuccessData: _wire2api_opt_box_autoadd_i32,
+      parseSuccessData: _wire2api_opt_i32,
       constMeta: kFirstSequenceConstMeta,
       argValues: [seqs],
       hint: hint,
@@ -1166,7 +1173,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     var arg0 = _platform.api2wire_box_autoadd_measure(measure);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_multiply_by_ten(port_, arg0),
-      parseSuccessData: _wire2api_opt_box_autoadd_measure,
+      parseSuccessData: _wire2api_opt_measure,
       constMeta: kMultiplyByTenConstMeta,
       argValues: [measure],
       hint: hint,
@@ -1627,7 +1634,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     var arg0 = _platform.api2wire_DartOpaque(opaque);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_loop_back_option(port_, arg0),
-      parseSuccessData: _wire2api_opt_box_autoadd_DartOpaque,
+      parseSuccessData: _wire2api_opt_DartOpaque,
       constMeta: kLoopBackOptionConstMeta,
       argValues: [opaque],
       hint: hint,
@@ -1672,7 +1679,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
       );
 
   Future<void> loopBackOptionGet({Object? opaque, dynamic hint}) {
-    var arg0 = _platform.api2wire_opt_box_autoadd_DartOpaque(opaque);
+    var arg0 = _platform.api2wire_opt_DartOpaque(opaque);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_loop_back_option_get(port_, arg0),
       parseSuccessData: _wire2api_unit,
@@ -1767,10 +1774,12 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
       );
 
   Future<HideData?> createOptionOpaque({HideData? opaque, dynamic hint}) {
-    var arg0 = _platform.api2wire_opt_box_autoadd_HideData(opaque);
+    var arg0 = _platform.api2wire_opt_HideData(opaque);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_create_option_opaque(port_, arg0),
       parseSuccessData: _wire2api_opt_box_autoadd_HideData,
+      callFfi: (port_) => _platform.inner.wire_create_option_opaque(port_, arg0),
+      parseSuccessData: _wire2api_opt_HideData,
       constMeta: kCreateOptionOpaqueConstMeta,
       argValues: [opaque],
       hint: hint,
@@ -2031,10 +2040,10 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
       );
 
   Object? syncOptionLoopback({Object? opaque, dynamic hint}) {
-    var arg0 = _platform.api2wire_opt_box_autoadd_DartOpaque(opaque);
+    var arg0 = _platform.api2wire_opt_DartOpaque(opaque);
     return _platform.executeSync(FlutterRustBridgeSyncTask(
       callFfi: () => _platform.inner.wire_sync_option_loopback(arg0),
-      parseSuccessData: _wire2api_opt_box_autoadd_DartOpaque,
+      parseSuccessData: _wire2api_opt_DartOpaque,
       constMeta: kSyncOptionLoopbackConstMeta,
       argValues: [opaque],
       hint: hint,
@@ -2079,7 +2088,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
   HideData? syncOptionRustOpaque({dynamic hint}) {
     return _platform.executeSync(FlutterRustBridgeSyncTask(
       callFfi: () => _platform.inner.wire_sync_option_rust_opaque(),
-      parseSuccessData: _wire2api_opt_box_autoadd_HideData,
+      parseSuccessData: _wire2api_opt_HideData,
       constMeta: kSyncOptionRustOpaqueConstMeta,
       argValues: [],
       hint: hint,
@@ -2095,7 +2104,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     var arg0 = _platform.api2wire_DartOpaque(opaque);
     return _platform.executeSync(FlutterRustBridgeSyncTask(
       callFfi: () => _platform.inner.wire_sync_option_dart_opaque(arg0),
-      parseSuccessData: _wire2api_opt_box_autoadd_DartOpaque,
+      parseSuccessData: _wire2api_opt_DartOpaque,
       constMeta: kSyncOptionDartOpaqueConstMeta,
       argValues: [opaque],
       hint: hint,
@@ -2414,35 +2423,20 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["boxed", "arc"],
       );
 
-  Future<RawStringItemStruct> testRawStringItemStruct({dynamic hint}) {
+  Future<List<String>?> handleVecString({List<String>? strings, dynamic hint}) {
+    var arg0 = _platform.api2wire_opt_StringList(strings);
     return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner.wire_test_raw_string_item_struct(port_),
-      parseSuccessData: _wire2api_raw_string_item_struct,
-      constMeta: kTestRawStringItemStructConstMeta,
-      argValues: [],
+      callFfi: (port_) => _platform.inner.wire_handle_vec_string(port_, arg0),
+      parseSuccessData: _wire2api_opt_StringList,
+      constMeta: kHandleVecStringConstMeta,
+      argValues: [strings],
       hint: hint,
     ));
   }
 
-  FlutterRustBridgeTaskConstMeta get kTestRawStringItemStructConstMeta => const FlutterRustBridgeTaskConstMeta(
-        debugName: "test_raw_string_item_struct",
-        argNames: [],
-      );
-
-  Future<MoreThanJustOneRawStringStruct> testMoreThanJustOneRawStringStruct({dynamic hint}) {
-    return _platform.executeNormal(FlutterRustBridgeTask(
-      callFfi: (port_) => _platform.inner.wire_test_more_than_just_one_raw_string_struct(port_),
-      parseSuccessData: _wire2api_more_than_just_one_raw_string_struct,
-      constMeta: kTestMoreThanJustOneRawStringStructConstMeta,
-      argValues: [],
-      hint: hint,
-    ));
-  }
-
-  FlutterRustBridgeTaskConstMeta get kTestMoreThanJustOneRawStringStructConstMeta =>
-      const FlutterRustBridgeTaskConstMeta(
-        debugName: "test_more_than_just_one_raw_string_struct",
-        argNames: [],
+  FlutterRustBridgeTaskConstMeta get kHandleVecStringConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "handle_vec_string",
+        argNames: ["strings"],
       );
 
   Future<RawStringMirrored> testRawStringMirrored({dynamic hint}) {
@@ -3085,7 +3079,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
       version: _wire2api_String(arr[1]),
       mode: _wire2api_application_mode(arr[2]),
       env: _wire2api_box_application_env(arr[3]),
-      envOptional: _wire2api_opt_box_autoadd_application_env(arr[4]),
+      envOptional: _wire2api_opt_application_env(arr[4]),
     );
   }
 
@@ -3168,11 +3162,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
   }
 
   bool _wire2api_box_autoadd_bool(dynamic raw) {
-    return raw as bool;
-  }
-
-  C _wire2api_box_autoadd_c(dynamic raw) {
-    return _wire2api_c(raw);
+    return _wire2api_bool(raw);
   }
 
   Element _wire2api_box_autoadd_element(dynamic raw) {
@@ -3184,11 +3174,11 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
   }
 
   double _wire2api_box_autoadd_f64(dynamic raw) {
-    return raw as double;
+    return _wire2api_f64(raw);
   }
 
   int _wire2api_box_autoadd_i32(dynamic raw) {
-    return raw as int;
+    return _wire2api_i32(raw);
   }
 
   int _wire2api_box_autoadd_i64(dynamic raw) {
@@ -3209,14 +3199,6 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
 
   NewTypeInt _wire2api_box_autoadd_new_type_int(dynamic raw) {
     return _wire2api_new_type_int(raw);
-  }
-
-  RawStringMirrored _wire2api_box_autoadd_raw_string_mirrored(dynamic raw) {
-    return _wire2api_raw_string_mirrored(raw);
-  }
-
-  Weekdays _wire2api_box_autoadd_weekdays(dynamic raw) {
-    return _wire2api_weekdays(raw);
   }
 
   Distance _wire2api_box_distance(dynamic raw) {
@@ -3364,10 +3346,10 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     final arr = raw as List<dynamic>;
     if (arr.length != 14) throw Exception('unexpected arr length: expect 14 but see ${arr.length}');
     return ExoticOptionals(
-      int32: _wire2api_opt_box_autoadd_i32(arr[0]),
-      int64: _wire2api_opt_box_autoadd_i64(arr[1]),
-      float64: _wire2api_opt_box_autoadd_f64(arr[2]),
-      boolean: _wire2api_opt_box_autoadd_bool(arr[3]),
+      int32: _wire2api_opt_i32(arr[0]),
+      int64: _wire2api_opt_i64(arr[1]),
+      float64: _wire2api_opt_f64(arr[2]),
+      boolean: _wire2api_opt_bool(arr[3]),
       zerocopy: _wire2api_opt_ZeroCopyBuffer_Uint8List(arr[4]),
       int8List: _wire2api_opt_int_8_list(arr[5]),
       uint8List: _wire2api_opt_uint_8_list(arr[6]),
@@ -3375,9 +3357,9 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
       float32List: _wire2api_opt_float_32_list(arr[8]),
       float64List: _wire2api_opt_float_64_list(arr[9]),
       attributes: _wire2api_opt_list_attribute(arr[10]),
-      attributesNullable: _wire2api_list_opt_box_autoadd_attribute(arr[11]),
-      nullableAttributes: _wire2api_opt_list_opt_box_autoadd_attribute(arr[12]),
-      newtypeint: _wire2api_opt_box_autoadd_new_type_int(arr[13]),
+      attributesNullable: _wire2api_list_opt_attribute(arr[11]),
+      nullableAttributes: _wire2api_opt_list_opt_attribute(arr[12]),
+      newtypeint: _wire2api_opt_new_type_int(arr[13]),
     );
   }
 
@@ -3467,8 +3449,8 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         );
       case 3:
         return KitchenSink_Optional(
-          _wire2api_opt_box_autoadd_i32(raw[1]),
-          _wire2api_opt_box_autoadd_i32(raw[2]),
+          _wire2api_opt_i32(raw[1]),
+          _wire2api_opt_i32(raw[2]),
         );
       case 4:
         return KitchenSink_Buffer(
@@ -3536,7 +3518,11 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
   }
 
   List<Attribute?> _wire2api_list_opt_box_autoadd_attribute(dynamic raw) {
-    return (raw as List<dynamic>).map(_wire2api_opt_box_autoadd_attribute).toList();
+    return (raw as List<dynamic>)
+        .map(_wire2api_opt_box_autoadd_attribute)
+        .toList();
+  List<Attribute?> _wire2api_list_opt_attribute(dynamic raw) {
+    return (raw as List<dynamic>).map(_wire2api_opt_attribute).toList();
   }
 
   List<Point> _wire2api_list_point(dynamic raw) {
@@ -3729,76 +3715,48 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     );
   }
 
+  Object? _wire2api_opt_DartOpaque(dynamic raw) {
+    return raw == null ? null : _wire2api_DartOpaque(raw);
+  }
+
+  HideData? _wire2api_opt_HideData(dynamic raw) {
+    return raw == null ? null : _wire2api_HideData(raw);
+  }
+
   String? _wire2api_opt_String(dynamic raw) {
     return raw == null ? null : _wire2api_String(raw);
+  }
+
+  List<String>? _wire2api_opt_StringList(dynamic raw) {
+    return raw == null ? null : _wire2api_StringList(raw);
   }
 
   Uint8List? _wire2api_opt_ZeroCopyBuffer_Uint8List(dynamic raw) {
     return raw == null ? null : _wire2api_ZeroCopyBuffer_Uint8List(raw);
   }
 
-  Duration? _wire2api_opt_box_autoadd_Chrono_Duration(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_Chrono_Duration(raw);
+  ApplicationEnv? _wire2api_opt_application_env(dynamic raw) {
+    return raw == null ? null : _wire2api_application_env(raw);
   }
 
-  DateTime? _wire2api_opt_box_autoadd_Chrono_Naive(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_Chrono_Naive(raw);
+  Attribute? _wire2api_opt_attribute(dynamic raw) {
+    return raw == null ? null : _wire2api_attribute(raw);
   }
 
-  DateTime? _wire2api_opt_box_autoadd_Chrono_Utc(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_Chrono_Utc(raw);
+  bool? _wire2api_opt_bool(dynamic raw) {
+    return raw == null ? null : _wire2api_bool(raw);
   }
 
-  Object? _wire2api_opt_box_autoadd_DartOpaque(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_DartOpaque(raw);
+  Element? _wire2api_opt_element(dynamic raw) {
+    return raw == null ? null : _wire2api_element(raw);
   }
 
-  HideData? _wire2api_opt_box_autoadd_HideData(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_HideData(raw);
+  ExoticOptionals? _wire2api_opt_exotic_optionals(dynamic raw) {
+    return raw == null ? null : _wire2api_exotic_optionals(raw);
   }
 
-  ApplicationEnv? _wire2api_opt_box_autoadd_application_env(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_application_env(raw);
-  }
-
-  Attribute? _wire2api_opt_box_autoadd_attribute(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_attribute(raw);
-  }
-
-  bool? _wire2api_opt_box_autoadd_bool(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_bool(raw);
-  }
-
-  Element? _wire2api_opt_box_autoadd_element(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_element(raw);
-  }
-
-  ExoticOptionals? _wire2api_opt_box_autoadd_exotic_optionals(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_exotic_optionals(raw);
-  }
-
-  double? _wire2api_opt_box_autoadd_f64(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_f64(raw);
-  }
-
-  int? _wire2api_opt_box_autoadd_i32(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_i32(raw);
-  }
-
-  int? _wire2api_opt_box_autoadd_i64(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_i64(raw);
-  }
-
-  Measure? _wire2api_opt_box_autoadd_measure(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_measure(raw);
-  }
-
-  NewTypeInt? _wire2api_opt_box_autoadd_new_type_int(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_new_type_int(raw);
-  }
-
-  Weekdays? _wire2api_opt_box_autoadd_weekdays(dynamic raw) {
-    return raw == null ? null : _wire2api_box_autoadd_weekdays(raw);
+  double? _wire2api_opt_f64(dynamic raw) {
+    return raw == null ? null : _wire2api_f64(raw);
   }
 
   Float32List? _wire2api_opt_float_32_list(dynamic raw) {
@@ -3807,6 +3765,14 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
 
   Float64List? _wire2api_opt_float_64_list(dynamic raw) {
     return raw == null ? null : _wire2api_float_64_list(raw);
+  }
+
+  int? _wire2api_opt_i32(dynamic raw) {
+    return raw == null ? null : _wire2api_i32(raw);
+  }
+
+  int? _wire2api_opt_i64(dynamic raw) {
+    return raw == null ? null : _wire2api_i64(raw);
   }
 
   Int32List? _wire2api_opt_int_32_list(dynamic raw) {
@@ -3825,12 +3791,24 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
     return raw == null ? null : _wire2api_list_element(raw);
   }
 
-  List<Attribute?>? _wire2api_opt_list_opt_box_autoadd_attribute(dynamic raw) {
-    return raw == null ? null : _wire2api_list_opt_box_autoadd_attribute(raw);
+  List<Attribute?>? _wire2api_opt_list_opt_attribute(dynamic raw) {
+    return raw == null ? null : _wire2api_list_opt_attribute(raw);
+  }
+
+  Measure? _wire2api_opt_measure(dynamic raw) {
+    return raw == null ? null : _wire2api_measure(raw);
+  }
+
+  NewTypeInt? _wire2api_opt_new_type_int(dynamic raw) {
+    return raw == null ? null : _wire2api_new_type_int(raw);
   }
 
   Uint8List? _wire2api_opt_uint_8_list(dynamic raw) {
     return raw == null ? null : _wire2api_uint_8_list(raw);
+  }
+
+  Weekdays? _wire2api_opt_weekdays(dynamic raw) {
+    return raw == null ? null : _wire2api_weekdays(raw);
   }
 
   Point _wire2api_point(dynamic raw) {

@@ -269,8 +269,11 @@ pub fn handle_struct_sync_freezed(
 #[derive(Debug)]
 pub struct NewTypeInt(pub i64);
 
-pub fn handle_newtype(arg: NewTypeInt) -> NewTypeInt {
-    info!("handle_newtype({:?})", &arg);
+#[frb]
+pub fn handle_newtype(
+    #[frb(default = "const NewTypeInt(field0: 0)")] arg: NewTypeInt,
+) -> NewTypeInt {
+    println!("handle_newtype({:?})", &arg);
     NewTypeInt(arg.0 * 2)
 }
 
@@ -1524,6 +1527,21 @@ impl IntWrapper {
 
 pub fn handle_string_references(boxed: Box<str>, arc: Arc<str>) {}
 pub fn handle_slices(boxed: Box<[u8]>, arc: Arc<[u8]>) {}
+pub fn handle_vec_string(strings: Option<Vec<String>>) -> Option<Vec<String>> {
+    strings
+}
+pub fn handle_option_delegates(array: Option<[u8; 3]>) {}
+
+pub fn handle_many_optionals(
+    path: String,
+    has_header: Option<bool>,
+    columns: Option<Vec<String>>,
+    delimiter: Option<u8>,
+    skip_rows: Option<usize>,
+    skip_rows_after_header: Option<usize>,
+    chunk_size: Option<usize>,
+) {
+}
 
 pub struct RawStringItemStruct {
     pub r#type: String,

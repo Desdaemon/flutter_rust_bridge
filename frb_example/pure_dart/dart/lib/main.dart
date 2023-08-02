@@ -1335,6 +1335,11 @@ void main(List<String> args) async {
     expect(data, ['foo']);
   });
 
+  test('dart call handle_vec_string', () {
+    expect(api.handleVecString(), completion(null));
+    expect(api.handleVecString(strings: ['foo']), completion(['foo']));
+  });
+
   test("dart call list_of_primitive_enums", () async {
     List<Weekdays> days = await api.listOfPrimitiveEnums(weekdays: Weekdays.values);
     expect(days, Weekdays.values);

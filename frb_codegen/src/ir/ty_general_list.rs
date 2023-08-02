@@ -24,7 +24,7 @@ impl IrTypeTrait for IrTypeGeneralList {
     }
 
     fn dart_wire_type(&self, target: Target) -> String {
-        if let Target::Wasm = target {
+        if target.is_wasm() {
             "List<dynamic>".into()
         } else {
             format!("ffi.Pointer<wire_{}>", self.safe_ident())
@@ -36,8 +36,8 @@ impl IrTypeTrait for IrTypeGeneralList {
     }
 
     fn rust_wire_type(&self, target: Target) -> String {
-        if let Target::Wasm = target {
-            "JsValue".into()
+        if target.is_wasm() {
+            "JsArray".into()
         } else {
             format!("wire_{}", self.safe_ident())
         }

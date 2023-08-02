@@ -69,7 +69,7 @@ impl TypeRustGeneratorTrait for TypePrimitiveListGenerator<'_> {
                 &format!(
                     "let ans = {} {{ ptr: support::new_leak_vec_ptr(Default::default(), len), len }};
                     support::new_leak_box_ptr(ans)",
-                    self.ir.rust_wire_type(Target::Io),
+                    self.ir.rust_wire_type(Target::Io)
                 ),
                 Target::Io,
             )),

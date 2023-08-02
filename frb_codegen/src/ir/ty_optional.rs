@@ -12,39 +12,11 @@ pub struct IrTypeOptional {
 crate::derive_serde_inner_as_newtype!(IrTypeOptional);
 
 impl IrTypeOptional {
+    #[inline]
     pub fn new(ptr: IrType) -> Self {
         Self {
             inner: Box::new(ptr),
         }
-    }
-
-    pub fn new_boxed(inner: IrType) -> Self {
-        Self {
-            inner: Box::new(Boxed(IrTypeBoxed {
-                exist_in_real_api: false,
-                inner: Box::new(inner),
-            })),
-        }
-    }
-
-    pub fn is_primitive(&self) -> bool {
-        matches!(&*self.inner, Boxed(boxed) if ! boxed.exist_in_real_api && boxed.inner.is_primitive())
-    }
-
-    pub fn is_boxed_primitive(&self) -> bool {
-        matches!(&*self.inner, Boxed(boxed) if boxed.exist_in_real_api && boxed.inner.is_primitive())
-    }
-
-    pub fn is_list(&self) -> bool {
-        matches!(&*self.inner, GeneralList(_) | PrimitiveList(_))
-    }
-
-    pub fn is_delegate(&self) -> bool {
-        matches!(&*self.inner, Delegate(_))
-    }
-
-    pub fn needs_initialization(&self) -> bool {
-        !(self.is_primitive() || self.is_delegate())
     }
 }
 
@@ -54,11 +26,12 @@ impl IrTypeTrait for IrTypeOptional {
     }
 
     fn rust_wire_type(&self, target: Target) -> String {
-        if self.inner.rust_wire_is_pointer(target)
-            || target.is_wasm()
-                && (self.inner.is_js_value() || self.is_primitive() || self.is_boxed_primitive())
-        {
-            self.inner.rust_wire_type(target)
+        if self.inner.needs_box(target) {
+            if target.is_wasm() {
+                "JsValue".into()
+            } else {
+                self.inner.rust_wire_type(target)
+            }
         } else {
             format!("Option<{}>", self.inner.rust_wire_type(target))
         }
@@ -71,6 +44,11 @@ impl IrTypeTrait for IrTypeOptional {
     fn dart_wire_type(&self, target: Target) -> String {
         if target.is_wasm() {
             format!("{}?", self.inner.dart_wire_type(target))
+        } else if self.inner.needs_indirection(target) {
+            format!(
+                "ffi.Pointer<{}>",
+                self.inner.dart_wire_prefer_native(target)
+            )
         } else {
             self.inner.dart_wire_type(target)
         }
@@ -85,6 +63,20 @@ impl IrTypeTrait for IrTypeOptional {
     }
 
     fn visit_children_types<F: FnMut(&IrType) -> bool>(&self, f: &mut F, ir_file: &IrFile) {
-        self.inner.visit_types(f, ir_file);
+        if self.inner.needs_box(Target::Io)
+            // HACK: Do not generate duplicates.
+            && !matches!(
+                self.inner.as_ref(),
+                Delegate(..) | PrimitiveList(..) | GeneralList(..) | Boxed(..)
+            )
+        {
+            IrType::Boxed(IrTypeBoxed {
+                exist_in_real_api: false,
+                inner: self.inner.clone(),
+            })
+            .visit_types(f, ir_file);
+        } else {
+            self.inner.visit_types(f, ir_file);
+        }
     }
 }

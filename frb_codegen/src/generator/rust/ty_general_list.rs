@@ -14,8 +14,7 @@ impl TypeGeneralListGenerator<'_> {
                 support::vec_from_leak_ptr(wrap.ptr, wrap.len)
             };
             vec.into_iter().map(Wire2Api::wire2api).collect()";
-    pub const WIRE2API_BODY_WASM: &'static str =
-        "self.dyn_into::<JsArray>().unwrap().iter().map(Wire2Api::wire2api).collect()";
+    pub const WIRE2API_BODY_WASM: &'static str = "self.iter().map(Wire2Api::wire2api).collect()";
 }
 
 impl TypeRustGeneratorTrait for TypeGeneralListGenerator<'_> {
@@ -25,6 +24,10 @@ impl TypeRustGeneratorTrait for TypeGeneralListGenerator<'_> {
             io: Some(TypeGeneralListGenerator::WIRE2API_BODY_IO.to_owned()),
             ..Default::default()
         }
+    }
+
+    fn wire2api_jsvalue(&self) -> Option<std::borrow::Cow<str>> {
+        Some("let arr = self.dyn_into::<JsArray>().unwrap(); arr.iter().map(Wire2Api::wire2api).collect()".into())
     }
 
     fn wire_struct_fields(&self) -> Option<Vec<String>> {

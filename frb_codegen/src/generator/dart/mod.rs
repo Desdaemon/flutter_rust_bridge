@@ -498,18 +498,13 @@ fn generate_api2wire_func(ty: &IrType, ir_file: &IrFile, config: &Opts) -> Acc<S
 fn generate_api_fill_to_wire_func(ty: &IrType, ir_file: &IrFile, config: &Opts) -> String {
     if let Some(body) = TypeDartGenerator::new(ty.clone(), ir_file, config).api_fill_to_wire_body()
     {
-        let target_wire_type = match ty {
-            Optional(inner) => &inner.inner,
-            it => it,
-        };
-
         format!(
             "void _api_fill_to_wire_{}({} apiObj, {} wireObj) {{
                 {}
             }}",
             ty.safe_ident(),
             ty.dart_api_type(),
-            target_wire_type.dart_wire_type(Target::Io),
+            ty.dart_wire_type(Target::Io),
             body,
         )
     } else {

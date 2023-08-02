@@ -13,12 +13,7 @@ type_rust_generator_struct!(TypeRustOpaqueGenerator, IrTypeRustOpaque);
 impl TypeRustGeneratorTrait for TypeRustOpaqueGenerator<'_> {
     fn wire2api_body(&self) -> crate::target::Acc<Option<String>> {
         Acc {
-            io: Some(
-                "unsafe {
-                support::opaque_from_dart(self.ptr as _)
-            }"
-                .into(),
-            ),
+            io: Some("unsafe { support::opaque_from_dart(self.ptr as _) }".into()),
             ..Default::default()
         }
     }

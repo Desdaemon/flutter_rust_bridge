@@ -10,7 +10,6 @@ pub use crate::utils::misc::get_symbols_if_no_duplicates;
 
 pub mod config;
 pub mod dump;
-pub mod utils;
 
 mod commands;
 mod entrypoint;
@@ -22,6 +21,8 @@ mod others;
 mod parser;
 mod target;
 mod transformer;
+#[macro_use]
+pub mod utils;
 
 use crate::entrypoint::dart::generate_dart_code;
 use crate::entrypoint::rust::generate_rust_code;

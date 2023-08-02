@@ -1,6 +1,6 @@
 use crate::{ir::*, target::Target};
 use enum_dispatch::enum_dispatch;
-use std::collections::HashSet;
+use std::{borrow::Cow, collections::HashSet};
 use IrType::*;
 
 crate::ir! {
@@ -112,10 +112,10 @@ impl IrType {
 
     /// In WASM, these types belong to the JS scope-local heap, **NOT** the Rust heap and
     /// therefore do not implement [Send].
-    #[inline]
     pub fn is_js_value(&self) -> bool {
         match self {
-            Self::GeneralList(_)
+            | Self::GeneralList(..) // JsArray
+            | Self::Delegate(IrTypeDelegate::StringList) // special: JsArray
             | Self::StructRef(_)
             | Self::EnumRef(_)
             | Self::RustOpaque(_)
@@ -123,6 +123,59 @@ impl IrType {
             | Self::Record(_) => true,
             Self::Boxed(IrTypeBoxed { inner, .. }) => inner.is_js_value(),
             _ => false,
+        }
+    }
+
+    /// Whether the inner type needs a layer of indirection,
+    /// i.e. *mut T on native and JsValue on WASM platforms.
+    ///
+    /// Used by [Optional].
+    pub fn needs_box(&self, target: Target) -> bool {
+        // Guidance for adding new checks:
+        //
+        // WASM:
+        // - Consult the wasm-bindgen docs, is Option<T> valid?
+        // - If not, this should be true.
+        //
+        // IO:
+        // - Is this type representable by nullptr?
+        // - If not, this should be true.
+        match self {
+            // nullptr / Option<Box<[u8]>>
+            PrimitiveList(..) => !target.is_wasm(),
+            // wire_String[List] / JsValue
+            // Delegate(IrTypeDelegate::String | IrTypeDelegate::StringList) => true,
+            Delegate(IrTypeDelegate::String) => !target.is_wasm(),
+            Delegate(IrTypeDelegate::StringList) => true,
+            StructRef(..) | EnumRef(..) | DartOpaque(..) | RustOpaque(..) | Primitive(..) => true,
+            // *mut T / ?
+            Boxed(ir) => !target.is_wasm() || ir.inner.needs_box(target),
+            // *mut list_.. // JsArray
+            GeneralList(..) => true,
+            Delegate(ir) => ir.get_delegate().needs_box(target),
+            Optional(..) | SyncReturn(..) | Dynamic(..) => unreachable!(),
+        }
+    }
+
+    #[inline]
+    pub fn dart_wire_prefer_native(&self, target: Target) -> Cow<str> {
+        if let Some(prim) = self.as_primitive() {
+            prim.dart_native_type().into()
+        } else {
+            self.dart_wire_type(target).into()
+        }
+    }
+
+    #[inline]
+    pub fn needs_indirection(&self, target: Target) -> bool {
+        self.needs_box(target) && !self.rust_wire_is_pointer(target)
+    }
+
+    pub fn wrapper_struct<'file>(&self, ir_file: &'file IrFile) -> Option<&'file str> {
+        match self {
+            StructRef(ir) => ir.get(ir_file).wrapper_name.as_deref(),
+            EnumRef(ir) => ir.get(ir_file).wrapper_name.as_deref(),
+            _ => None,
         }
     }
 

@@ -2174,6 +2174,76 @@ fn wire_handle_slices_impl(
         },
     )
 }
+fn wire_handle_vec_string_impl(
+    port_: MessagePort,
+    strings: impl Wire2Api<Option<Vec<String>>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "handle_vec_string",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_strings = strings.wire2api();
+            move |task_callback| Ok(handle_vec_string(api_strings))
+        },
+    )
+}
+fn wire_handle_option_delegates_impl(
+    port_: MessagePort,
+    array: impl Wire2Api<Option<[u8; 3]>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "handle_option_delegates",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_array = array.wire2api();
+            move |task_callback| Ok(handle_option_delegates(api_array))
+        },
+    )
+}
+fn wire_handle_many_optionals_impl(
+    port_: MessagePort,
+    path: impl Wire2Api<String> + UnwindSafe,
+    has_header: impl Wire2Api<Option<bool>> + UnwindSafe,
+    columns: impl Wire2Api<Option<Vec<String>>> + UnwindSafe,
+    delimiter: impl Wire2Api<Option<u8>> + UnwindSafe,
+    skip_rows: impl Wire2Api<Option<usize>> + UnwindSafe,
+    skip_rows_after_header: impl Wire2Api<Option<usize>> + UnwindSafe,
+    chunk_size: impl Wire2Api<Option<usize>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "handle_many_optionals",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_path = path.wire2api();
+            let api_has_header = has_header.wire2api();
+            let api_columns = columns.wire2api();
+            let api_delimiter = delimiter.wire2api();
+            let api_skip_rows = skip_rows.wire2api();
+            let api_skip_rows_after_header = skip_rows_after_header.wire2api();
+            let api_chunk_size = chunk_size.wire2api();
+            move |task_callback| {
+                Ok(handle_many_optionals(
+                    api_path,
+                    api_has_header,
+                    api_columns,
+                    api_delimiter,
+                    api_skip_rows,
+                    api_skip_rows_after_header,
+                    api_chunk_size,
+                ))
+            }
+        },
+    )
+}
 fn wire_test_raw_string_item_struct_impl(port_: MessagePort) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, RawStringItemStruct>(
         WrapInfo {
@@ -2867,10 +2937,10 @@ impl rust2dart::IntoIntoDart<mirror_ApplicationMode> for ApplicationMode {
 impl support::IntoDart for mirror_ApplicationSettings {
     fn into_dart(self) -> support::DartAbi {
         vec![
-            self.0.name.into_into_dart().into_dart(),
-            self.0.version.into_into_dart().into_dart(),
-            self.0.mode.into_into_dart().into_dart(),
-            self.0.env.into_into_dart().into_dart(),
+            self.0.name.into_dart(),
+            self.0.version.into_dart(),
+            mirror_ApplicationMode(self.0.mode).into_dart(),
+            mirror_ApplicationEnv((*self.0.env)).into_dart(),
             self.0
                 .env_optional
                 .map(|v| mirror_ApplicationEnv(v))

@@ -145,6 +145,30 @@ impl PathExt for std::path::Path {
     }
 }
 
+/// Takes a consecutive sequence of string literals to be joined
+/// into lines, and an optional list of format arguments.
+#[macro_export]
+macro_rules! fmt {
+    ($($lit:literal)+, $($tt:tt)*) => {
+        format_args!(
+            concat!(
+                $(
+                    concat!($lit, "\n")
+                ),+
+            ),
+            $($tt)*
+        )
+    }
+}
+
+/// [panic!], but with the syntax of [fmt!].
+#[macro_export]
+macro_rules! bail {
+    ($($tt:tt)*) => {
+        panic!("{}", $crate::fmt!($($tt)*))
+    }
+}
+
 /// For structs that only has an `inner` serializable property that
 /// would be better (de)serialized as a newtype.
 #[macro_export]

@@ -811,6 +811,39 @@ pub extern "C" fn wire_handle_slices(
 }
 
 #[no_mangle]
+pub extern "C" fn wire_handle_vec_string(port_: i64, strings: *mut wire_StringList) {
+    wire_handle_vec_string_impl(port_, strings)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_handle_option_delegates(port_: i64, array: *mut wire_uint_8_list) {
+    wire_handle_option_delegates_impl(port_, array)
+}
+
+#[no_mangle]
+pub extern "C" fn wire_handle_many_optionals(
+    port_: i64,
+    path: *mut wire_uint_8_list,
+    has_header: *mut bool,
+    columns: *mut wire_StringList,
+    delimiter: *mut u8,
+    skip_rows: *mut usize,
+    skip_rows_after_header: *mut usize,
+    chunk_size: *mut usize,
+) {
+    wire_handle_many_optionals_impl(
+        port_,
+        path,
+        has_header,
+        columns,
+        delimiter,
+        skip_rows,
+        skip_rows_after_header,
+        chunk_size,
+    )
+}
+
+#[no_mangle]
 pub extern "C" fn wire_test_raw_string_item_struct(port_: i64) {
     wire_test_raw_string_item_struct_impl(port_)
 }
@@ -1222,8 +1255,18 @@ pub extern "C" fn new_box_autoadd_test_id_0() -> *mut wire_TestId {
 }
 
 #[no_mangle]
+pub extern "C" fn new_box_autoadd_u8_0(value: u8) -> *mut u8 {
+    support::new_leak_box_ptr(value)
+}
+
+#[no_mangle]
 pub extern "C" fn new_box_autoadd_user_id_0() -> *mut wire_UserId {
     support::new_leak_box_ptr(wire_UserId::new_with_null_ptr())
+}
+
+#[no_mangle]
+pub extern "C" fn new_box_autoadd_usize_0(value: usize) -> *mut usize {
+    support::new_leak_box_ptr(value)
 }
 
 #[no_mangle]
@@ -1405,10 +1448,8 @@ pub extern "C" fn new_list_my_tree_node_0(len: i32) -> *mut wire_list_my_tree_no
 }
 
 #[no_mangle]
-pub extern "C" fn new_list_opt_box_autoadd_attribute_0(
-    len: i32,
-) -> *mut wire_list_opt_box_autoadd_attribute {
-    let wrap = wire_list_opt_box_autoadd_attribute {
+pub extern "C" fn new_list_opt_attribute_0(len: i32) -> *mut wire_list_opt_attribute {
+    let wrap = wire_list_opt_attribute {
         ptr: support::new_leak_vec_ptr(<*mut wire_Attribute>::new_with_null_ptr(), len),
         len,
     };
@@ -2058,10 +2099,20 @@ impl Wire2Api<TestId> for *mut wire_TestId {
         Wire2Api::<TestId>::wire2api(*wrap).into()
     }
 }
+impl Wire2Api<u8> for *mut u8 {
+    fn wire2api(self) -> u8 {
+        unsafe { *support::box_from_leak_ptr(self) }
+    }
+}
 impl Wire2Api<UserId> for *mut wire_UserId {
     fn wire2api(self) -> UserId {
         let wrap = unsafe { support::box_from_leak_ptr(self) };
         Wire2Api::<UserId>::wire2api(*wrap).into()
+    }
+}
+impl Wire2Api<usize> for *mut usize {
+    fn wire2api(self) -> usize {
+        unsafe { *support::box_from_leak_ptr(self) }
     }
 }
 impl Wire2Api<Box<Blob>> for *mut wire_Blob {
@@ -2455,7 +2506,7 @@ impl Wire2Api<Vec<MyTreeNode>> for *mut wire_list_my_tree_node {
         vec.into_iter().map(Wire2Api::wire2api).collect()
     }
 }
-impl Wire2Api<Vec<Option<Attribute>>> for *mut wire_list_opt_box_autoadd_attribute {
+impl Wire2Api<Vec<Option<Attribute>>> for *mut wire_list_opt_attribute {
     fn wire2api(self) -> Vec<Option<Attribute>> {
         let vec = unsafe {
             let wrap = support::box_from_leak_ptr(self);
@@ -2614,6 +2665,12 @@ impl Wire2Api<TestId> for wire_TestId {
 
 impl Wire2Api<[u8; 1600]> for *mut wire_uint_8_list {
     fn wire2api(self) -> [u8; 1600] {
+        let vec: Vec<u8> = self.wire2api();
+        support::from_vec_to_array(vec)
+    }
+}
+impl Wire2Api<[u8; 3]> for *mut wire_uint_8_list {
+    fn wire2api(self) -> [u8; 3] {
         let vec: Vec<u8> = self.wire2api();
         support::from_vec_to_array(vec)
     }
@@ -2810,8 +2867,8 @@ pub struct wire_ExoticOptionals {
     float32list: *mut wire_float_32_list,
     float64list: *mut wire_float_64_list,
     attributes: *mut wire_list_attribute,
-    attributes_nullable: *mut wire_list_opt_box_autoadd_attribute,
-    nullable_attributes: *mut wire_list_opt_box_autoadd_attribute,
+    attributes_nullable: *mut wire_list_opt_attribute,
+    nullable_attributes: *mut wire_list_opt_attribute,
     newtypeint: *mut wire_NewTypeInt,
 }
 
@@ -2929,7 +2986,7 @@ pub struct wire_list_my_tree_node {
 
 #[repr(C)]
 #[derive(Clone)]
-pub struct wire_list_opt_box_autoadd_attribute {
+pub struct wire_list_opt_attribute {
     ptr: *mut *mut wire_Attribute,
     len: i32,
 }

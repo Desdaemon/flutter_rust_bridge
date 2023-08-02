@@ -81,7 +81,7 @@ impl IrTypeDelegateArray {
             }
             IrTypeDelegateArray::PrimitiveArray { primitive, .. } => {
                 IrType::PrimitiveList(IrTypePrimitiveList {
-                    primitive: primitive.clone(),
+                    primitive: *primitive,
                 })
             }
         }
@@ -174,16 +174,16 @@ impl IrTypeDelegate {
                 primitive: IrTypePrimitive::U8,
             }),
             IrTypeDelegate::Str(..) => IrType::Delegate(IrTypeDelegate::String),
-            IrTypeDelegate::Slice(_, prim) => IrType::PrimitiveList(IrTypePrimitiveList {
-                primitive: prim.clone(),
-            }),
+            IrTypeDelegate::Slice(_, prim) => {
+                IrType::PrimitiveList(IrTypePrimitiveList { primitive: *prim })
+            }
             IrTypeDelegate::ZeroCopyBufferVecPrimitive(primitive) => {
                 IrType::PrimitiveList(IrTypePrimitiveList {
-                    primitive: primitive.clone(),
+                    primitive: *primitive,
                 })
             }
             IrTypeDelegate::StringList => IrType::Delegate(IrTypeDelegate::String),
-            IrTypeDelegate::PrimitiveEnum { repr, .. } => IrType::Primitive(repr.clone()),
+            IrTypeDelegate::PrimitiveEnum { repr, .. } => IrType::Primitive(*repr),
             #[cfg(feature = "chrono")]
             IrTypeDelegate::Time(_) => IrType::Primitive(IrTypePrimitive::I64),
             #[cfg(feature = "chrono")]
@@ -314,7 +314,9 @@ impl IrTypeTrait for IrTypeDelegate {
         match (self, target) {
             (IrTypeDelegate::String, Target::Wasm) => "String".into(),
             (IrTypeDelegate::StringList, Target::Io) => "wire_StringList".to_owned(),
-            (IrTypeDelegate::StringList, Target::Wasm) => "JsValue".into(),
+            // Although StringList delegates to a packed String on native,
+            // on WASM it delegates to a GeneralList.
+            (IrTypeDelegate::StringList, Target::Wasm) => "JsArray".to_owned(),
             _ => self.get_delegate().rust_wire_type(target),
         }
     }

@@ -7,28 +7,38 @@ type_dart_generator_struct!(TypeOptionalGenerator, IrTypeOptional);
 
 impl TypeDartGeneratorTrait for TypeOptionalGenerator<'_> {
     fn api2wire_body(&self) -> Acc<Option<String>> {
-        Acc::new(|target| match target {
-            Target::Io | Target::Wasm => Some(format!(
-                "return raw == null ? {} : api2wire_{}(raw);",
-                if target.is_wasm() {
-                    "null"
-                } else {
-                    "ffi.nullptr"
-                },
-                self.ir.inner.safe_ident()
+        let inner = self.ir.inner.safe_ident();
+        Acc {
+            wasm: Some(format!(
+                "return raw == null ? null : api2wire_{}(raw);",
+                inner
             )),
-            _ => None,
-        })
+            io: Some(format!(
+                "return raw == null ? ffi.nullptr : api2wire_{}(raw);",
+                if self.ir.inner.needs_indirection(Target::Io) {
+                    format!("box_autoadd_{}", &inner)
+                } else {
+                    inner
+                }
+            )),
+            ..Default::default()
+        }
     }
 
     fn api_fill_to_wire_body(&self) -> Option<String> {
-        if !self.ir.needs_initialization() || self.ir.is_list() || self.ir.is_boxed_primitive() {
-            return None;
-        }
-        Some(format!(
-            "if (apiObj != null) _api_fill_to_wire_{}(apiObj, wireObj);",
-            self.ir.inner.safe_ident()
-        ))
+        self.ir.inner.needs_indirection(Target::Io).then(|| {
+            if self.ir.inner.is_primitive() {
+                format!(
+                    "if (apiObj != null) wireObj.value = api2wire_{}(apiObj);",
+                    self.ir.inner.safe_ident()
+                )
+            } else {
+                format!(
+                    "if (apiObj != null) _api_fill_to_wire_{}(apiObj, wireObj.ref);",
+                    self.ir.inner.safe_ident()
+                )
+            }
+        })
     }
 
     fn wire2api_body(&self) -> String {
