@@ -1320,7 +1320,8 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["durations", "since"],
       );
 
-  Future<TestChrono> testChrono({dynamic hint}) {
+  Future<Duration> howLongDoesItTake({required FeatureChrono mine, dynamic hint}) {
+    var arg0 = _platform.api2wire_feature_chrono(mine);
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_test_chrono(port_),
       parseSuccessData: _wire2api_test_chrono,

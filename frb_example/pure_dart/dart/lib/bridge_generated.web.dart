@@ -287,6 +287,31 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  List<dynamic> api2wire_box_autoadd_concatenate_with(ConcatenateWith raw) {
+    return api2wire_concatenate_with(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_customized(Customized raw) {
+    return api2wire_customized(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_dart_opaque_nested(DartOpaqueNested raw) {
+    return api2wire_dart_opaque_nested(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_enum_dart_opaque(EnumDartOpaque raw) {
+    return api2wire_enum_dart_opaque(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_enum_opaque(EnumOpaque raw) {
+    return api2wire_enum_opaque(raw);
+  }
+
+  @protected
   List<dynamic> api2wire_box_autoadd_c(C raw) {
     return api2wire_c(raw);
   }
@@ -344,6 +369,41 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   @protected
   Object api2wire_box_autoadd_i64(int raw) {
     return api2wire_i64(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_int_wrapper(IntWrapper raw) {
+    return api2wire_int_wrapper(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_kitchen_sink(KitchenSink raw) {
+    return api2wire_kitchen_sink(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_measure(Measure raw) {
+    return api2wire_measure(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_message_id(MessageId raw) {
+    return api2wire_message_id(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_my_size(MySize raw) {
+    return api2wire_my_size(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_my_struct(MyStruct raw) {
+    return api2wire_my_struct(raw);
+  }
+
+  @protected
+  List<dynamic> api2wire_box_autoadd_my_tree_node(MyTreeNode raw) {
+    return api2wire_my_tree_node(raw);
   }
 
   @protected
@@ -2486,8 +2546,11 @@ class FlutterRustBridgeExampleSingleBlockTestWire
   void wire_test_raw_string_enum_mirrored(NativePortType port_, bool nested) =>
       wasmModule.wire_test_raw_string_enum_mirrored(port_, nested);
 
-  void wire_test_list_of_raw_nested_string_mirrored(NativePortType port_) =>
-      wasmModule.wire_test_list_of_raw_nested_string_mirrored(port_);
+  void wire_test_list_of_raw_nested_string_mirrored(NativePortType port_) => wasmModule.wire_handle_opt_enum(port_, weekday);
+
+  void wire_return_dart_dynamic(NativePortType port_) => wasmModule.wire_return_dart_dynamic(port_);
+
+  void wire_handle_opt_enum(NativePortType port_, int? weekday) => wasmModule.wire_test_list_of_raw_nested_string_mirrored(port_);
 
   void wire_test_fallible_of_raw_string_mirrored(NativePortType port_) =>
       wasmModule.wire_test_fallible_of_raw_string_mirrored(port_);
