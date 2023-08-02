@@ -2372,7 +2372,37 @@ fn wire_handle_list_optionals_impl(
 fn wire_test_list_of_raw_nested_string_mirrored_impl(port_: MessagePort) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, mirror_ListOfNestedRawStringMirrored>(
         WrapInfo {
-            debug_name: "test_list_of_raw_nested_string_mirrored",
+            debug_name: "test_raw_string_item_struct",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || move |task_callback| Ok(test_raw_string_item_struct()),
+    )
+}
+fn wire_test_more_than_just_one_raw_string_struct_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "test_more_than_just_one_raw_string_struct",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || move |task_callback| Ok(test_more_than_just_one_raw_string_struct()),
+    )
+}
+fn wire_test_raw_string_mirrored_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "test_raw_string_mirrored",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || move |task_callback| Ok(mirror_RawStringMirrored(test_raw_string_mirrored())),
+    )
+}
+fn wire_test_nested_raw_string_mirrored_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "test_nested_raw_string_mirrored",
             port: Some(port_),
             mode: FfiCallMode::Normal,
         },
@@ -2760,6 +2790,7 @@ const _: fn() = || {
         RawStringEnumMirrored::ListOfNested(field0) => {
             let _: ListOfNestedRawStringMirrored = field0;
         }
+        _ => unreachable!(),
     }
     {
         let RawStringMirrored = None::<RawStringMirrored>.unwrap();

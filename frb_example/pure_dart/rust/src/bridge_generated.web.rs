@@ -889,7 +889,7 @@ pub fn wire_test_fallible_of_raw_string_mirrored(port_: MessagePort) {
 }
 
 #[wasm_bindgen]
-pub fn wire_list_of_primitive_enums(port_: MessagePort, weekdays: JsValue) {
+pub fn wire_list_of_primitive_enums(port_: MessagePort, weekdays: JsArray) {
     wire_list_of_primitive_enums_impl(port_, weekdays)
 }
 
@@ -1370,6 +1370,7 @@ impl Wire2Api<C> for JsValue {
         }
     }
 }
+
 impl Wire2Api<ConcatenateWith> for JsValue {
     fn wire2api(self) -> ConcatenateWith {
         let self_ = self.dyn_into::<JsArray>().unwrap();
@@ -1740,22 +1741,9 @@ impl Wire2Api<Vec<TestId>> for JsArray {
         self.iter().map(Wire2Api::wire2api).collect()
     }
 }
-impl Wire2Api<Vec<Weekdays>> for JsValue {
+impl Wire2Api<Vec<Weekdays>> for JsArray {
     fn wire2api(self) -> Vec<Weekdays> {
-        self.dyn_into::<JsArray>()
-            .unwrap()
-            .iter()
-            .map(Wire2Api::wire2api)
-            .collect()
-    }
-}
-impl Wire2Api<Vec<Weekdays>> for JsValue {
-    fn wire2api(self) -> Vec<Weekdays> {
-        self.dyn_into::<JsArray>()
-            .unwrap()
-            .iter()
-            .map(Wire2Api::wire2api)
-            .collect()
+        self.iter().map(Wire2Api::wire2api).collect()
     }
 }
 impl Wire2Api<Measure> for JsValue {
@@ -2737,6 +2725,12 @@ impl Wire2Api<Vec<Option<Weekdays>>> for JsValue {
 }
 impl Wire2Api<Vec<TestId>> for JsValue {
     fn wire2api(self) -> Vec<TestId> {
+        let arr = self.dyn_into::<JsArray>().unwrap();
+        arr.iter().map(Wire2Api::wire2api).collect()
+    }
+}
+impl Wire2Api<Vec<Weekdays>> for JsValue {
+    fn wire2api(self) -> Vec<Weekdays> {
         let arr = self.dyn_into::<JsArray>().unwrap();
         arr.iter().map(Wire2Api::wire2api).collect()
     }

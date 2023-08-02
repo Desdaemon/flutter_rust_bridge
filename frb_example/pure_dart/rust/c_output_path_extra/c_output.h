@@ -888,9 +888,7 @@ void wire_handle_many_optionals(int64_t port_,
                                 uintptr_t *skip_rows_after_header,
                                 uintptr_t *chunk_size);
 
-void wire_test_list_of_raw_nested_string_mirrored(int64_t port_);
-
-void wire_test_fallible_of_raw_string_mirrored(int64_t port_);
+void wire_handle_with_enum(int64_t port_, struct wire_WithEnum with_enum);
 
 void wire_handle_char(int64_t port_, uint32_t plain, uint32_t *opt);
 
@@ -960,6 +958,10 @@ struct wire_RwLockHideData new_RwLockHideData(void);
 
 struct wire_StringList *new_StringList_0(int32_t len);
 
+struct wire_A new_a_0(void);
+
+struct wire_Abc new_abc_0(void);
+
 struct wire_ApplicationEnv new_application_env_0(void);
 
 struct wire_ApplicationEnvVar new_application_env_var_0(void);
@@ -967,6 +969,8 @@ struct wire_ApplicationEnvVar new_application_env_var_0(void);
 struct wire_ApplicationSettings new_application_settings_0(void);
 
 struct wire_Attribute new_attribute_0(void);
+
+struct wire_B new_b_0(void);
 
 struct wire_Blob new_blob_0(void);
 
@@ -978,6 +982,8 @@ struct wire_DartOpaque *new_box_autoadd_DartOpaque_0(void);
 
 struct wire_HideData *new_box_autoadd_HideData_0(void);
 
+struct wire_A *new_box_autoadd_a_0(void);
+
 struct wire_ApplicationEnv *new_box_autoadd_application_env_0(void);
 
 struct wire_Attribute *new_box_autoadd_attribute_0(void);
@@ -985,6 +991,8 @@ struct wire_Attribute *new_box_autoadd_attribute_0(void);
 struct wire_B *new_box_autoadd_b_0(void);
 
 bool *new_box_autoadd_bool_0(bool value);
+
+struct wire_C *new_box_autoadd_c_0(void);
 
 uint32_t *new_box_autoadd_char_0(uint32_t value);
 
@@ -1036,6 +1044,8 @@ uint8_t *new_box_u8_0(uint8_t value);
 
 int32_t *new_box_weekdays_0(int32_t value);
 
+struct wire_C new_c_0(void);
+
 struct wire_ConcatenateWith new_concatenate_with_0(void);
 
 struct wire_Customized new_customized_0(void);
@@ -1049,6 +1059,8 @@ struct wire_Empty new_empty_0(void);
 struct wire_EnumDartOpaque new_enum_dart_opaque_0(void);
 
 struct wire_EnumOpaque new_enum_opaque_0(void);
+
+struct wire_Event new_event_0(void);
 
 struct wire_ExoticOptionals new_exotic_optionals_0(void);
 
@@ -1114,6 +1126,8 @@ struct wire_ListOptionals new_list_optionals_0(void);
 
 struct wire_list_test_id *new_list_test_id_0(int32_t len);
 
+struct wire_list_weekdays *new_list_weekdays_0(int32_t len);
+
 struct wire_Measure new_measure_0(void);
 
 struct wire_MessageId new_message_id_0(void);
@@ -1137,6 +1151,8 @@ struct wire_OpaqueNested new_opaque_nested_0(void);
 struct wire_Sequences new_sequences_0(void);
 
 struct wire_Speed new_speed_0(void);
+
+struct wire_StructWithEnum new_struct_with_enum_0(void);
 
 struct wire_SumWith new_sum_with_0(void);
 
@@ -1375,6 +1391,17 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) wire_handle_type_alias_model);
     dummy_var ^= ((int64_t) (void*) wire_empty_struct);
     dummy_var ^= ((int64_t) (void*) wire_return_dart_dynamic);
+    dummy_var ^= ((int64_t) (void*) wire_handle_string_references);
+    dummy_var ^= ((int64_t) (void*) wire_handle_slices);
+    dummy_var ^= ((int64_t) (void*) wire_handle_vec_string);
+    dummy_var ^= ((int64_t) (void*) wire_handle_option_delegates);
+    dummy_var ^= ((int64_t) (void*) wire_handle_many_optionals);
+    dummy_var ^= ((int64_t) (void*) wire_handle_with_enum);
+    dummy_var ^= ((int64_t) (void*) wire_handle_char);
+    dummy_var ^= ((int64_t) (void*) wire_handle_opt_enum);
+    dummy_var ^= ((int64_t) (void*) wire_handle_complex_type_1);
+    dummy_var ^= ((int64_t) (void*) wire_handle_complex_type_2);
+    dummy_var ^= ((int64_t) (void*) wire_handle_list_optionals);
     dummy_var ^= ((int64_t) (void*) wire_test_raw_string_item_struct);
     dummy_var ^= ((int64_t) (void*) wire_test_more_than_just_one_raw_string_struct);
     dummy_var ^= ((int64_t) (void*) wire_test_raw_string_mirrored);
@@ -1383,7 +1410,6 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) wire_test_list_of_raw_nested_string_mirrored);
     dummy_var ^= ((int64_t) (void*) wire_test_fallible_of_raw_string_mirrored);
     dummy_var ^= ((int64_t) (void*) wire_list_of_primitive_enums);
-    dummy_var ^= ((int64_t) (void*) wire_handle_char);
     dummy_var ^= ((int64_t) (void*) wire_test_abc_enum);
     dummy_var ^= ((int64_t) (void*) wire_test_contains_mirrored_sub_struct);
     dummy_var ^= ((int64_t) (void*) wire_test_struct_with_enum);
@@ -1408,10 +1434,13 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) new_NonSendHideData);
     dummy_var ^= ((int64_t) (void*) new_RwLockHideData);
     dummy_var ^= ((int64_t) (void*) new_StringList_0);
+    dummy_var ^= ((int64_t) (void*) new_a_0);
+    dummy_var ^= ((int64_t) (void*) new_abc_0);
     dummy_var ^= ((int64_t) (void*) new_application_env_0);
     dummy_var ^= ((int64_t) (void*) new_application_env_var_0);
     dummy_var ^= ((int64_t) (void*) new_application_settings_0);
     dummy_var ^= ((int64_t) (void*) new_attribute_0);
+    dummy_var ^= ((int64_t) (void*) new_b_0);
     dummy_var ^= ((int64_t) (void*) new_blob_0);
     dummy_var ^= ((int64_t) (void*) new_box_application_env_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_Chrono_Utc_0);
@@ -1419,7 +1448,6 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_HideData_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd___record__String_i32_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_a_0);
-    dummy_var ^= ((int64_t) (void*) new_box_autoadd_abc_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_application_env_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_attribute_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_b_0);
@@ -1432,6 +1460,9 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_kitchen_sink_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_list_optionals_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_new_type_int_0);
+    dummy_var ^= ((int64_t) (void*) new_box_autoadd_u8_0);
+    dummy_var ^= ((int64_t) (void*) new_box_autoadd_usize_0);
+    dummy_var ^= ((int64_t) (void*) new_box_autoadd_weekdays_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_u8_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_usize_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_weekdays_0);
@@ -1449,6 +1480,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) new_box_speed_0);
     dummy_var ^= ((int64_t) (void*) new_box_u8_0);
     dummy_var ^= ((int64_t) (void*) new_box_weekdays_0);
+    dummy_var ^= ((int64_t) (void*) new_c_0);
     dummy_var ^= ((int64_t) (void*) new_concatenate_with_0);
     dummy_var ^= ((int64_t) (void*) new_customized_0);
     dummy_var ^= ((int64_t) (void*) new_dart_opaque_nested_0);
@@ -1456,6 +1488,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) new_empty_0);
     dummy_var ^= ((int64_t) (void*) new_enum_dart_opaque_0);
     dummy_var ^= ((int64_t) (void*) new_enum_opaque_0);
+    dummy_var ^= ((int64_t) (void*) new_event_0);
     dummy_var ^= ((int64_t) (void*) new_exotic_optionals_0);
     dummy_var ^= ((int64_t) (void*) new_feature_chrono_0);
     dummy_var ^= ((int64_t) (void*) new_feature_uuid_0);
@@ -1488,6 +1521,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) new_list_opt_weekdays_0);
     dummy_var ^= ((int64_t) (void*) new_list_optionals_0);
     dummy_var ^= ((int64_t) (void*) new_list_test_id_0);
+    dummy_var ^= ((int64_t) (void*) new_list_weekdays_0);
     dummy_var ^= ((int64_t) (void*) new_measure_0);
     dummy_var ^= ((int64_t) (void*) new_message_id_0);
     dummy_var ^= ((int64_t) (void*) new_my_nested_struct_0);
@@ -1500,6 +1534,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) new_opaque_nested_0);
     dummy_var ^= ((int64_t) (void*) new_sequences_0);
     dummy_var ^= ((int64_t) (void*) new_speed_0);
+    dummy_var ^= ((int64_t) (void*) new_struct_with_enum_0);
     dummy_var ^= ((int64_t) (void*) new_sum_with_0);
     dummy_var ^= ((int64_t) (void*) new_test_id_0);
     dummy_var ^= ((int64_t) (void*) new_uint_8_list_0);

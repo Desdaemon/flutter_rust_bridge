@@ -281,8 +281,8 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
-  int api2wire_box_autoadd_char(String raw) {
-    return api2wire_char(raw);
+  List<dynamic> api2wire_box_autoadd_c(C raw) {
+    return api2wire_c(raw);
   }
 
   @protected
@@ -646,46 +646,10 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
       return [0];
     }
     if (raw is KitchenSink_Primitives) {
-      return [
-        1,
-        api2wire_i32(raw.int32),
-        api2wire_f64(raw.float64),
-        api2wire_bool(raw.boolean)
-      ];
-      return [
-        1,
-        api2wire_i32(raw.int32),
-        api2wire_f64(raw.float64),
-        api2wire_bool(raw.boolean)
-      ];
-      return [
-        1,
-        api2wire_i32(raw.int32),
-        api2wire_f64(raw.float64),
-        api2wire_bool(raw.boolean)
-      ];
+      return [1, api2wire_i32(raw.int32), api2wire_f64(raw.float64), api2wire_bool(raw.boolean)];
     }
     if (raw is KitchenSink_Nested) {
       return [2, api2wire_i32(raw.field0), api2wire_box_kitchen_sink(raw.field1)];
-    }
-    if (raw is KitchenSink_Nested) {
-      return [
-        2,
-        api2wire_i32(raw.field0),
-        api2wire_box_kitchen_sink(raw.field1)
-      ];
-    }
-    if (raw is KitchenSink_Nested) {
-      return [
-        2,
-        api2wire_i32(raw.field0),
-        api2wire_box_kitchen_sink(raw.field1)
-      ];
-      return [
-        2,
-        api2wire_i32(raw.field0),
-        api2wire_box_kitchen_sink(raw.field1)
-      ];
     }
     if (raw is KitchenSink_Optional) {
       return [3, api2wire_opt_i32(raw.field0), api2wire_opt_i32(raw.field1)];
@@ -841,14 +805,7 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
 
   @protected
   List<dynamic> api2wire_my_nested_struct(MyNestedStruct raw) {
-    return [
-      api2wire_my_tree_node(raw.treeNode),
-      api2wire_weekdays(raw.weekday)
-    ];
-    return [
-      api2wire_my_tree_node(raw.treeNode),
-      api2wire_weekdays(raw.weekday)
-    ];
+    return [api2wire_my_tree_node(raw.treeNode), api2wire_weekdays(raw.weekday)];
   }
 
   @protected
@@ -1255,17 +1212,7 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
       NativePortType port_, int my_i32, Object my_i64, double my_f64, bool my_bool);
 
   external dynamic /* void */ wire_primitive_optional_types(
-      NativePortType port_,
-      int? my_i32,
-      Object? my_i64,
-      double? my_f64,
-      bool? my_bool);
-  external dynamic /* void */ wire_primitive_optional_types(
-      NativePortType port_,
-      int? my_i32,
-      Object? my_i64,
-      double? my_f64,
-      bool? my_bool);
+      NativePortType port_, int? my_i32, Object? my_i64, double? my_f64, bool? my_bool);
 
   external dynamic /* int */ wire_primitive_types_sync(int my_i32, Object my_i64, double my_f64, bool my_bool);
 
@@ -1311,16 +1258,9 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
 
   external dynamic /* void */ wire_handle_complex_struct(NativePortType port_, List<dynamic> s);
 
-  external dynamic /* List<dynamic> */ wire_handle_complex_struct_sync(
-      List<dynamic> s);
+  external dynamic /* List<dynamic> */ wire_handle_complex_struct_sync(List<dynamic> s);
 
-  external dynamic /* void */ wire_handle_nested_struct(
-      NativePortType port_, List<dynamic> s);
-  external dynamic /* List<dynamic> */ wire_handle_complex_struct_sync(
-      List<dynamic> s);
-
-  external dynamic /* void */ wire_handle_nested_struct(
-      NativePortType port_, List<dynamic> s);
+  external dynamic /* void */ wire_handle_nested_struct(NativePortType port_, List<dynamic> s);
 
   external dynamic /* Uint8List */ wire_handle_sync_return(String mode);
 
@@ -1422,77 +1362,34 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
       NativePortType port_, Object /* BigInt64Array */ durations, Object since);
 
   external dynamic /* void */ wire_test_chrono(NativePortType port_);
-  external dynamic /* void */ wire_test_chrono(NativePortType port_);
 
   external dynamic /* void */ wire_test_precise_chrono(NativePortType port_);
-  external dynamic /* void */ wire_test_precise_chrono(NativePortType port_);
 
-  external dynamic /* void */ wire_how_long_does_it_take(
-      NativePortType port_, List<dynamic> mine);
-  external dynamic /* void */ wire_how_long_does_it_take(
-      NativePortType port_, List<dynamic> mine);
+  external dynamic /* void */ wire_how_long_does_it_take(NativePortType port_, List<dynamic> mine);
 
-  external dynamic /* void */ wire_handle_uuid(
-      NativePortType port_, Uint8List id);
-  external dynamic /* void */ wire_handle_uuid(
-      NativePortType port_, Uint8List id);
+  external dynamic /* void */ wire_handle_uuid(NativePortType port_, Uint8List id);
 
-  external dynamic /* void */ wire_handle_uuids(
-      NativePortType port_, Uint8List ids);
-  external dynamic /* void */ wire_handle_uuids(
-      NativePortType port_, Uint8List ids);
+  external dynamic /* void */ wire_handle_uuids(NativePortType port_, Uint8List ids);
 
-  external dynamic /* void */ wire_handle_nested_uuids(
-      NativePortType port_, List<dynamic> ids);
-  external dynamic /* void */ wire_handle_nested_uuids(
-      NativePortType port_, List<dynamic> ids);
+  external dynamic /* void */ wire_handle_nested_uuids(NativePortType port_, List<dynamic> ids);
 
-  external dynamic /* void */ wire_new_msgid(
-      NativePortType port_, Uint8List id);
-  external dynamic /* void */ wire_new_msgid(
-      NativePortType port_, Uint8List id);
+  external dynamic /* void */ wire_new_msgid(NativePortType port_, Uint8List id);
 
-  external dynamic /* void */ wire_use_msgid(
-      NativePortType port_, List<dynamic> id);
-  external dynamic /* void */ wire_use_msgid(
-      NativePortType port_, List<dynamic> id);
+  external dynamic /* void */ wire_use_msgid(NativePortType port_, List<dynamic> id);
 
-  external dynamic /* void */ wire_boxed_blob(
-      NativePortType port_, Uint8List blob);
-  external dynamic /* void */ wire_boxed_blob(
-      NativePortType port_, Uint8List blob);
+  external dynamic /* void */ wire_boxed_blob(NativePortType port_, Uint8List blob);
 
-  external dynamic /* void */ wire_use_boxed_blob(
-      NativePortType port_, List<dynamic> blob);
-  external dynamic /* void */ wire_use_boxed_blob(
-      NativePortType port_, List<dynamic> blob);
+  external dynamic /* void */ wire_use_boxed_blob(NativePortType port_, List<dynamic> blob);
 
-  external dynamic /* void */ wire_return_boxed_feed_id(
-      NativePortType port_, Uint8List id);
-  external dynamic /* void */ wire_return_boxed_feed_id(
-      NativePortType port_, Uint8List id);
+  external dynamic /* void */ wire_return_boxed_feed_id(NativePortType port_, Uint8List id);
 
-  external dynamic /* void */ wire_return_boxed_raw_feed_id(
-      NativePortType port_, List<dynamic> id);
-  external dynamic /* void */ wire_return_boxed_raw_feed_id(
-      NativePortType port_, List<dynamic> id);
+  external dynamic /* void */ wire_return_boxed_raw_feed_id(NativePortType port_, List<dynamic> id);
 
-  external dynamic /* void */ wire_test_id(
-      NativePortType port_, List<dynamic> id);
+  external dynamic /* void */ wire_test_id(NativePortType port_, List<dynamic> id);
 
-  external dynamic /* void */ wire_last_number(
-      NativePortType port_, Float64List array);
+  external dynamic /* void */ wire_last_number(NativePortType port_, Float64List array);
 
-  external dynamic /* void */ wire_nested_id(
-      NativePortType port_, List<dynamic> id);
-  external dynamic /* void */ wire_test_id(
-      NativePortType port_, List<dynamic> id);
-
-  external dynamic /* void */ wire_last_number(
-      NativePortType port_, Float64List array);
-
-  external dynamic /* void */ wire_nested_id(
-      NativePortType port_, List<dynamic> id);
+  external dynamic /* void */ wire_nested_id(NativePortType port_, List<dynamic> id);
 
   external dynamic /* String */ wire_sync_accept_dart_opaque(Object opaque);
 
@@ -1580,10 +1477,7 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
 
   external dynamic /* void */ wire_unwrap_rust_opaque(NativePortType port_, Object opaque);
 
-  external dynamic /* Object */ wire_return_non_droppable_dart_opaque(
-      Object opaque);
-  external dynamic /* Object */ wire_return_non_droppable_dart_opaque(
-      Object opaque);
+  external dynamic /* Object */ wire_return_non_droppable_dart_opaque(Object opaque);
 
   external dynamic /* void */ wire_frb_generator_test(NativePortType port_);
 
@@ -1710,20 +1604,11 @@ class FlutterRustBridgeExampleSingleBlockTestWire
   void wire_primitive_types(NativePortType port_, int my_i32, Object my_i64, double my_f64, bool my_bool) =>
       wasmModule.wire_primitive_types(port_, my_i32, my_i64, my_f64, my_bool);
 
-  void wire_primitive_optional_types(NativePortType port_, int? my_i32,
-          Object? my_i64, double? my_f64, bool? my_bool) =>
-      wasmModule.wire_primitive_optional_types(
-          port_, my_i32, my_i64, my_f64, my_bool);
+  void wire_primitive_optional_types(
+          NativePortType port_, int? my_i32, Object? my_i64, double? my_f64, bool? my_bool) =>
+      wasmModule.wire_primitive_optional_types(port_, my_i32, my_i64, my_f64, my_bool);
 
-  dynamic /* int */ wire_primitive_types_sync(
-          int my_i32, Object my_i64, double my_f64, bool my_bool) =>
-  void wire_primitive_optional_types(NativePortType port_, int? my_i32,
-          Object? my_i64, double? my_f64, bool? my_bool) =>
-      wasmModule.wire_primitive_optional_types(
-          port_, my_i32, my_i64, my_f64, my_bool);
-
-  dynamic /* int */ wire_primitive_types_sync(
-          int my_i32, Object my_i64, double my_f64, bool my_bool) =>
+  dynamic /* int */ wire_primitive_types_sync(int my_i32, Object my_i64, double my_f64, bool my_bool) =>
       wasmModule.wire_primitive_types_sync(my_i32, my_i64, my_f64, my_bool);
 
   void wire_primitive_u32(NativePortType port_, int my_u32) => wasmModule.wire_primitive_u32(port_, my_u32);
@@ -1783,13 +1668,8 @@ class FlutterRustBridgeExampleSingleBlockTestWire
 
   void wire_handle_nested_struct(NativePortType port_, List<dynamic> s) =>
       wasmModule.wire_handle_nested_struct(port_, s);
-  void wire_handle_nested_struct(NativePortType port_, List<dynamic> s) =>
-      wasmModule.wire_handle_nested_struct(port_, s);
 
-  dynamic /* Uint8List */ wire_handle_sync_return(String mode) =>
-      wasmModule.wire_handle_sync_return(mode);
-  dynamic /* Uint8List */ wire_handle_sync_return(String mode) =>
-      wasmModule.wire_handle_sync_return(mode);
+  dynamic /* Uint8List */ wire_handle_sync_return(String mode) => wasmModule.wire_handle_sync_return(mode);
 
   void wire_handle_stream(NativePortType port_, String arg) => wasmModule.wire_handle_stream(port_, arg);
 
@@ -1896,11 +1776,8 @@ class FlutterRustBridgeExampleSingleBlockTestWire
 
   void wire_optional_empty_datetime_utc(NativePortType port_, Object? d) =>
       wasmModule.wire_optional_empty_datetime_utc(port_, d);
-  void wire_optional_empty_datetime_utc(NativePortType port_, Object? d) =>
-      wasmModule.wire_optional_empty_datetime_utc(port_, d);
 
-  void wire_duration(NativePortType port_, Object d) =>
-      wasmModule.wire_duration(port_, d);
+  void wire_duration(NativePortType port_, Object d) => wasmModule.wire_duration(port_, d);
 
   void wire_handle_timestamps(NativePortType port_, Object /* BigInt64Array */ timestamps, Object epoch) =>
       wasmModule.wire_handle_timestamps(port_, timestamps, epoch);
@@ -1908,15 +1785,9 @@ class FlutterRustBridgeExampleSingleBlockTestWire
   void wire_handle_durations(NativePortType port_, Object /* BigInt64Array */ durations, Object since) =>
       wasmModule.wire_handle_durations(port_, durations, since);
 
-  void wire_test_chrono(NativePortType port_) =>
-      wasmModule.wire_test_chrono(port_);
-  void wire_test_chrono(NativePortType port_) =>
-      wasmModule.wire_test_chrono(port_);
+  void wire_test_chrono(NativePortType port_) => wasmModule.wire_test_chrono(port_);
 
-  void wire_test_precise_chrono(NativePortType port_) =>
-      wasmModule.wire_test_precise_chrono(port_);
-  void wire_test_precise_chrono(NativePortType port_) =>
-      wasmModule.wire_test_precise_chrono(port_);
+  void wire_test_precise_chrono(NativePortType port_) => wasmModule.wire_test_precise_chrono(port_);
 
   void wire_how_long_does_it_take(NativePortType port_, List<dynamic> mine) =>
       wasmModule.wire_how_long_does_it_take(port_, mine);
@@ -2060,11 +1931,11 @@ class FlutterRustBridgeExampleSingleBlockTestWire
   void wire_handle_type_alias_model(NativePortType port_, Object input) =>
       wasmModule.wire_handle_type_alias_model(port_, input);
 
-  void wire_empty_struct(NativePortType port_, List<dynamic> empty) =>
-      wasmModule.wire_empty_struct(port_, empty);
+  void wire_empty_struct(NativePortType port_, List<dynamic> empty) => wasmModule.wire_empty_struct(port_, empty);
 
-  void wire_handle_string_references(
-          NativePortType port_, String boxed, String arc) =>
+  void wire_return_dart_dynamic(NativePortType port_) => wasmModule.wire_return_dart_dynamic(port_);
+
+  void wire_handle_string_references(NativePortType port_, String boxed, String arc) =>
       wasmModule.wire_handle_string_references(port_, boxed, arc);
 
   void wire_handle_slices(NativePortType port_, Uint8List boxed, Uint8List arc) =>
@@ -2081,8 +1952,8 @@ class FlutterRustBridgeExampleSingleBlockTestWire
       wasmModule.wire_handle_many_optionals(
           port_, path, has_header, columns, delimiter, skip_rows, skip_rows_after_header, chunk_size);
 
-  void wire_return_dart_dynamic(NativePortType port_) =>
-      wasmModule.wire_return_dart_dynamic(port_);
+  void wire_handle_with_enum(NativePortType port_, List<dynamic> with_enum) =>
+      wasmModule.wire_handle_with_enum(port_, with_enum);
 
   void wire_handle_char(NativePortType port_, int plain, int? opt) => wasmModule.wire_handle_char(port_, plain, opt);
 
