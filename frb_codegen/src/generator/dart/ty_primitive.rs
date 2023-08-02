@@ -14,6 +14,7 @@ impl TypeDartGeneratorTrait for TypePrimitiveGenerator<'_> {
                 wasm: Some("return castNativeBigInt(raw);".into()),
                 ..Default::default()
             },
+            IrTypePrimitive::Char => "return raw.runes.single;".into(),
             _ => "return raw;".into(),
         }
     }
@@ -24,6 +25,7 @@ impl TypeDartGeneratorTrait for TypePrimitiveGenerator<'_> {
             IrTypePrimitive::I64 | IrTypePrimitive::U64 | IrTypePrimitive::Usize => {
                 "return castInt(raw);".to_owned()
             }
+            IrTypePrimitive::Char => "return String.fromCharCode(raw);".to_owned(),
             _ => gen_wire2api_simple_type_cast(&self.ir.dart_api_type()),
         }
     }

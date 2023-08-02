@@ -118,7 +118,7 @@ impl IrTypeDelegateArray {
             IrTypeDelegateArray::PrimitiveArray { primitive, .. } => {
                 use IrTypePrimitive::*;
                 match &primitive {
-                    U8 | I8 | U16 | I16 | U32 | I32 | Usize | Isize => "int",
+                    U8 | I8 | U16 | I16 | U32 | I32 | Usize | Char | Isize => "int",
                     U64 | I64 => "BigInt",
                     F32 | F64 => "double",
                     Bool => "bool",

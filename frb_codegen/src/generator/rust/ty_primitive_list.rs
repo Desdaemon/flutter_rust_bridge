@@ -26,6 +26,7 @@ impl TypeRustGeneratorTrait for TypePrimitiveListGenerator<'_> {
     fn wire2api_jsvalue(&self) -> Option<std::borrow::Cow<str>> {
         match self.ir.primitive {
             IrTypePrimitive::Bool | IrTypePrimitive::Unit => Some("todo!()".into()),
+            IrTypePrimitive::Char => unimplemented!(),
             IrTypePrimitive::I64 | IrTypePrimitive::U64 => Some(
                 format!(
                     "let buf = self.dyn_into::<{}>().unwrap();

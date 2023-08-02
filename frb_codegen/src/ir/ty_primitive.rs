@@ -16,6 +16,7 @@ pub enum IrTypePrimitive {
     Bool,
     Unit,
     Usize,
+    Char,
     Isize,
 }
 }
@@ -42,6 +43,7 @@ impl IrTypeTrait for IrTypePrimitive {
             IrTypePrimitive::F32 | IrTypePrimitive::F64 => "double",
             IrTypePrimitive::Bool => "bool",
             IrTypePrimitive::Unit => "void",
+            IrTypePrimitive::Char => "String",
         }
         .to_string()
     }
@@ -49,12 +51,17 @@ impl IrTypeTrait for IrTypePrimitive {
     fn dart_wire_type(&self, target: Target) -> String {
         match self {
             IrTypePrimitive::I64 | IrTypePrimitive::U64 if target.is_wasm() => "Object".into(),
+            IrTypePrimitive::Char => "int".into(),
             _ => self.dart_api_type(),
         }
     }
 
     fn rust_api_type(&self) -> String {
-        self.rust_wire_type(Target::Io)
+        if let IrTypePrimitive::Char = self {
+            "char".into()
+        } else {
+            self.rust_wire_type(Target::Io)
+        }
     }
 
     fn rust_wire_type(&self, _target: Target) -> String {
@@ -63,7 +70,7 @@ impl IrTypeTrait for IrTypePrimitive {
             IrTypePrimitive::I8 => "i8",
             IrTypePrimitive::U16 => "u16",
             IrTypePrimitive::I16 => "i16",
-            IrTypePrimitive::U32 => "u32",
+            IrTypePrimitive::U32 | IrTypePrimitive::Char => "u32",
             IrTypePrimitive::I32 => "i32",
             IrTypePrimitive::U64 => "u64",
             IrTypePrimitive::Unit => "unit",
@@ -95,7 +102,7 @@ impl IrTypePrimitive {
             IrTypePrimitive::I8 => "ffi.Int8",
             IrTypePrimitive::U16 => "ffi.Uint16",
             IrTypePrimitive::I16 => "ffi.Int16",
-            IrTypePrimitive::U32 => "ffi.Uint32",
+            IrTypePrimitive::U32 | IrTypePrimitive::Char => "ffi.Uint32",
             IrTypePrimitive::I32 => "ffi.Int32",
             IrTypePrimitive::U64 => "ffi.Uint64",
             IrTypePrimitive::I64 => "ffi.Int64",
@@ -122,6 +129,7 @@ impl IrTypePrimitive {
             "bool" => Some(IrTypePrimitive::Bool),
             "()" => Some(IrTypePrimitive::Unit),
             "usize" => Some(IrTypePrimitive::Usize),
+            "char" => Some(IrTypePrimitive::Char),
             "isize" => Some(IrTypePrimitive::Isize),
             _ => None,
         }

@@ -14,6 +14,9 @@ impl TypeRustGeneratorTrait for TypeBoxedGenerator<'_> {
         let box_inner = self.ir.inner.as_ref();
         let exist_in_real_api = self.ir.exist_in_real_api;
         Acc::new(|target| match (target, self.ir.inner.as_ref()) {
+            (Io, IrType::Primitive(IrTypePrimitive::Char)) => {
+                Some("unsafe{ *support::box_from_leak_ptr(self) }.wire2api()".into())
+            }
             (Io, IrType::Primitive(_)) => Some(
                 if exist_in_real_api {
                     "unsafe { support::box_from_leak_ptr(self) }"

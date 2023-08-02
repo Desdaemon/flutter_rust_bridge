@@ -813,6 +813,11 @@ pub fn wire_handle_with_enum(port_: MessagePort, with_enum: JsValue) {
 }
 
 #[wasm_bindgen]
+pub fn wire_handle_char(port_: MessagePort, plain: u32, opt: JsValue) {
+    wire_handle_char_impl(port_, plain, opt)
+}
+
+#[wasm_bindgen]
 pub fn wire_handle_opt_enum(port_: MessagePort, weekday: JsValue) {
     wire_handle_opt_enum_impl(port_, weekday)
 }
@@ -1870,6 +1875,11 @@ impl Wire2Api<Option<Box<u8>>> for JsValue {
         (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
     }
 }
+impl Wire2Api<Option<char>> for JsValue {
+    fn wire2api(self) -> Option<char> {
+        (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
+    }
+}
 impl Wire2Api<Option<ExoticOptionals>> for JsValue {
     fn wire2api(self) -> Option<ExoticOptionals> {
         (!self.is_undefined() && !self.is_null()).then(|| self.wire2api())
@@ -2345,6 +2355,11 @@ impl Wire2Api<Box<Weekdays>> for JsValue {
     fn wire2api(self) -> Box<Weekdays> {
         let ptr: Box<i32> = self.wire2api();
         Box::new(ptr.wire2api())
+    }
+}
+impl Wire2Api<char> for JsValue {
+    fn wire2api(self) -> char {
+        char::from_u32(self.unchecked_into_f64() as u32).unwrap()
     }
 }
 impl Wire2Api<f32> for JsValue {

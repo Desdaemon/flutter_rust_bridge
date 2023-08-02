@@ -287,6 +287,11 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
+  int api2wire_box_autoadd_char(String raw) {
+    return api2wire_char(raw);
+  }
+
+  @protected
   List<dynamic> api2wire_box_autoadd_concatenate_with(ConcatenateWith raw) {
     return api2wire_concatenate_with(raw);
   }
@@ -686,6 +691,18 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
         api2wire_f64(raw.float64),
         api2wire_bool(raw.boolean)
       ];
+      return [
+        1,
+        api2wire_i32(raw.int32),
+        api2wire_f64(raw.float64),
+        api2wire_bool(raw.boolean)
+      ];
+    }
+    if (raw is KitchenSink_Nested) {
+      return [2, api2wire_i32(raw.field0), api2wire_box_kitchen_sink(raw.field1)];
+    }
+    if (raw is KitchenSink_Nested) {
+      return [2, api2wire_i32(raw.field0), api2wire_box_kitchen_sink(raw.field1)];
     }
     if (raw is KitchenSink_Nested) {
       return [
@@ -914,6 +931,11 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   @protected
   int? api2wire_opt_box_u8(int? raw) {
     return raw == null ? null : api2wire_box_u8(raw);
+  }
+
+  @protected
+  int? api2wire_opt_char(String? raw) {
+    return raw == null ? null : api2wire_char(raw);
   }
 
   @protected

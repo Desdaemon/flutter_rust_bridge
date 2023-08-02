@@ -2257,6 +2257,24 @@ fn wire_handle_with_enum_impl(port_: MessagePort, with_enum: impl Wire2Api<WithE
         },
     )
 }
+fn wire_handle_char_impl(
+    port_: MessagePort,
+    plain: impl Wire2Api<char> + UnwindSafe,
+    opt: impl Wire2Api<Option<char>> + UnwindSafe,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "handle_char",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_plain = plain.wire2api();
+            let api_opt = opt.wire2api();
+            move |task_callback| Ok(handle_char(api_plain, api_opt))
+        },
+    )
+}
 fn wire_handle_opt_enum_impl(
     port_: MessagePort,
     weekday: impl Wire2Api<Option<Weekdays>> + UnwindSafe,
@@ -2732,6 +2750,12 @@ impl Wire2Api<ApplicationMode> for i32 {
 impl Wire2Api<bool> for bool {
     fn wire2api(self) -> bool {
         self
+    }
+}
+
+impl Wire2Api<char> for u32 {
+    fn wire2api(self) -> char {
+        char::from_u32(self).unwrap()
     }
 }
 

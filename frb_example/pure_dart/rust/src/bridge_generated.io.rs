@@ -862,6 +862,11 @@ pub extern "C" fn wire_handle_with_enum(port_: i64, with_enum: wire_WithEnum) {
 }
 
 #[no_mangle]
+pub extern "C" fn wire_handle_char(port_: i64, plain: u32, opt: *mut u32) {
+    wire_handle_char_impl(port_, plain, opt)
+}
+
+#[no_mangle]
 pub extern "C" fn wire_handle_opt_enum(port_: i64, weekday: *mut i32) {
     wire_handle_opt_enum_impl(port_, weekday)
 }
@@ -1142,6 +1147,11 @@ pub extern "C" fn new_box_autoadd_attribute_0() -> *mut wire_Attribute {
 
 #[no_mangle]
 pub extern "C" fn new_box_autoadd_bool_0(value: bool) -> *mut bool {
+    support::new_leak_box_ptr(value)
+}
+
+#[no_mangle]
+pub extern "C" fn new_box_autoadd_char_0(value: u32) -> *mut u32 {
     support::new_leak_box_ptr(value)
 }
 
@@ -1991,6 +2001,11 @@ impl Wire2Api<B> for *mut wire_B {
 impl Wire2Api<bool> for *mut bool {
     fn wire2api(self) -> bool {
         unsafe { *support::box_from_leak_ptr(self) }
+    }
+}
+impl Wire2Api<char> for *mut u32 {
+    fn wire2api(self) -> char {
+        unsafe { *support::box_from_leak_ptr(self) }.wire2api()
     }
 }
 impl Wire2Api<ExoticOptionals> for *mut wire_ExoticOptionals {

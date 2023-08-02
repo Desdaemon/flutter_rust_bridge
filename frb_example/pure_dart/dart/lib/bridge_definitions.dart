@@ -661,6 +661,10 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
 
   FlutterRustBridgeTaskConstMeta get kHandleWithEnumConstMeta;
 
+  Future<String> handleChar({required String plain, String? opt, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHandleCharConstMeta;
+
   Future<Weekdays?> handleOptEnum({Weekdays? weekday, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kHandleOptEnumConstMeta;

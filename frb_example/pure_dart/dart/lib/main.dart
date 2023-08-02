@@ -1340,6 +1340,14 @@ void main(List<String> args) async {
     expect(api.handleVecString(strings: ['foo']), completion(['foo']));
   });
 
+  test('dart call handle_char', () async {
+    expect(api.handleChar(plain: 'a'), completion('a'));
+    expect(api.handleChar(plain: 'a', opt: 'b'), completion('b'));
+    expect(() => api.handleChar(plain: 'ab'), throwsStateError);
+    expect(api.handleChar(plain: "🦀"), completion("🦀"));
+    expect(api.handleChar(plain: '🎊', opt: '🚀'), completion('🚀'));
+  });
+
   test("dart call list_of_primitive_enums", () async {
     List<Weekdays> days = await api.listOfPrimitiveEnums(weekdays: Weekdays.values);
     expect(days, Weekdays.values);

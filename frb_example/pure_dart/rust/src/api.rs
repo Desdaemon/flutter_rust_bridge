@@ -1553,6 +1553,10 @@ pub fn handle_with_enum(with_enum: WithEnum) -> WithEnum {
     with_enum
 }
 
+pub fn handle_char(plain: char, opt: Option<char>) -> char {
+    opt.unwrap_or(plain)
+}
+
 pub fn handle_opt_enum(weekday: Option<Weekdays>) -> Option<Weekdays> {
     weekday
 }

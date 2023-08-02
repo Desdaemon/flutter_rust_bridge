@@ -29,7 +29,15 @@ impl IrTypeTrait for IrTypePrimitiveList {
             IrTypePrimitive::I64 => "Int64List",
             IrTypePrimitive::F32 => "Float32List",
             IrTypePrimitive::F64 => "Float64List",
-            _ => panic!("does not support {:?} yet", &self.primitive),
+            IrTypePrimitive::Char => panic!("Vec<char> is not supported; please use String or Vec<u32> instead."),
+            | IrTypePrimitive::Bool
+            | IrTypePrimitive::Unit // TODO: Only transfer length
+            | IrTypePrimitive::Usize => {
+                panic!(
+                    "Vec<{}> is not yet supported.",
+                    self.primitive.rust_api_type()
+                )
+            }
         }
         .to_string()
     }
@@ -81,6 +89,7 @@ impl IrTypePrimitiveList {
             IrTypePrimitive::F32 => "js_sys::Float32Array",
             IrTypePrimitive::F64 => "js_sys::Float64Array",
             IrTypePrimitive::Bool | IrTypePrimitive::Unit => "js_sys::Array",
+            IrTypePrimitive::Char => unimplemented!(),
         }
     }
 }
