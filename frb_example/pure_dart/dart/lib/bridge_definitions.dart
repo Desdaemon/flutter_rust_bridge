@@ -669,6 +669,22 @@ abstract class FlutterRustBridgeExampleSingleBlockTest {
 
   FlutterRustBridgeTaskConstMeta get kHandleOptEnumConstMeta;
 
+  List<Weekdays> handleComplexType1({dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHandleComplexType1ConstMeta;
+
+  List<ApplicationMessage> handleComplexType2({dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kHandleComplexType2ConstMeta;
+
+  Future<int> sumMethodSumWith({required SumWith that, required int y, required int z, dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kEmptyStructConstMeta;
+
+  Future<dynamic> returnDartDynamic({dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kReturnDartDynamicConstMeta;
+
   Future<RawStringEnumMirrored> testRawStringEnumMirrored({required bool nested, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kTestRawStringEnumMirroredConstMeta;
@@ -1770,18 +1786,6 @@ enum Weekdays {
   /// Best day of the week.
   Saturday,
   Sunday,
-}
-
-class WithEnum {
-  final Weekdays weekdays;
-  final KitchenSink kitchenSink;
-  final NewTypeInt wrapper;
-
-  const WithEnum({
-    required this.weekdays,
-    required this.kitchenSink,
-    required this.wrapper,
-  });
 }
 
 class WithEnum {

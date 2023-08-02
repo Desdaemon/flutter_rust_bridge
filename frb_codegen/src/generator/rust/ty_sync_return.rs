@@ -51,4 +51,18 @@ impl<'a> TypeRustGeneratorTrait for TypeSyncReturnGenerator<'a> {
             fn imports(&self) -> Option<String>;
         }
     }
+
+    fn wrap_obj(&self, obj: String, wired_fallible_func: bool) -> String {
+        if wired_fallible_func {
+            let unwrapped = format!("{obj}?.0");
+            let gen = self.inner.wrap_obj(unwrapped.clone(), wired_fallible_func);
+            if gen != unwrapped {
+                format!("Ok(SyncReturn({gen}))")
+            } else {
+                obj
+            }
+        } else {
+            obj
+        }
+    }
 }

@@ -1320,8 +1320,7 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
         argNames: ["durations", "since"],
       );
 
-  Future<Duration> howLongDoesItTake({required FeatureChrono mine, dynamic hint}) {
-    var arg0 = _platform.api2wire_feature_chrono(mine);
+  Future<TestChrono> testChrono({dynamic hint}) {
     return _platform.executeNormal(FlutterRustBridgeTask(
       callFfi: (port_) => _platform.inner.wire_test_chrono(port_),
       parseSuccessData: _wire2api_test_chrono,
@@ -2502,6 +2501,36 @@ class FlutterRustBridgeExampleSingleBlockTestImpl implements FlutterRustBridgeEx
   FlutterRustBridgeTaskConstMeta get kHandleOptEnumConstMeta => const FlutterRustBridgeTaskConstMeta(
         debugName: "handle_opt_enum",
         argNames: ["weekday"],
+      );
+
+  List<Weekdays> handleComplexType1({dynamic hint}) {
+    return _platform.executeSync(FlutterRustBridgeSyncTask(
+      callFfi: () => _platform.inner.wire_handle_complex_type_1(),
+      parseSuccessData: _wire2api_list_weekdays,
+      constMeta: kHandleComplexType1ConstMeta,
+      argValues: [],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHandleComplexType1ConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "handle_complex_type_1",
+        argNames: [],
+      );
+
+  List<ApplicationMessage> handleComplexType2({dynamic hint}) {
+    return _platform.executeSync(FlutterRustBridgeSyncTask(
+      callFfi: () => _platform.inner.wire_handle_complex_type_2(),
+      parseSuccessData: _wire2api_list_application_message,
+      constMeta: kHandleComplexType2ConstMeta,
+      argValues: [],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kHandleComplexType2ConstMeta => const FlutterRustBridgeTaskConstMeta(
+        debugName: "handle_complex_type_2",
+        argNames: [],
       );
 
   Future<List<RawStringMirrored>> testFallibleOfRawStringMirrored({dynamic hint}) {

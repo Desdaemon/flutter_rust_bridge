@@ -2291,6 +2291,34 @@ fn wire_handle_opt_enum_impl(
         },
     )
 }
+fn wire_handle_complex_type_1_impl() -> support::WireSyncReturn {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync(
+        WrapInfo {
+            debug_name: "handle_complex_type_1",
+            port: None,
+            mode: FfiCallMode::Sync,
+        },
+        move || handle_complex_type_1(),
+    )
+}
+fn wire_handle_complex_type_2_impl() -> support::WireSyncReturn {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync(
+        WrapInfo {
+            debug_name: "handle_complex_type_2",
+            port: None,
+            mode: FfiCallMode::Sync,
+        },
+        move || {
+            Ok(SyncReturn(
+                handle_complex_type_2()?
+                    .0
+                    .into_iter()
+                    .map(mirror_ApplicationMessage)
+                    .collect::<Vec<_>>(),
+            ))
+        },
+    )
+}
 fn wire_test_list_of_raw_nested_string_mirrored_impl(port_: MessagePort) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, mirror_ListOfNestedRawStringMirrored>(
         WrapInfo {
@@ -2645,10 +2673,12 @@ const _: fn() = || {
             let _: i32 = y;
         }
         ApplicationMessage::Exit => {}
+        _ => unreachable!(),
     }
     match None::<ApplicationMode>.unwrap() {
         ApplicationMode::Standalone => {}
         ApplicationMode::Embedded => {}
+        _ => unreachable!(),
     }
     {
         let ApplicationSettings = None::<ApplicationSettings>.unwrap();
@@ -2905,6 +2935,7 @@ impl support::IntoDart for mirror_ApplicationMessage {
                 y.into_into_dart().into_dart(),
             ],
             ApplicationMessage::Exit => vec![2.into_dart()],
+            _ => unreachable!(),
         }
         .into_dart()
     }
@@ -3136,6 +3167,7 @@ impl support::IntoDart for EnumOpaque {
             Self::TraitObj(field0) => vec![2.into_dart(), field0.into_dart()],
             Self::Mutex(field0) => vec![3.into_dart(), field0.into_dart()],
             Self::RwLock(field0) => vec![4.into_dart(), field0.into_dart()],
+            _ => unreachable!(),
         }
         .into_dart()
     }
@@ -3758,6 +3790,8 @@ impl support::IntoDart for Weekdays {
         .into_dart()
     }
 }
+impl support::IntoDartExceptPrimitive for Weekdays {}
+
 impl support::IntoDart for WithEnum {
     fn into_dart(self) -> support::DartAbi {
         vec![

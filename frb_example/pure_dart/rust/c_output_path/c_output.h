@@ -859,7 +859,13 @@ void wire_handle_many_optionals(int64_t port_,
 
 void wire_handle_with_enum(int64_t port_, struct wire_WithEnum with_enum);
 
+void wire_handle_char(int64_t port_, uint32_t plain, uint32_t *opt);
+
 void wire_handle_opt_enum(int64_t port_, int32_t *weekday);
+
+WireSyncReturn wire_handle_complex_type_1(void);
+
+WireSyncReturn wire_handle_complex_type_2(void);
 
 void wire_sum__method__SumWith(int64_t port_, struct wire_SumWith that, uint32_t y, uint32_t z);
 
@@ -943,6 +949,8 @@ struct wire_Attribute *new_box_autoadd_attribute_0(void);
 struct wire_B *new_box_autoadd_b_0(void);
 
 bool *new_box_autoadd_bool_0(bool value);
+
+uint32_t *new_box_autoadd_char_0(uint32_t value);
 
 struct wire_C *new_box_autoadd_c_0(void);
 
@@ -1327,7 +1335,10 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) wire_handle_option_delegates);
     dummy_var ^= ((int64_t) (void*) wire_handle_many_optionals);
     dummy_var ^= ((int64_t) (void*) wire_handle_with_enum);
+    dummy_var ^= ((int64_t) (void*) wire_handle_char);
     dummy_var ^= ((int64_t) (void*) wire_handle_opt_enum);
+    dummy_var ^= ((int64_t) (void*) wire_handle_complex_type_1);
+    dummy_var ^= ((int64_t) (void*) wire_handle_complex_type_2);
     dummy_var ^= ((int64_t) (void*) wire_test_raw_string_item_struct);
     dummy_var ^= ((int64_t) (void*) wire_test_more_than_just_one_raw_string_struct);
     dummy_var ^= ((int64_t) (void*) wire_test_raw_string_mirrored);
@@ -1376,6 +1387,7 @@ static int64_t dummy_method_to_enforce_bundling(void) {
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_attribute_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_b_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_bool_0);
+    dummy_var ^= ((int64_t) (void*) new_box_autoadd_char_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_c_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_concatenate_with_0);
     dummy_var ^= ((int64_t) (void*) new_box_autoadd_customized_0);

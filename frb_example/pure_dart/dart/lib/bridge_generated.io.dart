@@ -59,17 +59,6 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
-  ffi.Pointer<wire_int_64_list> api2wire_Chrono_DurationList(
-      List<Duration> raw) {
-    final ans = Int64List(raw.length);
-    for (var i = 0; i < raw.length; ++i)
-      ans[i] = api2wire_Chrono_Duration(raw[i]);
-    for (var i = 0; i < raw.length; ++i)
-      ans[i] = api2wire_Chrono_Duration(raw[i]);
-    return api2wire_int_64_list(ans);
-  }
-
-  @protected
   int api2wire_Chrono_Local(DateTime raw) {
     return api2wire_i64(raw.microsecondsSinceEpoch);
   }
@@ -314,13 +303,9 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   @protected
   ffi.Pointer<ffi.UintPtr> api2wire_box_autoadd_usize(int raw) {
     return inner.new_box_autoadd_usize_0(api2wire_usize(raw));
-  ffi.Pointer<ffi.UintPtr> api2wire_box_autoadd_usize(int raw) {
-    return inner.new_box_autoadd_usize_0(api2wire_usize(raw));
   }
 
   @protected
-  ffi.Pointer<ffi.Int32> api2wire_box_autoadd_weekdays(Weekdays raw) {
-    return inner.new_box_autoadd_weekdays_0(api2wire_weekdays(raw));
   ffi.Pointer<ffi.Int32> api2wire_box_autoadd_weekdays(Weekdays raw) {
     return inner.new_box_autoadd_weekdays_0(api2wire_weekdays(raw));
   }
@@ -499,27 +484,6 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
-  wire_FeatureChrono api2wire_feature_chrono(FeatureChrono raw) {
-    final shell = inner.new_feature_chrono_0();
-    _api_fill_to_wire_feature_chrono(raw, shell);
-    return shell;
-  }
-
-  @protected
-  wire_FeatureUuid api2wire_feature_uuid(FeatureUuid raw) {
-    final shell = inner.new_feature_uuid_0();
-    _api_fill_to_wire_feature_uuid(raw, shell);
-    return shell;
-  }
-
-  @protected
-  wire_FeedId api2wire_feed_id(FeedId raw) {
-    final shell = inner.new_feed_id_0();
-    _api_fill_to_wire_feed_id(raw, shell);
-    return shell;
-  }
-
-  @protected
   ffi.Pointer<wire_float_32_list> api2wire_float_32_list(Float32List raw) {
     final ans = inner.new_float_32_list_0(raw.length);
     ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
@@ -564,20 +528,6 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
     final ans = inner.new_int_8_list_0(raw.length);
     ans.ref.ptr.asTypedList(raw.length).setAll(0, raw);
     return ans;
-  }
-
-  @protected
-  wire_IntWrapper api2wire_int_wrapper(IntWrapper raw) {
-    final shell = inner.new_int_wrapper_0();
-    _api_fill_to_wire_int_wrapper(raw, shell);
-    return shell;
-  }
-
-  @protected
-  wire_KitchenSink api2wire_kitchen_sink(KitchenSink raw) {
-    final shell = inner.new_kitchen_sink_0();
-    _api_fill_to_wire_kitchen_sink(raw, shell);
-    return shell;
   }
 
   @protected
@@ -954,39 +904,6 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
-  ffi.Pointer<ffi.Int32> api2wire_opt_weekdays(Weekdays? raw) {
-    return raw == null ? ffi.nullptr : api2wire_box_autoadd_weekdays(raw);
-  }
-
-  @protected
-  wire_Sequences api2wire_sequences(Sequences raw) {
-    final shell = inner.new_sequences_0();
-    _api_fill_to_wire_sequences(raw, shell);
-    return shell;
-  }
-
-  @protected
-  wire_Speed api2wire_speed(Speed raw) {
-    final shell = inner.new_speed_0();
-    _api_fill_to_wire_speed(raw, shell);
-    return shell;
-  }
-
-  @protected
-  wire_SumWith api2wire_sum_with(SumWith raw) {
-    final shell = inner.new_sum_with_0();
-    _api_fill_to_wire_sum_with(raw, shell);
-    return shell;
-  }
-
-  @protected
-  wire_TestId api2wire_test_id(TestId raw) {
-    final shell = inner.new_test_id_0();
-    _api_fill_to_wire_test_id(raw, shell);
-    return shell;
-  }
-
-  @protected
   int api2wire_u64(int raw) {
     return raw;
   }
@@ -1026,19 +943,6 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
     return ans;
   }
 
-  @protected
-  wire_UserId api2wire_user_id(UserId raw) {
-    final shell = inner.new_user_id_0();
-    _api_fill_to_wire_user_id(raw, shell);
-    return shell;
-  }
-
-  @protected
-  wire_WithEnum api2wire_with_enum(WithEnum raw) {
-    final shell = inner.new_with_enum_0();
-    _api_fill_to_wire_with_enum(raw, shell);
-    return shell;
-  }
   @protected
   wire_UserId api2wire_user_id(UserId raw) {
     final shell = inner.new_user_id_0();
@@ -1226,6 +1130,8 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
       return;
     }
   }
+
+  void _api_fill_to_wire_empty(Empty apiObj, wire_Empty wireObj) {}
 
   void _api_fill_to_wire_enum_dart_opaque(EnumDartOpaque apiObj, wire_EnumDartOpaque wireObj) {
     if (apiObj is EnumDartOpaque_Primitive) {
@@ -1667,6 +1573,30 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
           'wire_primitive_types');
   late final _wire_primitive_types = _wire_primitive_typesPtr.asFunction<void Function(int, int, int, double, bool)>();
 
+  void wire_primitive_optional_types(
+    int port_,
+    ffi.Pointer<ffi.Int32> my_i32,
+    ffi.Pointer<ffi.Int64> my_i64,
+    ffi.Pointer<ffi.Double> my_f64,
+    ffi.Pointer<ffi.Bool> my_bool,
+  ) {
+    return _wire_primitive_optional_types(
+      port_,
+      my_i32,
+      my_i64,
+      my_f64,
+      my_bool,
+    );
+  }
+
+  late final _wire_primitive_optional_typesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int64, ffi.Pointer<ffi.Int32>, ffi.Pointer<ffi.Int64>, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Bool>)>>('wire_primitive_optional_types');
+  late final _wire_primitive_optional_types = _wire_primitive_optional_typesPtr.asFunction<
+      void Function(
+          int, ffi.Pointer<ffi.Int32>, ffi.Pointer<ffi.Int64>, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Bool>)>();
+
   WireSyncReturn wire_primitive_types_sync(
     int my_i32,
     int my_i64,
@@ -1847,7 +1777,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_handle_struct(
     int port_,
     wire_MySize arg,
-    wire_MySize arg,
     ffi.Pointer<wire_MySize> boxed,
   ) {
     return _wire_handle_struct(
@@ -1864,7 +1793,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
       _wire_handle_structPtr.asFunction<void Function(int, wire_MySize, ffi.Pointer<wire_MySize>)>();
 
   WireSyncReturn wire_handle_struct_sync(
-    wire_MySize arg,
     wire_MySize arg,
     ffi.Pointer<wire_MySize> boxed,
   ) {
@@ -1883,7 +1811,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_handle_newtype(
     int port_,
     wire_NewTypeInt arg,
-    wire_NewTypeInt arg,
   ) {
     return _wire_handle_newtype(
       port_,
@@ -1896,7 +1823,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   late final _wire_handle_newtype = _wire_handle_newtypePtr.asFunction<void Function(int, wire_NewTypeInt)>();
 
   WireSyncReturn wire_handle_newtype_sync(
-    wire_NewTypeInt arg,
     wire_NewTypeInt arg,
   ) {
     return _wire_handle_newtype_sync(
@@ -1972,7 +1898,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_handle_complex_struct(
     int port_,
     wire_MyTreeNode s,
-    wire_MyTreeNode s,
   ) {
     return _wire_handle_complex_struct(
       port_,
@@ -1986,7 +1911,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
       _wire_handle_complex_structPtr.asFunction<void Function(int, wire_MyTreeNode)>();
 
   WireSyncReturn wire_handle_complex_struct_sync(
-    wire_MyTreeNode s,
     wire_MyTreeNode s,
   ) {
     return _wire_handle_complex_struct_sync(
@@ -2181,7 +2105,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_print_note(
     int port_,
     wire_Note note,
-    wire_Note note,
   ) {
     return _wire_print_note(
       port_,
@@ -2226,7 +2149,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_handle_customized_struct(
     int port_,
     wire_Customized val,
-    wire_Customized val,
   ) {
     return _wire_handle_customized_struct(
       port_,
@@ -2242,7 +2164,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_handle_enum_struct(
     int port_,
     wire_KitchenSink val,
-    wire_KitchenSink val,
   ) {
     return _wire_handle_enum_struct(
       port_,
@@ -2256,7 +2177,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
 
   void wire_use_imported_struct(
     int port_,
-    wire_MyStruct my_struct,
     wire_MyStruct my_struct,
   ) {
     return _wire_use_imported_struct(
@@ -2309,7 +2229,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
 
   void wire_is_app_embedded(
     int port_,
-    wire_ApplicationSettings app_settings,
     wire_ApplicationSettings app_settings,
   ) {
     return _wire_is_app_embedded(
@@ -2369,7 +2288,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_first_number(
     int port_,
     wire_Numbers nums,
-    wire_Numbers nums,
   ) {
     return _wire_first_number(
       port_,
@@ -2383,7 +2301,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
 
   void wire_first_sequence(
     int port_,
-    wire_Sequences seqs,
     wire_Sequences seqs,
   ) {
     return _wire_first_sequence(
@@ -2435,7 +2352,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
 
   void wire_next_user_id(
     int port_,
-    wire_UserId user_id,
     wire_UserId user_id,
   ) {
     return _wire_next_user_id(
@@ -2575,7 +2491,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_multiply_by_ten(
     int port_,
     wire_Measure measure,
-    wire_Measure measure,
   ) {
     return _wire_multiply_by_ten(
       port_,
@@ -2665,6 +2580,22 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Int64)>>('wire_naivedatetime');
   late final _wire_naivedatetime = _wire_naivedatetimePtr.asFunction<void Function(int, int)>();
 
+  void wire_optional_empty_datetime_utc(
+    int port_,
+    ffi.Pointer<ffi.Int64> d,
+  ) {
+    return _wire_optional_empty_datetime_utc(
+      port_,
+      d,
+    );
+  }
+
+  late final _wire_optional_empty_datetime_utcPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Pointer<ffi.Int64>)>>(
+          'wire_optional_empty_datetime_utc');
+  late final _wire_optional_empty_datetime_utc =
+      _wire_optional_empty_datetime_utcPtr.asFunction<void Function(int, ffi.Pointer<ffi.Int64>)>();
+
   void wire_duration(
     int port_,
     int d,
@@ -2714,9 +2645,31 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   late final _wire_handle_durations =
       _wire_handle_durationsPtr.asFunction<void Function(int, ffi.Pointer<wire_int_64_list>, int)>();
 
+  void wire_test_chrono(
+    int port_,
+  ) {
+    return _wire_test_chrono(
+      port_,
+    );
+  }
+
+  late final _wire_test_chronoPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>('wire_test_chrono');
+  late final _wire_test_chrono = _wire_test_chronoPtr.asFunction<void Function(int)>();
+
+  void wire_test_precise_chrono(
+    int port_,
+  ) {
+    return _wire_test_precise_chrono(
+      port_,
+    );
+  }
+
+  late final _wire_test_precise_chronoPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>('wire_test_precise_chrono');
+  late final _wire_test_precise_chrono = _wire_test_precise_chronoPtr.asFunction<void Function(int)>();
+
   void wire_how_long_does_it_take(
     int port_,
-    wire_FeatureChrono mine,
     wire_FeatureChrono mine,
   ) {
     return _wire_how_long_does_it_take(
@@ -2761,7 +2714,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_handle_nested_uuids(
     int port_,
     wire_FeatureUuid ids,
-    wire_FeatureUuid ids,
   ) {
     return _wire_handle_nested_uuids(
       port_,
@@ -2790,7 +2742,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
 
   void wire_use_msgid(
     int port_,
-    wire_MessageId id,
     wire_MessageId id,
   ) {
     return _wire_use_msgid(
@@ -2850,7 +2801,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_return_boxed_raw_feed_id(
     int port_,
     wire_FeedId id,
-    wire_FeedId id,
   ) {
     return _wire_return_boxed_raw_feed_id(
       port_,
@@ -2865,7 +2815,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
 
   void wire_test_id(
     int port_,
-    wire_TestId id,
     wire_TestId id,
   ) {
     return _wire_test_id(
@@ -3115,7 +3064,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_run_enum_opaque(
     int port_,
     wire_EnumOpaque opaque,
-    wire_EnumOpaque opaque,
   ) {
     return _wire_run_enum_opaque(
       port_,
@@ -3347,7 +3295,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_run_nested_opaque(
     int port_,
     wire_OpaqueNested opaque,
-    wire_OpaqueNested opaque,
   ) {
     return _wire_run_nested_opaque(
       port_,
@@ -3380,7 +3327,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_get_nested_dart_opaque(
     int port_,
     wire_DartOpaqueNested opaque,
-    wire_DartOpaqueNested opaque,
   ) {
     return _wire_get_nested_dart_opaque(
       port_,
@@ -3410,7 +3356,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
 
   void wire_get_enum_dart_opaque(
     int port_,
-    wire_EnumDartOpaque opaque,
     wire_EnumDartOpaque opaque,
   ) {
     return _wire_get_enum_dart_opaque(
@@ -3473,10 +3418,10 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
     );
   }
 
-  late final _wire_return_non_dropable_dart_opaquePtr =
-      _lookup<ffi.NativeFunction<WireSyncReturn Function(wire_DartOpaque)>>('wire_return_non_dropable_dart_opaque');
-  late final _wire_return_non_dropable_dart_opaque =
-      _wire_return_non_dropable_dart_opaquePtr.asFunction<WireSyncReturn Function(wire_DartOpaque)>();
+  late final _wire_return_non_droppable_dart_opaquePtr =
+      _lookup<ffi.NativeFunction<WireSyncReturn Function(wire_DartOpaque)>>('wire_return_non_droppable_dart_opaque');
+  late final _wire_return_non_droppable_dart_opaque =
+      _wire_return_non_droppable_dart_opaquePtr.asFunction<WireSyncReturn Function(wire_DartOpaque)>();
 
   void wire_frb_generator_test(
     int port_,
@@ -3539,6 +3484,20 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   late final _wire_handle_type_alias_modelPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Uint64)>>('wire_handle_type_alias_model');
   late final _wire_handle_type_alias_model = _wire_handle_type_alias_modelPtr.asFunction<void Function(int, int)>();
+
+  void wire_empty_struct(
+    int port_,
+    wire_Empty empty,
+  ) {
+    return _wire_empty_struct(
+      port_,
+      empty,
+    );
+  }
+
+  late final _wire_empty_structPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, wire_Empty)>>('wire_empty_struct');
+  late final _wire_empty_struct = _wire_empty_structPtr.asFunction<void Function(int, wire_Empty)>();
 
   void wire_return_dart_dynamic(
     int port_,
@@ -3833,9 +3792,24 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Pointer<ffi.Int32>)>>('wire_handle_opt_enum');
   late final _wire_handle_opt_enum = _wire_handle_opt_enumPtr.asFunction<void Function(int, ffi.Pointer<ffi.Int32>)>();
 
+  WireSyncReturn wire_handle_complex_type_1() {
+    return _wire_handle_complex_type_1();
+  }
+
+  late final _wire_handle_complex_type_1Ptr =
+      _lookup<ffi.NativeFunction<WireSyncReturn Function()>>('wire_handle_complex_type_1');
+  late final _wire_handle_complex_type_1 = _wire_handle_complex_type_1Ptr.asFunction<WireSyncReturn Function()>();
+
+  WireSyncReturn wire_handle_complex_type_2() {
+    return _wire_handle_complex_type_2();
+  }
+
+  late final _wire_handle_complex_type_2Ptr =
+      _lookup<ffi.NativeFunction<WireSyncReturn Function()>>('wire_handle_complex_type_2');
+  late final _wire_handle_complex_type_2 = _wire_handle_complex_type_2Ptr.asFunction<WireSyncReturn Function()>();
+
   void wire_sum__method__SumWith(
     int port_,
-    wire_SumWith that,
     wire_SumWith that,
     int y,
     int z,
@@ -3872,7 +3846,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
 
   void wire_concatenate__method__ConcatenateWith(
     int port_,
-    wire_ConcatenateWith that,
     wire_ConcatenateWith that,
     ffi.Pointer<wire_uint_8_list> b,
   ) {
@@ -3912,7 +3885,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   void wire_handle_some_stream_sink__method__ConcatenateWith(
     int port_,
     wire_ConcatenateWith that,
-    wire_ConcatenateWith that,
     int key,
     int max,
   ) {
@@ -3930,12 +3902,9 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
   late final _wire_handle_some_stream_sink__method__ConcatenateWith =
       _wire_handle_some_stream_sink__method__ConcatenateWithPtr
           .asFunction<void Function(int, wire_ConcatenateWith, int, int)>();
-      _wire_handle_some_stream_sink__method__ConcatenateWithPtr
-          .asFunction<void Function(int, wire_ConcatenateWith, int, int)>();
 
   void wire_handle_some_stream_sink_at_1__method__ConcatenateWith(
     int port_,
-    wire_ConcatenateWith that,
     wire_ConcatenateWith that,
   ) {
     return _wire_handle_some_stream_sink_at_1__method__ConcatenateWith(
@@ -3949,7 +3918,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
           'wire_handle_some_stream_sink_at_1__method__ConcatenateWith');
   late final _wire_handle_some_stream_sink_at_1__method__ConcatenateWith =
       _wire_handle_some_stream_sink_at_1__method__ConcatenateWithPtr
-          .asFunction<void Function(int, wire_ConcatenateWith)>();
           .asFunction<void Function(int, wire_ConcatenateWith)>();
 
   void wire_handle_some_static_stream_sink__static_method__ConcatenateWith(
@@ -3988,7 +3956,6 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
 
   void wire_handle_self_by_value__method__take_self__IntWrapper(
     int port_,
-    wire_IntWrapper that,
     wire_IntWrapper that,
   ) {
     return _wire_handle_self_by_value__method__take_self__IntWrapper(
@@ -4119,6 +4086,19 @@ class FlutterRustBridgeExampleSingleBlockTestWire implements FlutterRustBridgeWi
       _lookup<ffi.NativeFunction<ffi.Pointer<wire_ApplicationEnv> Function()>>('new_box_application_env_0');
   late final _new_box_application_env_0 =
       _new_box_application_env_0Ptr.asFunction<ffi.Pointer<wire_ApplicationEnv> Function()>();
+
+  ffi.Pointer<ffi.Int64> new_box_autoadd_Chrono_Utc_0(
+    int value,
+  ) {
+    return _new_box_autoadd_Chrono_Utc_0(
+      value,
+    );
+  }
+
+  late final _new_box_autoadd_Chrono_Utc_0Ptr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int64> Function(ffi.Int64)>>('new_box_autoadd_Chrono_Utc_0');
+  late final _new_box_autoadd_Chrono_Utc_0 =
+      _new_box_autoadd_Chrono_Utc_0Ptr.asFunction<ffi.Pointer<ffi.Int64> Function(int)>();
 
   ffi.Pointer<wire_DartOpaque> new_box_autoadd_DartOpaque_0() {
     return _new_box_autoadd_DartOpaque_0();

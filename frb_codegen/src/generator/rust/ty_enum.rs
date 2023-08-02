@@ -1,6 +1,7 @@
 use itertools::Itertools;
 
 use crate::generator::rust::get_into_into_dart;
+use crate::fmt;
 use crate::generator::rust::ty::*;
 use crate::generator::rust::ExternFuncCollector;
 use crate::generator::rust::NO_PARAMS;
@@ -181,7 +182,7 @@ impl TypeRustGeneratorTrait for TypeEnumRefGenerator<'_> {
             })
             .collect();
         Some(format!(
-            "match None::<{}>.unwrap() {{ {} }}",
+            "match None::<{}>.unwrap() {{ {} _ => unreachable!(), }}",
             src.name,
             branches.join(","),
         ))
@@ -265,8 +266,10 @@ impl TypeRustGeneratorTrait for TypeEnumRefGenerator<'_> {
             ",
             name,
             self_ref,
-            variants.join("\n")
+            variants.join("\n"),
+            name = name,
         )
+        .to_string()
     }
 
     fn new_with_nullptr(&self, collector: &mut ExternFuncCollector) -> String {

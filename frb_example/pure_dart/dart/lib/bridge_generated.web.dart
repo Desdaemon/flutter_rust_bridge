@@ -371,41 +371,6 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
   }
 
   @protected
-  List<dynamic> api2wire_box_autoadd_int_wrapper(IntWrapper raw) {
-    return api2wire_int_wrapper(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_kitchen_sink(KitchenSink raw) {
-    return api2wire_kitchen_sink(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_measure(Measure raw) {
-    return api2wire_measure(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_message_id(MessageId raw) {
-    return api2wire_message_id(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_my_size(MySize raw) {
-    return api2wire_my_size(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_my_struct(MyStruct raw) {
-    return api2wire_my_struct(raw);
-  }
-
-  @protected
-  List<dynamic> api2wire_box_autoadd_my_tree_node(MyTreeNode raw) {
-    return api2wire_my_tree_node(raw);
-  }
-
-  @protected
   List<dynamic> api2wire_box_autoadd_new_type_int(NewTypeInt raw) {
     return api2wire_new_type_int(raw);
   }
@@ -689,7 +654,11 @@ class FlutterRustBridgeExampleSingleBlockTestPlatform
       return [2, api2wire_i32(raw.field0), api2wire_box_kitchen_sink(raw.field1)];
     }
     if (raw is KitchenSink_Nested) {
-      return [2, api2wire_i32(raw.field0), api2wire_box_kitchen_sink(raw.field1)];
+      return [
+        2,
+        api2wire_i32(raw.field0),
+        api2wire_box_kitchen_sink(raw.field1)
+      ];
     }
     if (raw is KitchenSink_Nested) {
       return [
@@ -1136,8 +1105,7 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
       double? my_f64,
       bool? my_bool);
 
-  external dynamic /* int */ wire_primitive_types_sync(
-      int my_i32, Object my_i64, double my_f64, bool my_bool);
+  external dynamic /* int */ wire_primitive_types_sync(int my_i32, Object my_i64, double my_f64, bool my_bool);
 
   external dynamic /* void */ wire_primitive_u32(NativePortType port_, int my_u32);
 
@@ -1465,8 +1433,6 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
 
   external dynamic /* void */ wire_handle_type_alias_model(NativePortType port_, Object input);
 
-  external dynamic /* void */ wire_handle_type_alias_model(NativePortType port_, Object input);
-
   external dynamic /* void */ wire_empty_struct(NativePortType port_, List<dynamic> empty);
 
   external dynamic /* void */ wire_return_dart_dynamic(NativePortType port_);
@@ -1487,6 +1453,10 @@ class FlutterRustBridgeExampleSingleBlockTestWasmModule implements WasmModule {
   external dynamic /* void */ wire_handle_char(NativePortType port_, int plain, int? opt);
 
   external dynamic /* void */ wire_handle_opt_enum(NativePortType port_, int? weekday);
+
+  external dynamic /* List<dynamic> */ wire_handle_complex_type_1();
+
+  external dynamic /* List<dynamic> */ wire_handle_complex_type_2();
 
   external dynamic /* void */ wire_sum__method__SumWith(NativePortType port_, List<dynamic> that, int y, int z);
 
@@ -1940,12 +1910,12 @@ class FlutterRustBridgeExampleSingleBlockTestWire
 
   void wire_handle_char(NativePortType port_, int plain, int? opt) => wasmModule.wire_handle_char(port_, plain, opt);
 
-  void wire_return_dart_dynamic(NativePortType port_) => wasmModule.wire_return_dart_dynamic(port_);
-
-  void wire_handle_opt_enum(NativePortType port_, int? weekday) => wasmModule.wire_handle_opt_enum(port_, weekday);
   void wire_handle_opt_enum(NativePortType port_, int? weekday) => wasmModule.wire_handle_opt_enum(port_, weekday);
 
-  void wire_sum__method__SumWith(NativePortType port_, List<dynamic> that, int y, int z) =>
+  dynamic /* List<dynamic> */ wire_handle_complex_type_1() => wasmModule.wire_handle_complex_type_1();
+
+  dynamic /* List<dynamic> */ wire_handle_complex_type_2() => wasmModule.wire_handle_complex_type_2();
+
   void wire_sum__method__SumWith(NativePortType port_, List<dynamic> that, int y, int z) =>
       wasmModule.wire_sum__method__SumWith(port_, that, y, z);
 

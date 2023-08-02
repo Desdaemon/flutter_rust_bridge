@@ -823,6 +823,16 @@ pub fn wire_handle_opt_enum(port_: MessagePort, weekday: JsValue) {
 }
 
 #[wasm_bindgen]
+pub fn wire_handle_complex_type_1() -> support::WireSyncReturn {
+    wire_handle_complex_type_1_impl()
+}
+
+#[wasm_bindgen]
+pub fn wire_handle_complex_type_2() -> support::WireSyncReturn {
+    wire_handle_complex_type_2_impl()
+}
+
+#[wasm_bindgen]
 pub fn wire_test_raw_string_item_struct(port_: MessagePort) {
     wire_test_raw_string_item_struct_impl(port_)
 }

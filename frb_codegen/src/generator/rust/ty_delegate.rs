@@ -2,16 +2,16 @@ use crate::generator::rust::ty::*;
 use crate::generator::rust::{
     generate_list_allocate_func, ExternFuncCollector, TypeGeneralListGenerator,
 };
-use crate::ir::*;
 use crate::target::{Acc, Target};
 use crate::type_rust_generator_struct;
 use crate::utils::misc::BlockIndex;
 
 use super::get_into_into_dart;
+use crate::{fmt, ir::*};
 
 type_rust_generator_struct!(TypeDelegateGenerator, IrTypeDelegate);
 
-macro_rules! delegate_enum{
+macro_rules! delegate_enum {
     ($self:ident, $func:ident($($tokens:tt)*), $ret:expr) => {
         if let IrTypeDelegate:: PrimitiveEnum {
             ir,
@@ -248,5 +248,21 @@ impl TypeRustGeneratorTrait for TypeDelegateGenerator<'_> {
 
     fn static_checks(&self) -> Option<String> {
         delegate_enum!(self, static_checks(), None)
+    }
+
+    fn convert_to_dart(&self, obj: String) -> String {
+        delegate_enum!(self, convert_to_dart(obj), format!("{obj}.into_dart()"))
+    }
+
+    fn structs(&self) -> String {
+        delegate_enum!(self, structs(), "".to_owned())
+    }
+
+    fn related_funcs(
+        &self,
+        collector: &mut ExternFuncCollector,
+        block_index: BlockIndex,
+    ) -> Acc<Option<String>> {
+        delegate_enum!(self, related_funcs(collector, block_index), Acc::default())
     }
 }

@@ -1561,6 +1561,14 @@ pub fn handle_opt_enum(weekday: Option<Weekdays>) -> Option<Weekdays> {
     weekday
 }
 
+pub fn handle_complex_type_1() -> Result<SyncReturn<Vec<Weekdays>>> {
+    Ok(SyncReturn(vec![]))
+}
+
+pub fn handle_complex_type_2() -> Result<SyncReturn<Vec<ApplicationMessage>>> {
+    Ok(SyncReturn(vec![]))
+}
+
 pub struct RawStringItemStruct {
     pub r#type: String,
 }
