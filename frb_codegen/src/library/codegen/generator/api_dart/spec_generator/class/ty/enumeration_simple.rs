@@ -2,7 +2,7 @@ use crate::codegen::generator::api_dart::spec_generator::class::ApiDartGenerated
 use crate::codegen::generator::api_dart::spec_generator::misc::generate_dart_comments;
 use crate::codegen::ir::ty::enumeration::{IrEnum, IrVariant};
 use crate::library::codegen::generator::api_dart::spec_generator::base::*;
-use crate::utils::dart_keywords::make_string_keyword_safe;
+use crate::utils::dart_keywords::escape_dart_keywords;
 use itertools::Itertools;
 
 impl<'a> EnumRefApiDartGenerator<'a> {
@@ -31,7 +31,7 @@ impl<'a> EnumRefApiDartGenerator<'a> {
 
     fn generate_mode_simple_variant(&self, variant: &IrVariant) -> String {
         let variant_name = if self.context.config.dart_enums_style {
-            make_string_keyword_safe(variant.name.dart_style())
+            escape_dart_keywords(&variant.name.dart_style()).into_owned()
         } else {
             variant.name.rust_style().to_string()
         };

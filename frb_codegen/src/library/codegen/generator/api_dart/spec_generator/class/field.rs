@@ -1,8 +1,7 @@
-use crate::codegen::ir::default::IrDefaultValue;
 use crate::codegen::ir::field::IrField;
 use crate::codegen::ir::ty::delegate::IrTypeDelegate;
 use crate::codegen::ir::ty::IrType;
-use crate::utils::dart_keywords::make_string_keyword_safe;
+use crate::{codegen::ir::default::IrDefaultValue, utils::dart_keywords::escape_dart_keywords};
 use convert_case::{Case, Casing};
 use std::borrow::Cow;
 
@@ -51,11 +50,12 @@ fn default_value_maybe_to_dart_style(value: &str, enable: bool) -> Cow<str> {
 }
 
 fn default_value_to_dart_style(value: &str) -> String {
-    let mut split = value.split('.');
-    let enum_name = split.next().unwrap();
-
-    let variant_name = split.next().unwrap().to_string();
-    let variant_name = make_string_keyword_safe(variant_name.to_case(Case::Camel));
-
-    format!("{enum_name}.{variant_name}")
+    if let Some((enum_name, variant_name)) = value.split_once('.') {
+        let variant_name = variant_name.to_case(Case::Camel);
+        let variant_name = escape_dart_keywords(&variant_name);
+        format!("{enum_name}.{variant_name}")
+    } else {
+        // Probably invalid code, so just preserve it.
+        value.to_string()
+    }
 }

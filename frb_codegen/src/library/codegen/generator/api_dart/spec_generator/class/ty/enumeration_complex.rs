@@ -10,6 +10,7 @@ use crate::codegen::ir::ty::enumeration::{IrEnum, IrVariant, IrVariantKind};
 use crate::codegen::ir::ty::structure::IrStruct;
 use crate::library::codegen::generator::api_dart::spec_generator::base::*;
 use crate::library::codegen::generator::api_dart::spec_generator::info::ApiDartGeneratorInfoTrait;
+use crate::utils::dart_keywords::escape_dart_keywords;
 use itertools::Itertools;
 
 const BACKTRACE_IDENT: &str = "backtrace";
@@ -63,7 +64,7 @@ impl<'a> EnumRefApiDartGenerator<'a> {
             implements_exception,
             generate_dart_comments(&variant.comments),
             self.ir.ident.0.name,
-            variant.name.dart_style(),
+            escape_dart_keywords(&variant.name.dart_style()),
             args,
             variant.wrapper_name.rust_style(),
         )
@@ -85,6 +86,7 @@ impl<'a> EnumRefApiDartGenerator<'a> {
                 let type_str =
                     ApiDartGenerator::new(field.ty.clone(), self.context).dart_api_type();
                 let name_str = field.name.dart_style();
+                let name_str = escape_dart_keywords(&name_str);
                 format!("{comments} {default} {type_str} {name_str},")
             })
             .collect_vec();
@@ -106,7 +108,7 @@ impl<'a> EnumRefApiDartGenerator<'a> {
                 format!(
                     "{comments} {default} {required}{} {} ,",
                     ApiDartGenerator::new(field.ty.clone(), self.context).dart_api_type(),
-                    field.name.dart_style(),
+                    escape_dart_keywords(&field.name.dart_style()),
                     required = generate_field_required_modifier(field),
                     comments = generate_dart_comments(&field.comments),
                     default =

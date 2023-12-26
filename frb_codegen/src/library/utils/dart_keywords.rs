@@ -1,3 +1,5 @@
+use std::borrow::Cow;
+
 use anyhow::bail;
 use convert_case::{Case, Casing};
 
@@ -5,26 +7,26 @@ use convert_case::{Case, Casing};
 /// convert it to PascalCase to avoid issues.
 /// If the string is not a keyword, then the original
 /// is returned.
-pub(crate) fn make_string_keyword_safe(input: String) -> String {
-    if check_for_keywords(&[input.clone()]).is_err() {
-        input.to_case(Case::Pascal)
+pub(crate) fn escape_dart_keywords(input: &str) -> Cow<str> {
+    if check_for_keywords(&[&input]).is_err() {
+        input.to_case(Case::Pascal).into()
     } else {
-        input
+        input.into()
     }
 }
 
 // the function signature is not covered while the whole body is covered - looks like a bug in coverage tool
 // frb-coverage:ignore-start
-fn check_for_keywords(v: &[String]) -> anyhow::Result<()> {
+fn check_for_keywords(v: &[&str]) -> anyhow::Result<()> {
     // frb-coverage:ignore-end
-    if let Some(s) = v.iter().find(|s| DART_KEYWORDS.contains(&s.as_str())) {
+    if let Some(s) = v.iter().find(|s| DART_KEYWORDS.contains(s)) {
         bail!("Api name cannot be a dart keyword: {}", s);
     };
     Ok(())
 }
 
 // https://dart.dev/guides/language/language-tour#keywords
-const DART_KEYWORDS: [&str; 63] = [
+static DART_KEYWORDS: phf::Set<&str> = phf::phf_set![
     "abstract",
     "else",
     "import",
