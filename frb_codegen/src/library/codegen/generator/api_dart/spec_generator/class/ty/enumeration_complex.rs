@@ -31,11 +31,12 @@ impl<'a> EnumRefApiDartGenerator<'a> {
         };
         let maybe_implements_exception =
             generate_dart_maybe_implements_exception(self.ir.is_exception);
+        let comments = generate_dart_comments(&src.comments);
 
         Some(ApiDartGeneratedClass {
             namespace: src.name.namespace.clone(),
             code: format!(
-                "@freezed
+                "{comments}@freezed
                 {sealed} class {name} with _${name} {maybe_implements_exception} {{
                     {variants}
                 }}",
