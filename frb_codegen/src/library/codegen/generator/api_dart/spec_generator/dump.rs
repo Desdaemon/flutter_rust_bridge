@@ -23,10 +23,10 @@ pub(super) fn generate_dump_info(
 ) -> ApiDartDumpInfo {
     ApiDartDumpInfo {
         types: cache
-            .distinct_types
+            .distinct_types()
             .iter()
             .map(|ty| {
-                let gen = ApiDartGenerator::new(ty.clone(), context);
+                let gen = ApiDartGenerator::new(ty, context);
                 ApiDartDumpInfoType {
                     safe_ident: ty.safe_ident(),
                     dart_api_type: gen.dart_api_type(),

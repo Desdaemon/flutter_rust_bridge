@@ -103,8 +103,8 @@ fn generate_header(
     Ok(DartBasicHeaderCode {
         import: generate_imports_which_types_and_funcs_use(
             &func.name.namespace.clone(),
-            &None,
-            &Some(&vec![func]),
+            None,
+            Some(&[func]),
             context,
         )?,
         ..Default::default()

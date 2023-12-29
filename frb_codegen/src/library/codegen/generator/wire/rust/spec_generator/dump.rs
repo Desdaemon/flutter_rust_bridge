@@ -32,14 +32,12 @@ pub(super) fn generate_dump_info(
 ) -> WireRustDumpInfo {
     WireRustDumpInfo {
         types: cache
-            .distinct_types
+            .distinct_types()
             .iter()
             .map(|ty| {
-                let gen = WireRustGenerator::new(ty.clone(), context);
-                let cst_gen = WireRustCodecCstGenerator::new(
-                    ty.clone(),
-                    context.as_wire_rust_codec_cst_context(),
-                );
+                let gen = WireRustGenerator::new(ty, context);
+                let cst_gen =
+                    WireRustCodecCstGenerator::new(ty, context.as_wire_rust_codec_cst_context());
                 WireRustDumpInfoType {
                     safe_ident: ty.safe_ident(),
                     rust_wire_type: Target::iter()

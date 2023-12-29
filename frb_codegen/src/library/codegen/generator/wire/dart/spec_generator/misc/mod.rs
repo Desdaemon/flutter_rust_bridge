@@ -51,10 +51,7 @@ pub(crate) fn generate(
         api_impl_normal_functions: (context.ir_pack.funcs.iter())
             .map(|f| api_impl_body::generate_api_impl_normal_function(f, context))
             .collect::<anyhow::Result<Vec<_>>>()?,
-        // wire_delegate_functions: (rust_extern_funcs.iter())
-        //     .map(|f| generate_wire_delegate_functions(f))
-        //     .collect(),
-        extra_functions: (cache.distinct_types.iter())
+        extra_functions: (cache.distinct_types().iter())
             .flat_map(|ty| WireDartGenerator::new(ty.clone(), context).generate_extra_functions())
             .collect(),
     })
@@ -82,8 +79,8 @@ fn generate_boilerplate(
     )?;
     universal_imports += &generate_imports_which_types_and_funcs_use(
         &Namespace::new_self_crate(file_stem(&context.config.dart_impl_output_path.io)),
-        &Some(&cache.distinct_types.iter().collect_vec()),
-        &None,
+        Some(cache.distinct_types().iter().collect_vec().as_slice()),
+        None,
         context.as_api_dart_context(),
     )?;
     universal_imports += "
@@ -132,7 +129,7 @@ fn generate_boilerplate(
                       externalLibrary: externalLibrary,
                     );
                   }}
-                  
+
                   /// Dispose flutter_rust_bridge
                   ///
                   /// The call to this function is optional, since flutter_rust_bridge (and everything else)
@@ -144,7 +141,7 @@ fn generate_boilerplate(
 
                   @override
                   WireConstructor<{wire_class_name}> get wireConstructor => {wire_class_name}.fromExternalLibrary;
-                  
+
                   @override
                   Future<void> executeRustInitializers() async {{
                     {execute_rust_initializers}
@@ -155,7 +152,7 @@ fn generate_boilerplate(
 
                   @override
                   String get codegenVersion => '{codegen_version}';
-                  
+
                   static const kDefaultExternalLibraryLoaderConfig = ExternalLibraryLoaderConfig(
                     stem: '{stem}',
                     ioDirectory: '{io_directory}',

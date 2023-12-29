@@ -40,7 +40,7 @@ pub(crate) fn generate(
     Ok(WireRustOutputSpecMisc {
         code_header: Acc::new(|_| vec![(generate_code_header() + "\n\n").into()]),
         file_attributes: Acc::new_common(vec![FILE_ATTRIBUTES.to_string().into()]),
-        imports: generate_imports(&cache.distinct_types, context),
+        imports: generate_imports(cache.distinct_types(), context),
         executor: Acc::new_common(vec![generate_executor(context.ir_pack).into()]),
         boilerplate: generate_boilerplate(
             context.config.default_stream_sink_codec,
@@ -49,19 +49,19 @@ pub(crate) fn generate(
         wire_funcs: (context.ir_pack.funcs.iter())
             .map(|f| generate_wire_func(f, context))
             .collect(),
-        wrapper_structs: (cache.distinct_types.iter())
+        wrapper_structs: (cache.distinct_types().iter())
             .filter_map(|ty| generate_wrapper_struct(ty, context))
             .map(|x| Acc::<WireRustOutputCode>::new_common(x.into()))
             .collect(),
         static_checks: Acc::new_common(vec![generate_static_checks(
-            &cache.distinct_types,
+            cache.distinct_types(),
             context,
         )
         .into()]),
         related_funcs: cache
-            .distinct_types
+            .distinct_types()
             .iter()
-            .map(|ty| WireRustGenerator::new(ty.clone(), context).generate_related_funcs())
+            .map(|ty| WireRustGenerator::new(ty, context).generate_related_funcs())
             .collect(),
     })
 }
@@ -88,7 +88,7 @@ fn generate_imports(
 ) -> Acc<Vec<WireRustOutputCode>> {
     let imports_from_types = types
         .iter()
-        .flat_map(|ty| WireRustGenerator::new(ty.clone(), context).generate_imports())
+        .flat_map(|ty| WireRustGenerator::new(ty, context).generate_imports())
         .flatten()
         .collect::<HashSet<String>>()
         .into_iter()
@@ -133,7 +133,7 @@ fn generate_wrapper_struct(ty: &IrType, context: WireRustGeneratorContext) -> Op
 fn generate_static_checks(types: &[IrType], context: WireRustGeneratorContext) -> String {
     let raw = types
         .iter()
-        .filter_map(|ty| WireRustGenerator::new(ty.clone(), context).generate_static_checks())
+        .filter_map(|ty| WireRustGenerator::new(ty, context).generate_static_checks())
         .collect_vec();
 
     if raw.is_empty() {

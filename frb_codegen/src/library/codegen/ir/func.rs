@@ -52,12 +52,18 @@ pub enum IrFuncOwnerInfoMethodMode {
 }
 }
 
+pub(crate) struct TypeNode<'a> {
+    pub ty: &'a IrType,
+    /// Is this type accepted from or returned to Dart?
+    pub output: bool,
+}
+
 impl IrFunc {
     pub(crate) fn fallible(&self) -> bool {
         self.error_output.is_some()
     }
 
-    pub(crate) fn visit_types<F: FnMut(&IrType) -> bool>(
+    pub(crate) fn visit_types<F: FnMut(TypeNode) -> bool>(
         &self,
         f: &mut F,
         include_inputs: bool,
@@ -66,15 +72,18 @@ impl IrFunc {
     ) {
         if include_inputs {
             for field in &self.inputs {
-                field.ty.visit_types(f, ir_context);
+                field
+                    .ty
+                    .visit_types(&mut |ty| f(TypeNode { ty, output: false }), ir_context);
             }
         }
         if include_output {
-            self.output.visit_types(f, ir_context);
+            self.output
+                .visit_types(&mut |ty| f(TypeNode { ty, output: true }), ir_context);
 
             let error_output = (self.error_output.as_ref().cloned())
                 .unwrap_or(IrType::Primitive(IrTypePrimitive::Unit));
-            error_output.visit_types(f, ir_context);
+            error_output.visit_types(&mut |ty| f(TypeNode { ty, output: true }), ir_context);
         }
     }
 }

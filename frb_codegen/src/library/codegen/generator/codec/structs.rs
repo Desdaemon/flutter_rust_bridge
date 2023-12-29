@@ -112,9 +112,9 @@ pub(crate) fn get_interest_types_for_codec(
         CodecMode::Cst => cache.distinct_types_for_codec[&codec].clone(),
         // Consider all types in Rust, since users may want IntoDart and IntoIntoDart for DartDynamic etc
         // And all types in Dart, since DartFn needs DCO
-        CodecMode::Dco => cache.distinct_types.clone(),
+        CodecMode::Dco => cache.distinct_types().iter().cloned().collect(),
         // For simplicity, consider all types, since (1) PDE needs SSE (2) non-SSE DartFn still requires SSE
-        CodecMode::Sse => cache.distinct_types.clone(),
+        CodecMode::Sse => cache.distinct_types().iter().cloned().collect(),
         CodecMode::Pde => vec![],
     }
 }

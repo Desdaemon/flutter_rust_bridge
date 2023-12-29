@@ -63,8 +63,8 @@ pub(crate) fn generate_function_dart_return_type(func_mode: &IrFuncMode, inner: 
 
 pub(crate) fn generate_imports_which_types_and_funcs_use(
     current_file_namespace: &Namespace,
-    seed_types: &Option<&Vec<&IrType>>,
-    seed_funcs: &Option<&Vec<&IrFunc>>,
+    seed_types: Option<&[&IrType]>,
+    seed_funcs: Option<&[&IrFunc]>,
     context: ApiDartGeneratorContext,
 ) -> anyhow::Result<String> {
     let interest_types = {
@@ -74,7 +74,12 @@ pub(crate) fn generate_imports_which_types_and_funcs_use(
         }
         if let Some(funcs) = seed_funcs {
             (funcs.iter()).for_each(|x| {
-                x.visit_types(&mut |ty| gatherer.add(ty), true, true, context.ir_pack)
+                x.visit_types(
+                    &mut |node| gatherer.add(node.ty),
+                    true,
+                    true,
+                    context.ir_pack,
+                )
             });
         }
         gatherer.gather()

@@ -56,7 +56,7 @@ pub(crate) fn generate(
     )?;
 
     let grouped_funcs = (ir_pack.funcs.iter()).into_group_map_by(|x| x.name.namespace.clone());
-    let grouped_namespaced_types = (cache.distinct_types.iter())
+    let grouped_namespaced_types = (cache.distinct_types().iter())
         .filter(|x| x.self_namespace().is_some())
         .into_group_map_by(|x| x.self_namespace().unwrap());
 
@@ -72,8 +72,8 @@ pub(crate) fn generate(
                 namespace.to_owned(),
                 generate_item(
                     namespace,
-                    &grouped_namespaced_types.get(namespace),
-                    &grouped_funcs.get(namespace),
+                    grouped_namespaced_types.get(namespace).map(Vec::as_slice),
+                    grouped_funcs.get(namespace).map(Vec::as_slice),
                     context,
                 )?,
             ))
@@ -85,8 +85,8 @@ pub(crate) fn generate(
 
 fn generate_item(
     namespace: &Namespace,
-    namespaced_types: &Option<&Vec<&IrType>>,
-    funcs: &Option<&Vec<&IrFunc>>,
+    namespaced_types: Option<&[&IrType]>,
+    funcs: Option<&[&IrFunc]>,
     context: ApiDartGeneratorContext,
 ) -> Result<ApiDartOutputSpecItem> {
     let imports = DartBasicHeaderCode {

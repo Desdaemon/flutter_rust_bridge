@@ -103,6 +103,12 @@ impl From<Box<IrType>> for IrType {
     }
 }
 
+impl From<&'_ IrType> for IrType {
+    fn from(value: &IrType) -> Self {
+        value.clone()
+    }
+}
+
 impl Serialize for IrType {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
