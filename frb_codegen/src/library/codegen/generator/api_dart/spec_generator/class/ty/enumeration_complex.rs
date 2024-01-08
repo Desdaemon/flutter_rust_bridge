@@ -1,6 +1,7 @@
 use crate::codegen::generator::api_dart::spec_generator::class::field::{
     generate_field_default, generate_field_required_modifier,
 };
+use crate::codegen::generator::api_dart::spec_generator::class::method::generate_api_methods;
 use crate::codegen::generator::api_dart::spec_generator::class::ApiDartGeneratedClass;
 use crate::codegen::generator::api_dart::spec_generator::misc::{
     generate_dart_comments, generate_dart_maybe_implements_exception,
@@ -33,12 +34,17 @@ impl<'a> EnumRefApiDartGenerator<'a> {
             generate_dart_maybe_implements_exception(self.ir.is_exception);
         let comments = generate_dart_comments(&src.comments);
 
+        let methods = generate_api_methods(&src.name, self.context).join("\n");
+
         Some(ApiDartGeneratedClass {
             namespace: src.name.namespace.clone(),
             code: format!(
                 "{comments}@freezed
                 {sealed} class {name} with _${name} {maybe_implements_exception} {{
+                    const {name}._();
                     {variants}
+
+                    {methods}
                 }}",
             ),
             needs_freezed: true,

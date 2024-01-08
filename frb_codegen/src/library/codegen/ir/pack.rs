@@ -37,8 +37,7 @@ impl IrPack {
                 if node.output {
                     output_gatherer.add(node.ty)
                 } else {
-                    // Let output have a chance to gather this type.
-                    input_gatherer.add(node.ty) && output_gatherer.contains(node.ty)
+                    input_gatherer.add(node.ty)
                 }
             },
             include_func_inputs,
