@@ -48,7 +48,7 @@ pub struct IrFuncOwnerInfoMethod {
 
 pub enum IrFuncOwnerInfoMethodMode {
     Static,
-    Instance,
+    Instance { owned: bool },
 }
 }
 

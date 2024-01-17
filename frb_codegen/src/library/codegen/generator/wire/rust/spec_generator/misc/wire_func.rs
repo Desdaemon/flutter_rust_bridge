@@ -87,7 +87,15 @@ fn generate_inner_func_args(
                     OwnershipMode::RefMut => format!("&mut {ans}"),
                     _ => ans,
                 };
-            } else if index == 0 && matches!(&func.owner, IrFuncOwnerInfo::Method(IrFuncOwnerInfoMethod { mode, .. }) if mode == &Instance) {
+            } else if index == 0
+                && matches!(
+                    &func.owner,
+                    IrFuncOwnerInfo::Method(IrFuncOwnerInfoMethod {
+                        mode: Instance { owned: false },
+                        ..
+                    })
+                )
+            {
                 ans = format!("&{ans}");
             }
             ans

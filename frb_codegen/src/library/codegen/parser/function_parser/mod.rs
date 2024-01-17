@@ -126,10 +126,11 @@ impl<'a, 'b> FunctionParser<'a, 'b> {
                 item_impl,
                 impl_item_fn,
             } => {
-                let mode = if matches!(impl_item_fn.sig.inputs.first(), Some(FnArg::Receiver(..))) {
-                    IrFuncOwnerInfoMethodMode::Instance
-                } else {
-                    IrFuncOwnerInfoMethodMode::Static
+                let mode = match impl_item_fn.sig.inputs.first() {
+                    Some(FnArg::Receiver(recv)) => IrFuncOwnerInfoMethodMode::Instance {
+                        owned: recv.reference.is_none(),
+                    },
+                    _ => IrFuncOwnerInfoMethodMode::Static,
                 };
 
                 let enum_or_struct_name =
